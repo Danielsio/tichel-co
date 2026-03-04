@@ -1,0 +1,69 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Products: anyone can read published, only admin functions can write ──
+    match /products/{productId} {
+      allow read: if resource.data.publishedAt != null;
+      allow write: if false; // Admin SDK only (Cloud Functions)
+
+      match /variants/{variantId} {
+        allow read: if true;
+        allow write: if false;
+      }
+    }
+
+    // ── Collections: anyone can read published, only admin functions can write ──
+    match /collections/{collectionId} {
+      allow read: if resource.data.publishedAt != null;
+      allow write: if false;
+    }
+
+    // ── Users: owner can read/write own profile ──
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false;
+
+      match /addresses/{addressId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // ── Orders: owner can read own, only Cloud Functions can write ──
+    match /orders/{orderId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if false; // Created via /api/checkout route handler
+      allow update: if false; // Updated via Cloud Functions only
+      allow delete: if false;
+    }
+
+    // ── Cart: owner can read/write own cart ──
+    match /cart/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ── Custom Requests: anyone can create, owner can read own ──
+    match /customRequests/{requestId} {
+      allow create: if true;
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow update: if false; // Admin only via Cloud Functions
+      allow delete: if false;
+    }
+
+    // ── Reviews: anyone can read published, owner can create ──
+    match /reviews/{reviewId} {
+      allow read: if resource.data.publishedAt != null;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if false;
+    }
+
+    // ── Discount Codes: read-only from client (validation in Cloud Functions) ──
+    match /discountCodes/{code} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
