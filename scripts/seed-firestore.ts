@@ -20,9 +20,9 @@ function init(): Firestore {
 
   if (useEmulator) {
     process.env.FIRESTORE_EMULATOR_HOST = EMULATOR_HOST;
-    console.log(`→ Targeting Firestore emulator at ${EMULATOR_HOST}`);
+    console.warn(`→ Targeting Firestore emulator at ${EMULATOR_HOST}`);
   } else {
-    console.log("→ Targeting PRODUCTION Firestore");
+    console.warn("→ Targeting PRODUCTION Firestore");
   }
 
   if (!getApps().length) {
@@ -380,13 +380,13 @@ async function seed() {
   const db = init();
   const batch = db.batch();
 
-  console.log("Seeding collections...");
+  console.warn("Seeding collections...");
   for (const col of collections) {
     const { id, ...data } = col;
     batch.set(db.collection("collections").doc(id), data);
   }
 
-  console.log("Seeding products...");
+  console.warn("Seeding products...");
   for (const product of products) {
     const { id, variants, ...productData } = product;
     batch.set(db.collection("products").doc(id), productData);
@@ -401,7 +401,7 @@ async function seed() {
   }
 
   await batch.commit();
-  console.log(
+  console.warn(
     `✓ Seeded ${collections.length} collections and ${products.length} products`,
   );
 }
