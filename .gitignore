@@ -1,0 +1,47 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next.js
+.next/
+out/
+
+# build
+dist/
+functions/dist/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# testing
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Vercel
+.vercel
+
+# misc
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+Thumbs.db
+
+# Firebase
+service-account.json
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+ui-debug.log
+firestore-debug.log
+pubsub-debug.log
