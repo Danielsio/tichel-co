@@ -124,12 +124,33 @@
     "text": "The page you're looking for doesn't exist.",
     "home": "Back to Home"
   },
+  "auth": {
+    "loginTitle": "Sign In",
+    "registerTitle": "Create Account",
+    "email": "Email Address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "loginButton": "Sign In",
+    "registerButton": "Create Account",
+    "googleButton": "Continue with Google",
+    "or": "or",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "registerLink": "Create one",
+    "loginLink": "Sign in",
+    "logoutButton": "Sign Out",
+    "errorInvalidEmail": "Invalid email address",
+    "errorWeakPassword": "Password must be at least 6 characters",
+    "errorMismatch": "Passwords do not match",
+    "errorGeneric": "An error occurred. Please try again."
+  },
   "account": {
     "title": "My Account",
     "orders": "My Orders",
     "wishlist": "Wishlist",
     "addresses": "Addresses",
-    "settings": "Settings"
+    "settings": "Settings",
+    "welcome": "Welcome, {name}"
   },
   "common": {
     "close": "Close",

@@ -124,12 +124,33 @@
     "text": "הדף שחיפשת לא נמצא.",
     "home": "חזרה לדף הבית"
   },
+  "auth": {
+    "loginTitle": "התחברות",
+    "registerTitle": "יצירת חשבון",
+    "email": "כתובת אימייל",
+    "password": "סיסמה",
+    "confirmPassword": "אימות סיסמה",
+    "loginButton": "התחבר",
+    "registerButton": "צור חשבון",
+    "googleButton": "המשך עם Google",
+    "or": "או",
+    "noAccount": "אין לך חשבון?",
+    "hasAccount": "כבר יש לך חשבון?",
+    "registerLink": "צור חשבון",
+    "loginLink": "התחבר",
+    "logoutButton": "התנתק",
+    "errorInvalidEmail": "כתובת אימייל לא תקינה",
+    "errorWeakPassword": "הסיסמה חייבת להכיל לפחות 6 תווים",
+    "errorMismatch": "הסיסמאות אינן תואמות",
+    "errorGeneric": "אירעה שגיאה. נסו שוב."
+  },
   "account": {
     "title": "החשבון שלי",
     "orders": "ההזמנות שלי",
     "wishlist": "רשימת משאלות",
     "addresses": "כתובות",
-    "settings": "הגדרות"
+    "settings": "הגדרות",
+    "welcome": "שלום, {name}"
   },
   "common": {
     "close": "סגור",
