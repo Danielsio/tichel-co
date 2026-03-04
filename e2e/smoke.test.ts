@@ -18,8 +18,13 @@ test("@smoke home page loads in English", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("@smoke root redirects to default locale", async ({ page }) => {
+test("@smoke root redirects to default locale", async ({ browser }) => {
+  const context = await browser.newContext({
+    locale: "he-IL",
+  });
+  const page = await context.newPage();
   await page.goto("/");
   await page.waitForURL(/\/he/, { timeout: 10000 });
   await expect(page).toHaveURL(/\/he/);
+  await context.close();
 });
