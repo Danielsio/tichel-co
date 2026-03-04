@@ -147,10 +147,15 @@
   "account": {
     "title": "החשבון שלי",
     "orders": "ההזמנות שלי",
+    "ordersDesc": "צפו בהיסטוריית ההזמנות ועקבו אחר משלוחים",
     "wishlist": "רשימת משאלות",
+    "wishlistDesc": "הפריטים השמורים והמועדפים שלכם",
     "addresses": "כתובות",
+    "addressesDesc": "ניהול כתובות למשלוח",
     "settings": "הגדרות",
-    "welcome": "שלום, {name}"
+    "settingsDesc": "העדפות חשבון והתראות",
+    "welcome": "שלום, {name}",
+    "comingSoon": "בקרוב"
   },
   "common": {
     "close": "סגור",

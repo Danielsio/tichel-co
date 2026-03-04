@@ -147,10 +147,15 @@
   "account": {
     "title": "My Account",
     "orders": "My Orders",
+    "ordersDesc": "View your order history and track deliveries",
     "wishlist": "Wishlist",
+    "wishlistDesc": "Your saved items and favorites",
     "addresses": "Addresses",
+    "addressesDesc": "Manage your shipping addresses",
     "settings": "Settings",
-    "welcome": "Welcome, {name}"
+    "settingsDesc": "Account preferences and notifications",
+    "welcome": "Welcome, {name}",
+    "comingSoon": "Coming soon"
   },
   "common": {
     "close": "Close",
