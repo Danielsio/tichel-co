@@ -1,17 +1,68 @@
-import { setRequestLocale } from "next-intl/server";
+"use client";
 
-type Props = {
-  params: Promise<{ locale: string }>;
-};
+import { useEffect, useState } from "react";
+import { collection, getCountFromServer, query, where } from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
 
-export default async function AdminDashboardPage({ params }: Props) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+interface Stats {
+  totalProducts: number;
+  totalOrders: number;
+  pendingOrders: number;
+  customRequests: number;
+}
+
+export default function AdminDashboardPage() {
+  const [stats, setStats] = useState<Stats | null>(null);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const [products, orders, pending, custom] = await Promise.all([
+          getCountFromServer(collection(db, "products")),
+          getCountFromServer(collection(db, "orders")),
+          getCountFromServer(
+            query(collection(db, "orders"), where("status", "==", "pending_payment")),
+          ),
+          getCountFromServer(collection(db, "customRequests")),
+        ]);
+        setStats({
+          totalProducts: products.data().count,
+          totalOrders: orders.data().count,
+          pendingOrders: pending.data().count,
+          customRequests: custom.data().count,
+        });
+      } catch {
+        setStats({
+          totalProducts: 0,
+          totalOrders: 0,
+          pendingOrders: 0,
+          customRequests: 0,
+        });
+      }
+    }
+    load();
+  }, []);
+
+  const cards = [
+    { label: "Products", value: stats?.totalProducts },
+    { label: "Total Orders", value: stats?.totalOrders },
+    { label: "Pending Orders", value: stats?.pendingOrders },
+    { label: "Custom Requests", value: stats?.customRequests },
+  ];
 
   return (
     <div>
       <h1 className="text-navy text-2xl font-semibold">Dashboard</h1>
-      <p className="text-charcoal/60 mt-2">Admin dashboard with analytics — Phase 5</p>
+      <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {cards.map((card) => (
+          <div key={card.label} className="border-stone rounded-sm border bg-white p-6">
+            <p className="text-charcoal/50 text-xs tracking-wider uppercase">
+              {card.label}
+            </p>
+            <p className="text-navy mt-2 text-3xl font-semibold">{card.value ?? "—"}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
