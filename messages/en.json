@@ -244,5 +244,53 @@
     "products": "Products",
     "customRequests": "Custom Requests",
     "backToStore": "← Back to Store"
+  },
+  "legal": {
+    "lastUpdated": "Last updated: March 2026",
+    "privacyTitle": "Privacy Policy",
+    "termsTitle": "Terms of Service",
+    "returnsTitle": "Shipping & Returns",
+    "privacy": {
+      "collectTitle": "Information We Collect",
+      "collectText": "We collect personal information you provide when creating an account, placing an order, or contacting us. This includes your name, email address, shipping address, and payment information. Payment details are processed securely by Stripe and are never stored on our servers.",
+      "useTitle": "How We Use Your Information",
+      "useText": "We use your information to process orders, provide customer support, send order updates, and improve our services. With your consent, we may send promotional emails about new collections and offers. You can unsubscribe at any time.",
+      "shareTitle": "Information Sharing",
+      "shareText": "We do not sell or rent your personal information to third parties. We share data only with service providers who help us operate our business: Stripe for payments, Firebase for authentication and data storage, and shipping carriers for delivery.",
+      "cookiesTitle": "Cookies",
+      "cookiesText": "We use essential cookies to maintain your session and shopping cart. Analytics cookies help us understand how visitors use our site. You can manage cookie preferences in your browser settings.",
+      "rightsTitle": "Your Rights",
+      "rightsText": "You have the right to access, correct, or delete your personal data. You may also request a copy of your data or ask us to restrict its processing. Contact us at privacy@tichel.co for any data-related requests.",
+      "contactTitle": "Contact",
+      "contactText": "For privacy-related inquiries, please email privacy@tichel.co. We aim to respond within 5 business days."
+    },
+    "terms": {
+      "generalTitle": "General Terms",
+      "generalText": "By using this website and placing orders, you agree to these terms of service. Tichel & Co. reserves the right to update these terms at any time. Continued use of the site constitutes acceptance of the updated terms.",
+      "productsTitle": "Products & Pricing",
+      "productsText": "All products are handcrafted and may have slight variations in color and texture. Prices are listed in Israeli Shekels (ILS) and include VAT where applicable. We reserve the right to update prices without prior notice.",
+      "paymentTitle": "Payment",
+      "paymentText": "We accept credit and debit cards processed securely through Stripe. Payment is charged at the time of order placement. All transactions are encrypted and secured.",
+      "shippingTitle": "Shipping",
+      "shippingText": "We ship throughout Israel and internationally. Standard delivery within Israel takes 3-5 business days. International shipping takes 7-14 business days. Free shipping on orders over ₪260.",
+      "liabilityTitle": "Limitation of Liability",
+      "liabilityText": "Tichel & Co. is not liable for indirect, incidental, or consequential damages arising from your use of our products or services. Our total liability is limited to the purchase price of the product in question.",
+      "governingTitle": "Governing Law",
+      "governingText": "These terms are governed by the laws of the State of Israel. Any disputes will be resolved in the courts of Tel Aviv-Jaffa."
+    },
+    "returns": {
+      "policyTitle": "Return Policy",
+      "policyText": "We want you to love your Tichel & Co. purchase. If you're not completely satisfied, you may return unworn items within 30 days of delivery for a full refund or exchange.",
+      "eligibleTitle": "Eligible Items",
+      "eligibleText": "Items must be in their original condition — unworn, unwashed, and with tags attached. Custom-made pieces and items marked as final sale are not eligible for return.",
+      "processTitle": "How to Return",
+      "processText": "Email returns@tichel.co with your order number and reason for return. We'll send you a prepaid return label within 1-2 business days. Pack the item securely and drop it off at any post office.",
+      "refundTitle": "Refunds",
+      "refundText": "Refunds are processed within 5-7 business days after we receive and inspect the returned item. The refund will be credited to your original payment method.",
+      "exchangeTitle": "Exchanges",
+      "exchangeText": "To exchange an item for a different color or size, follow the return process and place a new order. If you need help finding the right alternative, our team is happy to assist.",
+      "contactTitle": "Need Help?",
+      "contactText": "Contact our customer service at returns@tichel.co or call us during business hours. We're here to make sure you're happy with your purchase."
+    }
   }
 }
