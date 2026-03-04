@@ -1,19 +1,159 @@
+import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import { Link } from "@/lib/i18n/navigation";
+import { Button } from "@/components/ui/button";
+import { MOCK_PRODUCTS } from "@/lib/mock-data";
+import type { Locale } from "@/types";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
 
+const LOOKS = [
+  {
+    title: { he: "אלגנטיות שבתית", en: "Shabbat Elegance" },
+    description: {
+      he: "שילוב של קטיפה עשירה עם סיכות פנינה לשבת מושלמת",
+      en: "Rich velvet paired with pearl pins for the perfect Shabbat",
+    },
+    imageUrl:
+      "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=1200&q=80",
+    productIds: ["prod-002", "prod-009"],
+  },
+  {
+    title: { he: "קלילות יומיומית", en: "Everyday Ease" },
+    description: {
+      he: "פשתן נושם וסרט משי — מראה טבעי ורענן לכל יום",
+      en: "Breathable linen and a silk headband — a fresh, natural look for every day",
+    },
+    imageUrl:
+      "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&q=80",
+    productIds: ["prod-004", "prod-007"],
+  },
+  {
+    title: { he: "חלום ורוד", en: "Pink Dream" },
+    description: {
+      he: "שיפון משי ורוד עם גימור עדין — ליום מיוחד או סתם כי מגיע לך",
+      en: "Pink silk chiffon with a delicate finish — for a special day or just because",
+    },
+    imageUrl: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1200&q=80",
+    productIds: ["prod-011", "prod-001"],
+  },
+];
+
 export default async function LookbookPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
+  return <LookbookContent locale={locale as Locale} />;
+}
+
+function LookbookContent({ locale }: { locale: Locale }) {
+  const t = useTranslations("lookbook");
+
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 lg:px-6">
-      <h1 className="font-display text-navy text-3xl font-semibold">Lookbook</h1>
-      <p className="text-charcoal/60 mt-4">
-        Editorial lookbook with shoppable looks — Phase 2
-      </p>
-    </div>
+    <>
+      {/* Header */}
+      <section className="bg-stone py-16">
+        <div className="mx-auto max-w-3xl px-4 text-center lg:px-6">
+          <h1 className="font-display text-navy text-4xl font-semibold md:text-5xl">
+            {t("title")}
+          </h1>
+          <p className="text-charcoal/60 mx-auto mt-4 max-w-md text-sm leading-relaxed">
+            {t("subtitle")}
+          </p>
+        </div>
+      </section>
+
+      {/* Looks */}
+      <section className="mx-auto max-w-6xl px-4 py-16 lg:px-6">
+        <div className="flex flex-col gap-20">
+          {LOOKS.map((look, idx) => {
+            const products = look.productIds
+              .map((id) => MOCK_PRODUCTS.find((p) => p.id === id))
+              .filter(Boolean);
+            const isReversed = idx % 2 === 1;
+
+            return (
+              <div
+                key={idx}
+                className={`flex flex-col gap-8 md:items-center lg:flex-row lg:gap-12 ${
+                  isReversed ? "lg:flex-row-reverse" : ""
+                }`}
+              >
+                {/* Image */}
+                <div className="bg-stone aspect-[4/5] overflow-hidden rounded-sm lg:flex-1">
+                  <img
+                    src={look.imageUrl}
+                    alt={look.title[locale]}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+
+                {/* Info */}
+                <div className="flex flex-col justify-center lg:flex-1">
+                  <h2 className="font-display text-navy text-2xl font-semibold md:text-3xl">
+                    {look.title[locale]}
+                  </h2>
+                  <p className="text-charcoal/60 mt-3 text-sm leading-relaxed">
+                    {look.description[locale]}
+                  </p>
+
+                  {/* Products in this look */}
+                  <div className="mt-8 flex flex-col gap-4">
+                    {products.map((product) => {
+                      if (!product) return null;
+                      const variant = product.variants[0];
+                      return (
+                        <Link
+                          key={product.id}
+                          href={`/products/${product.slug}` as never}
+                          className="border-stone group hover:border-gold/30 flex items-center gap-4 rounded-sm border p-3 transition-colors"
+                        >
+                          <div className="bg-stone h-16 w-12 shrink-0 overflow-hidden rounded-sm">
+                            {variant?.imageUrls[0] && (
+                              <img
+                                src={variant.imageUrls[0]}
+                                alt={product.title[locale]}
+                                className="h-full w-full object-cover"
+                              />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="text-navy group-hover:text-gold text-sm font-medium transition-colors">
+                              {product.title[locale]}
+                            </h3>
+                            <p className="text-charcoal/50 mt-0.5 text-xs">
+                              {variant?.fabric[locale]}
+                            </p>
+                          </div>
+                          <span className="text-charcoal/70 text-sm font-medium">
+                            {new Intl.NumberFormat(
+                              locale === "he" ? "he-IL" : "en-US",
+                              {
+                                style: "currency",
+                                currency: locale === "he" ? "ILS" : "USD",
+                                minimumFractionDigits: 0,
+                              },
+                            ).format(product.priceCents / 100)}
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+
+                  <div className="mt-6">
+                    <Button variant="secondary" size="sm">
+                      {t("shopTheLook")}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    </>
   );
 }
