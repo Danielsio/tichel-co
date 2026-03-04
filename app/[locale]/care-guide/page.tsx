@@ -42,27 +42,36 @@ function CareGuideContent() {
   return (
     <>
       {/* Header */}
-      <section className="bg-stone py-16">
-        <div className="mx-auto max-w-3xl px-4 text-center lg:px-6">
-          <h1 className="font-display text-navy text-4xl font-semibold">
+      <section className="gradient-luxury relative overflow-hidden py-16 lg:py-20">
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="relative mx-auto max-w-3xl px-4 text-center lg:px-6">
+          <h1 className="font-display text-ivory text-3xl font-semibold text-balance lg:text-5xl">
             {t("title")}
           </h1>
-          <p className="text-charcoal/60 mx-auto mt-4 max-w-lg text-sm leading-relaxed">
+          <p className="text-ivory/40 mx-auto mt-5 max-w-lg text-[14px] leading-relaxed">
             {t("subtitle")}
           </p>
         </div>
       </section>
 
       {/* Fabric Cards */}
-      <section className="mx-auto max-w-4xl px-4 py-16 lg:px-6">
-        <div className="grid gap-6 md:grid-cols-2">
+      <section className="mx-auto max-w-4xl px-4 py-20 lg:px-6">
+        <div className="grid gap-5 md:grid-cols-2">
           {fabrics.map((fabric) => (
-            <div key={fabric.title} className="border-stone rounded-sm border p-6">
+            <div key={fabric.title} className="border-stone/60 border p-7">
               <div className="flex items-start gap-4">
                 <span className="text-gold mt-0.5 text-xl">{fabric.icon}</span>
                 <div>
-                  <h2 className="text-navy text-lg font-semibold">{fabric.title}</h2>
-                  <p className="text-charcoal/70 mt-2 text-sm leading-relaxed">
+                  <h2 className="text-navy text-[15px] font-semibold">
+                    {fabric.title}
+                  </h2>
+                  <p className="text-charcoal/50 mt-2 text-[13px] leading-relaxed">
                     {fabric.text}
                   </p>
                 </div>
@@ -72,11 +81,13 @@ function CareGuideContent() {
         </div>
 
         {/* General Tips */}
-        <div className="bg-navy text-ivory mt-12 rounded-sm p-8">
-          <h2 className="font-display mb-3 text-xl font-semibold">
+        <div className="gradient-luxury text-ivory mt-14 p-10">
+          <h2 className="font-display mb-4 text-xl font-semibold">
             {t("generalTitle")}
           </h2>
-          <p className="text-ivory/70 text-sm leading-relaxed">{t("generalText")}</p>
+          <p className="text-ivory/50 text-[14px] leading-relaxed">
+            {t("generalText")}
+          </p>
         </div>
       </section>
     </>

@@ -43,14 +43,14 @@ export default function CheckoutPage() {
   if (!mounted) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 lg:px-6">
-        <div className="bg-stone h-96 animate-pulse rounded-sm" />
+        <div className="bg-stone h-96 animate-pulse" />
       </div>
     );
   }
 
   if (items.length === 0) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-20 text-center lg:px-6">
+      <div className="flex min-h-[50vh] items-center justify-center px-4">
         <h1 className="font-display text-navy text-2xl font-semibold">
           {tCart("empty")}
         </h1>
@@ -113,23 +113,25 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 lg:px-6">
-      <h1 className="font-display text-navy text-3xl font-semibold">{t("title")}</h1>
+    <div className="mx-auto max-w-4xl px-4 py-12 lg:px-6 lg:py-16">
+      <h1 className="font-display text-navy text-3xl font-semibold lg:text-4xl">
+        {t("title")}
+      </h1>
 
-      {/* Progress Bar */}
-      <div className="mt-8 flex items-center gap-2">
+      {/* Progress Steps */}
+      <div className="mt-10 flex items-center gap-1">
         {steps.map((s, idx) => (
           <div key={s} className="flex flex-1 items-center gap-2">
             <div
-              className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
-                idx <= stepIndex ? "bg-gold text-navy" : "bg-stone text-charcoal/40"
+              className={`flex h-8 w-8 items-center justify-center text-[11px] font-bold transition-colors ${
+                idx <= stepIndex ? "bg-navy text-ivory" : "bg-stone text-charcoal/30"
               }`}
             >
               {idx + 1}
             </div>
             <span
-              className={`hidden text-sm sm:block ${
-                idx <= stepIndex ? "text-navy font-medium" : "text-charcoal/40"
+              className={`hidden text-[12px] tracking-wide sm:block ${
+                idx <= stepIndex ? "text-navy font-medium" : "text-charcoal/30"
               }`}
             >
               {t(`steps.${s}`)}
@@ -137,7 +139,7 @@ export default function CheckoutPage() {
             {idx < steps.length - 1 && (
               <div
                 className={`mx-2 h-px flex-1 ${
-                  idx < stepIndex ? "bg-gold" : "bg-stone"
+                  idx < stepIndex ? "bg-navy" : "bg-stone"
                 }`}
               />
             )}
@@ -145,46 +147,36 @@ export default function CheckoutPage() {
         ))}
       </div>
 
-      <div className="mt-10 grid gap-10 lg:grid-cols-5">
+      <div className="mt-12 grid gap-12 lg:grid-cols-5">
         {/* Form */}
         <div className="lg:col-span-3">
           {step === "info" && (
-            <div className="flex flex-col gap-4">
-              <h2 className="text-navy text-lg font-semibold">{t("steps.info")}</h2>
+            <div className="flex flex-col gap-5">
+              <h2 className="text-navy text-[11px] font-semibold tracking-[0.15em] uppercase">
+                {t("steps.info")}
+              </h2>
               {!user && (
-                <div>
-                  <label className="text-navy mb-1.5 block text-sm font-medium">
-                    {t("steps.info")} — Email
-                  </label>
-                  <Input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => updateForm("email", e.target.value)}
-                    required
-                  />
-                </div>
+                <Input
+                  label="Email"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => updateForm("email", e.target.value)}
+                  required
+                />
               )}
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-navy mb-1.5 block text-sm font-medium">
-                    First Name
-                  </label>
-                  <Input
-                    value={form.firstName}
-                    onChange={(e) => updateForm("firstName", e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="text-navy mb-1.5 block text-sm font-medium">
-                    Last Name
-                  </label>
-                  <Input
-                    value={form.lastName}
-                    onChange={(e) => updateForm("lastName", e.target.value)}
-                    required
-                  />
-                </div>
+                <Input
+                  label="First Name"
+                  value={form.firstName}
+                  onChange={(e) => updateForm("firstName", e.target.value)}
+                  required
+                />
+                <Input
+                  label="Last Name"
+                  value={form.lastName}
+                  onChange={(e) => updateForm("lastName", e.target.value)}
+                  required
+                />
               </div>
               <Button size="lg" onClick={() => setStep("shipping")} className="mt-4">
                 Continue to Shipping
@@ -193,47 +185,33 @@ export default function CheckoutPage() {
           )}
 
           {step === "shipping" && (
-            <div className="flex flex-col gap-4">
-              <h2 className="text-navy text-lg font-semibold">{t("steps.shipping")}</h2>
-              <div>
-                <label className="text-navy mb-1.5 block text-sm font-medium">
-                  Address
-                </label>
+            <div className="flex flex-col gap-5">
+              <h2 className="text-navy text-[11px] font-semibold tracking-[0.15em] uppercase">
+                {t("steps.shipping")}
+              </h2>
+              <Input
+                label="Address"
+                value={form.line1}
+                onChange={(e) => updateForm("line1", e.target.value)}
+                required
+              />
+              <Input
+                label="Apartment / Suite (optional)"
+                value={form.line2}
+                onChange={(e) => updateForm("line2", e.target.value)}
+              />
+              <div className="grid grid-cols-2 gap-4">
                 <Input
-                  value={form.line1}
-                  onChange={(e) => updateForm("line1", e.target.value)}
+                  label="City"
+                  value={form.city}
+                  onChange={(e) => updateForm("city", e.target.value)}
                   required
                 />
-              </div>
-              <div>
-                <label className="text-navy mb-1.5 block text-sm font-medium">
-                  Apartment / Suite (optional)
-                </label>
                 <Input
-                  value={form.line2}
-                  onChange={(e) => updateForm("line2", e.target.value)}
+                  label="Postal Code"
+                  value={form.postalCode}
+                  onChange={(e) => updateForm("postalCode", e.target.value)}
                 />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-navy mb-1.5 block text-sm font-medium">
-                    City
-                  </label>
-                  <Input
-                    value={form.city}
-                    onChange={(e) => updateForm("city", e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="text-navy mb-1.5 block text-sm font-medium">
-                    Postal Code
-                  </label>
-                  <Input
-                    value={form.postalCode}
-                    onChange={(e) => updateForm("postalCode", e.target.value)}
-                  />
-                </div>
               </div>
               <div className="mt-4 flex gap-3">
                 <Button variant="ghost" onClick={() => setStep("info")}>
@@ -247,29 +225,30 @@ export default function CheckoutPage() {
           )}
 
           {step === "payment" && (
-            <div className="flex flex-col gap-4">
-              <h2 className="text-navy text-lg font-semibold">{t("steps.payment")}</h2>
+            <div className="flex flex-col gap-5">
+              <h2 className="text-navy text-[11px] font-semibold tracking-[0.15em] uppercase">
+                {t("steps.payment")}
+              </h2>
 
-              {/* Stripe Elements placeholder — in production, integrate @stripe/react-stripe-js here */}
-              <div className="border-stone rounded-sm border p-6">
-                <p className="text-charcoal/60 text-sm">
+              <div className="border-stone/60 border p-7">
+                <p className="text-charcoal/50 text-[13px]">
                   Stripe Elements will be rendered here. For testing, the order is
                   created directly via the API.
                 </p>
-                <div className="bg-stone mt-4 rounded-sm p-4">
-                  <p className="text-charcoal/50 text-xs">
+                <div className="bg-stone mt-4 p-4">
+                  <p className="text-charcoal/40 text-[11px]">
                     Test card: 4242 4242 4242 4242 · Any future date · Any CVC
                   </p>
                 </div>
               </div>
 
               {error && (
-                <p className="text-error text-sm" role="alert">
+                <p className="text-error text-[13px]" role="alert">
                   {error}
                 </p>
               )}
 
-              <p className="text-charcoal/50 text-xs">{t("freeReturns")}</p>
+              <p className="text-charcoal/40 text-[11px]">{t("freeReturns")}</p>
 
               <div className="mt-2 flex gap-3">
                 <Button variant="ghost" onClick={() => setStep("shipping")}>
@@ -290,14 +269,14 @@ export default function CheckoutPage() {
 
         {/* Order Summary */}
         <div className="lg:col-span-2">
-          <div className="bg-stone sticky top-28 rounded-sm p-6">
-            <h3 className="text-navy mb-4 text-sm font-semibold">
+          <div className="border-stone/60 sticky top-28 border p-7">
+            <h3 className="text-navy mb-5 text-[11px] font-semibold tracking-[0.15em] uppercase">
               {t("orderSummary")}
             </h3>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4">
               {items.map((item) => (
                 <div key={item.variantId} className="flex items-center gap-3">
-                  <div className="bg-ivory h-12 w-10 shrink-0 overflow-hidden rounded-sm">
+                  <div className="bg-stone h-14 w-11 shrink-0 overflow-hidden">
                     {item.image && (
                       <img
                         src={item.image}
@@ -307,20 +286,20 @@ export default function CheckoutPage() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <p className="text-navy text-xs font-medium">{item.name}</p>
-                    <p className="text-charcoal/40 text-[10px]">
+                    <p className="text-navy text-[12px] font-medium">{item.name}</p>
+                    <p className="text-charcoal/30 text-[10px]">
                       {item.color} · ×{item.quantity}
                     </p>
                   </div>
-                  <span className="text-charcoal/70 text-xs font-medium">
+                  <span className="text-charcoal/60 text-[12px] font-medium">
                     {formatPrice(item.price * item.quantity)}
                   </span>
                 </div>
               ))}
             </div>
-            <div className="border-charcoal/10 mt-4 border-t pt-4">
+            <div className="border-stone/60 mt-5 border-t pt-5">
               <div className="flex items-center justify-between">
-                <span className="text-navy text-sm font-semibold">
+                <span className="text-navy text-[13px] font-semibold">
                   {tCart("total")}
                 </span>
                 <span className="text-navy text-lg font-semibold">

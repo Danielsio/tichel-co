@@ -54,33 +54,26 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="mx-auto max-w-sm px-4 py-16 lg:px-6">
-      <h1 className="font-display text-navy text-center text-3xl font-semibold">
-        {t("registerTitle")}
-      </h1>
+    <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
+      <div className="w-full max-w-[400px]">
+        <div className="mb-10 text-center">
+          <h1 className="font-display text-navy text-3xl font-semibold lg:text-4xl">
+            {t("registerTitle")}
+          </h1>
+        </div>
 
-      <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
-        <div>
-          <label htmlFor="email" className="text-navy mb-1.5 block text-sm font-medium">
-            {t("email")}
-          </label>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <Input
+            label={t("email")}
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
 
-        <div>
-          <label
-            htmlFor="password"
-            className="text-navy mb-1.5 block text-sm font-medium"
-          >
-            {t("password")}
-          </label>
           <Input
+            label={t("password")}
             id="password"
             type="password"
             value={password}
@@ -88,16 +81,9 @@ export default function RegisterPage() {
             required
             minLength={6}
           />
-        </div>
 
-        <div>
-          <label
-            htmlFor="confirm-password"
-            className="text-navy mb-1.5 block text-sm font-medium"
-          >
-            {t("confirmPassword")}
-          </label>
           <Input
+            label={t("confirmPassword")}
             id="confirm-password"
             type="password"
             value={confirmPassword}
@@ -105,47 +91,49 @@ export default function RegisterPage() {
             required
             minLength={6}
           />
+
+          {error && (
+            <p className="text-error text-[13px]" role="alert">
+              {error}
+            </p>
+          )}
+
+          <Button
+            type="submit"
+            size="lg"
+            fullWidth
+            isLoading={isLoading}
+            className="mt-1"
+          >
+            {t("registerButton")}
+          </Button>
+        </form>
+
+        <div className="my-8 flex items-center gap-4">
+          <div className="bg-stone h-px flex-1" />
+          <span className="text-charcoal/30 text-[11px] tracking-[0.15em] uppercase">
+            {t("or")}
+          </span>
+          <div className="bg-stone h-px flex-1" />
         </div>
 
-        {error && (
-          <p className="text-error text-sm" role="alert">
-            {error}
-          </p>
-        )}
-
         <Button
-          type="submit"
+          variant="secondary"
           size="lg"
           fullWidth
-          isLoading={isLoading}
-          className="mt-2"
+          onClick={handleGoogle}
+          type="button"
         >
-          {t("registerButton")}
+          {t("googleButton")}
         </Button>
-      </form>
 
-      <div className="my-6 flex items-center gap-3">
-        <div className="bg-stone h-px flex-1" />
-        <span className="text-charcoal/40 text-xs uppercase">{t("or")}</span>
-        <div className="bg-stone h-px flex-1" />
+        <p className="text-charcoal/50 mt-10 text-center text-[13px]">
+          {t("hasAccount")}{" "}
+          <Link href="/login" className="text-navy font-medium hover:underline">
+            {t("loginLink")}
+          </Link>
+        </p>
       </div>
-
-      <Button
-        variant="secondary"
-        size="lg"
-        fullWidth
-        onClick={handleGoogle}
-        type="button"
-      >
-        {t("googleButton")}
-      </Button>
-
-      <p className="text-charcoal/60 mt-8 text-center text-sm">
-        {t("hasAccount")}{" "}
-        <Link href="/login" className="text-gold font-medium hover:underline">
-          {t("loginLink")}
-        </Link>
-      </p>
     </div>
   );
 }

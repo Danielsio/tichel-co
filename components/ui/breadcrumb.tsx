@@ -18,7 +18,10 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
   const t = useTranslations("common");
 
   return (
-    <nav aria-label={t("breadcrumb")} className={cn("text-sm", className)}>
+    <nav
+      aria-label={t("breadcrumb")}
+      className={cn("text-[12px] tracking-wide", className)}
+    >
       <ol className="flex flex-wrap items-center gap-1.5">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
@@ -26,7 +29,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
             <li key={index} className="flex items-center gap-1.5">
               {index > 0 && (
                 <svg
-                  className="text-charcoal/30 h-3.5 w-3.5 shrink-0 rtl:rotate-180"
+                  className="text-charcoal/20 h-3 w-3 shrink-0 rtl:rotate-180"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                   aria-hidden="true"
@@ -40,7 +43,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
               )}
               {isLast || !item.href ? (
                 <span
-                  className={cn(isLast ? "text-navy font-medium" : "text-charcoal/60")}
+                  className={cn(isLast ? "text-navy/60" : "text-charcoal/40")}
                   aria-current={isLast ? "page" : undefined}
                 >
                   {item.label}
@@ -48,7 +51,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
               ) : (
                 <Link
                   href={item.href}
-                  className="text-charcoal/60 hover:text-gold transition-colors"
+                  className="text-charcoal/40 hover:text-navy transition-colors duration-200"
                 >
                   {item.label}
                 </Link>

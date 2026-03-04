@@ -31,7 +31,10 @@ export default function ProductPage({ params }: Props) {
         <h1 className="font-display text-navy text-3xl font-semibold">
           Product not found
         </h1>
-        <Link href="/" className="text-gold mt-4 inline-block text-sm hover:underline">
+        <Link
+          href="/"
+          className="text-navy/50 hover:text-navy mt-4 inline-block text-sm transition-colors"
+        >
           {t("backToCollection")}
         </Link>
       </div>
@@ -92,57 +95,65 @@ function ProductPageContent({
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
       <Breadcrumb items={breadcrumbItems} />
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-12">
+      <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-16">
         {/* Gallery */}
         <ProductGallery images={images} />
 
         {/* Product Info */}
         <div className="flex flex-col">
           {/* Badges */}
-          <div className="mb-3 flex gap-2">
-            {product.isNew && <Badge variant="new">{t("new")}</Badge>}
-            {isOnSale && <Badge variant="sale">{t("sale")}</Badge>}
-          </div>
+          {(product.isNew || isOnSale) && (
+            <div className="mb-4 flex gap-2">
+              {product.isNew && <Badge variant="new">{t("new")}</Badge>}
+              {isOnSale && <Badge variant="sale">{t("sale")}</Badge>}
+            </div>
+          )}
 
-          <h1 className="font-display text-navy text-2xl font-semibold md:text-3xl">
+          <h1 className="font-display text-navy text-2xl font-semibold md:text-3xl lg:text-4xl">
             {product.title[locale]}
           </h1>
 
           {/* Price */}
-          <div className="mt-3 flex items-center gap-3">
+          <div className="mt-4 flex items-baseline gap-3">
             <span
               className={cn(
-                "text-xl font-semibold",
-                isOnSale ? "text-gold" : "text-charcoal",
+                "text-xl font-semibold lg:text-2xl",
+                isOnSale ? "text-error" : "text-navy",
               )}
             >
               {formatPrice(product.priceCents)}
             </span>
             {isOnSale && product.comparePriceCents && (
-              <span className="text-charcoal/40 text-base line-through">
+              <span className="text-charcoal/30 text-base line-through">
                 {formatPrice(product.comparePriceCents)}
               </span>
             )}
           </div>
 
           {/* Stock */}
-          <div className="mt-2">
+          <div className="mt-3">
             {selectedVariant.stockQty > 0 ? (
-              <span className="text-success text-xs font-medium">
+              <span className="text-success/80 text-[12px] font-medium tracking-wide">
                 {selectedVariant.stockQty <= 5
                   ? t("lowStock", { count: selectedVariant.stockQty })
                   : t("inStock")}
               </span>
             ) : (
-              <span className="text-error text-xs font-medium">{t("outOfStock")}</span>
+              <span className="text-error text-[12px] font-medium tracking-wide">
+                {t("outOfStock")}
+              </span>
             )}
           </div>
 
+          {/* Separator */}
+          <div className="border-stone/60 my-6 border-t" />
+
           {/* Color Variants */}
           {product.variants.length > 1 && (
-            <div className="mt-6">
-              <h3 className="text-navy mb-2 text-xs font-semibold tracking-wider uppercase">
-                {t("color")}: {selectedVariant.color[locale]}
+            <div className="mb-6">
+              <h3 className="text-navy/60 mb-3 text-[11px] font-semibold tracking-[0.15em] uppercase">
+                {t("color")}:{" "}
+                <span className="text-navy">{selectedVariant.color[locale]}</span>
               </h3>
               <div className="flex gap-2">
                 {product.variants.map((variant, idx) => (
@@ -150,11 +161,11 @@ function ProductPageContent({
                     key={variant.id}
                     onClick={() => setSelectedVariantIdx(idx)}
                     className={cn(
-                      "rounded-sm border-2 px-3 py-2 text-sm transition-all",
+                      "cursor-pointer border px-4 py-2.5 text-[13px] transition-all duration-200",
                       idx === selectedVariantIdx
-                        ? "border-gold text-navy font-medium"
-                        : "border-stone text-charcoal/60 hover:border-charcoal/30",
-                      variant.stockQty === 0 && "opacity-40",
+                        ? "border-navy text-navy font-medium"
+                        : "border-stone text-charcoal/50 hover:border-navy/30",
+                      variant.stockQty === 0 && "opacity-30",
                     )}
                   >
                     {variant.color[locale]}
@@ -165,52 +176,54 @@ function ProductPageContent({
           )}
 
           {/* Fabric */}
-          <div className="mt-4">
-            <span className="text-charcoal/50 text-xs tracking-wider uppercase">
+          <div className="mb-8">
+            <span className="text-navy/60 text-[11px] tracking-[0.15em] uppercase">
               {t("fabric")}:
             </span>{" "}
-            <span className="text-charcoal text-sm">
+            <span className="text-navy text-[13px] font-medium">
               {selectedVariant.fabric[locale]}
             </span>
           </div>
 
           {/* Add to Cart */}
-          <div className="mt-8">
-            <AddToCartButton
-              variantId={selectedVariant.id}
-              productId={product.id}
-              name={product.title[locale]}
-              price={product.priceCents}
-              image={selectedVariant.imageUrls[0] ?? ""}
-              color={selectedVariant.color[locale]}
-              size={selectedVariant.size ?? "One Size"}
-              stockQty={selectedVariant.stockQty}
-            />
-          </div>
+          <AddToCartButton
+            variantId={selectedVariant.id}
+            productId={product.id}
+            name={product.title[locale]}
+            price={product.priceCents}
+            image={selectedVariant.imageUrls[0] ?? ""}
+            color={selectedVariant.color[locale]}
+            size={selectedVariant.size ?? "One Size"}
+            stockQty={selectedVariant.stockQty}
+          />
 
           {/* Description */}
-          <div className="border-stone mt-8 border-t pt-6">
-            <h3 className="text-navy mb-3 text-sm font-semibold">{t("description")}</h3>
-            <p className="text-charcoal/70 text-sm leading-relaxed">
+          <div className="border-stone/60 mt-10 border-t pt-8">
+            <h3 className="text-navy mb-3 text-[11px] font-semibold tracking-[0.15em] uppercase">
+              {t("description")}
+            </h3>
+            <p className="text-charcoal/60 text-[14px] leading-[1.8]">
               {product.description[locale]}
             </p>
           </div>
 
           {/* Shipping */}
-          <div className="border-stone mt-6 border-t pt-6">
-            <h3 className="text-navy mb-2 text-sm font-semibold">{t("shipping")}</h3>
-            <p className="text-charcoal/60 text-sm">{t("shippingText")}</p>
+          <div className="border-stone/60 mt-6 border-t pt-6">
+            <h3 className="text-navy mb-2 text-[11px] font-semibold tracking-[0.15em] uppercase">
+              {t("shipping")}
+            </h3>
+            <p className="text-charcoal/50 text-[13px]">{t("shippingText")}</p>
           </div>
         </div>
       </div>
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <section className="mt-20">
-          <h2 className="font-display text-navy mb-8 text-2xl font-semibold">
+        <section className="border-stone/60 mt-24 border-t pt-16">
+          <h2 className="font-display text-navy mb-10 text-center text-2xl font-semibold md:text-3xl">
             {t("completeTheLook")}
           </h2>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-4 lg:gap-x-6">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 lg:gap-x-6">
             {relatedProducts.map((rp) => {
               const v = rp.variants[0];
               const stock = rp.variants.reduce((s, vr) => s + vr.stockQty, 0);

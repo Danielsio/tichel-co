@@ -23,7 +23,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={selectId} className="text-navy text-sm font-medium">
+          <label htmlFor={selectId} className="text-navy text-[13px] font-medium">
             {label}
           </label>
         )}
@@ -32,11 +32,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={selectId}
             className={cn(
-              "border-stone text-charcoal h-11 w-full appearance-none rounded-sm border bg-white py-3 ps-4 pe-10 text-sm transition-colors duration-150",
-              "hover:border-navy/30",
-              "focus:border-gold focus:ring-gold focus:ring-1 focus:outline-none",
+              "border-stone text-charcoal h-12 w-full appearance-none border bg-white py-3 ps-4 pe-10 text-[14px] transition-all duration-200",
+              "hover:border-navy/20",
+              "focus:border-navy focus:ring-0 focus:outline-none",
               "disabled:cursor-not-allowed disabled:opacity-50",
-              error && "border-error focus:border-error focus:ring-error",
+              error && "border-error focus:border-error",
               className,
             )}
             aria-invalid={!!error}
@@ -60,7 +60,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               : children}
           </select>
           <svg
-            className="text-charcoal/50 pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2"
+            className="text-charcoal/30 pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2"
             viewBox="0 0 20 20"
             fill="currentColor"
             aria-hidden="true"
@@ -73,19 +73,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </svg>
         </div>
         {error && (
-          <p className="text-error flex items-center gap-1.5 text-xs" role="alert">
-            <svg
-              className="h-3.5 w-3.5 shrink-0"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                clipRule="evenodd"
-              />
-            </svg>
+          <p className="text-error text-[12px]" role="alert">
             {error}
           </p>
         )}

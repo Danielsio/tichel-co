@@ -11,7 +11,6 @@ export interface ProductCardProps {
   imageUrl?: string;
   imageAlt?: string;
   isFeatured?: boolean;
-  /** Whether to show a "new" badge */
   isNew?: boolean;
   stockQty?: number;
   className?: string;
@@ -34,32 +33,35 @@ export function ProductCard({
 
   return (
     <Link href={`/products/${slug}`} className={cn("group flex flex-col", className)}>
-      {/* Image */}
-      <div className="bg-stone relative aspect-[3/4] overflow-hidden rounded-sm">
+      {/* Image Container */}
+      <div className="bg-stone relative aspect-[3/4] overflow-hidden">
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={imageAlt || title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
             loading="lazy"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <span className="font-display text-charcoal/20 text-lg">Tichel & Co.</span>
+            <span className="font-display text-charcoal/10 text-xl">Tichel & Co.</span>
           </div>
         )}
 
+        {/* Overlay on hover */}
+        <div className="bg-navy/0 group-hover:bg-navy/5 pointer-events-none absolute inset-0 transition-colors duration-500" />
+
         {/* Badges */}
-        <div className="absolute start-2 top-2 flex flex-col gap-1">
+        <div className="absolute start-3 top-3 flex flex-col gap-1.5">
           {isNew && <Badge variant="new">חדש</Badge>}
           {isOnSale && <Badge variant="sale">מבצע</Badge>}
           {isOutOfStock && <Badge variant="outOfStock">אזל</Badge>}
         </div>
 
-        {/* Quick add overlay (desktop) */}
+        {/* Quick add — slides up */}
         {!isOutOfStock && (
-          <div className="absolute inset-x-0 bottom-0 translate-y-full opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
-            <div className="bg-navy/90 text-ivory px-4 py-3 text-center text-sm font-medium">
+          <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-400 ease-out group-hover:translate-y-0">
+            <div className="bg-navy text-ivory py-3.5 text-center text-[11px] font-medium tracking-[0.15em] uppercase">
               הוספה מהירה
             </div>
           </div>
@@ -67,21 +69,21 @@ export function ProductCard({
       </div>
 
       {/* Info */}
-      <div className="mt-3 flex flex-col gap-1">
-        <h3 className="text-navy group-hover:text-gold line-clamp-1 text-sm font-medium transition-colors duration-150">
+      <div className="mt-4 flex flex-col gap-1.5">
+        <h3 className="text-navy group-hover:text-gold line-clamp-1 text-[13px] font-medium tracking-wide transition-colors duration-300">
           {title}
         </h3>
         <div className="flex items-center gap-2">
           <span
             className={cn(
-              "text-sm font-medium",
-              isOnSale ? "text-gold" : "text-charcoal/70",
+              "text-[13px]",
+              isOnSale ? "text-error font-medium" : "text-charcoal/60",
             )}
           >
             {formatPrice(priceCents)}
           </span>
           {isOnSale && (
-            <span className="text-charcoal/40 text-xs line-through">
+            <span className="text-charcoal/30 text-[11px] line-through">
               {formatPrice(comparePriceCents)}
             </span>
           )}

@@ -14,21 +14,20 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary:
-    "bg-gold text-navy hover:brightness-108 active:scale-[0.98] border border-gold",
+  primary: "bg-navy text-ivory hover:bg-navy/90 active:scale-[0.98] border border-navy",
   secondary:
-    "bg-transparent text-navy border border-navy hover:bg-navy hover:text-ivory active:scale-[0.98]",
+    "bg-transparent text-navy border border-navy/20 hover:border-navy hover:bg-navy hover:text-ivory active:scale-[0.98]",
   ghost:
     "bg-transparent text-navy hover:bg-navy/5 active:scale-[0.98] border border-transparent",
   destructive:
-    "bg-transparent text-error border border-error hover:bg-error hover:text-white active:scale-[0.98]",
-  link: "bg-transparent text-gold underline-offset-4 hover:underline border-none p-0 h-auto",
+    "bg-transparent text-error border border-error/30 hover:border-error hover:bg-error hover:text-white active:scale-[0.98]",
+  link: "bg-transparent text-navy underline-offset-4 hover:underline border-none p-0 h-auto font-medium",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "h-8 px-3 text-[13px]",
-  md: "h-11 px-5 text-sm",
-  lg: "h-14 px-8 text-base",
+  sm: "h-9 px-4 text-[12px] tracking-wider",
+  md: "h-12 px-6 text-[13px] tracking-wide",
+  lg: "h-14 px-10 text-[13px] tracking-wider",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -49,7 +48,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "font-body inline-flex cursor-pointer items-center justify-center gap-2 rounded-sm font-medium transition-all duration-150 ease-out",
+          "font-body inline-flex cursor-pointer items-center justify-center gap-2 font-medium uppercase transition-all duration-300 ease-out",
           "disabled:pointer-events-none disabled:opacity-40",
           variantStyles[variant],
           variant !== "link" && sizeStyles[size],

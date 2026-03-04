@@ -23,14 +23,16 @@ export default function CustomPage() {
 
   if (submitted) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-20 text-center lg:px-6">
-        <div className="text-gold mx-auto mb-6 text-4xl">✦</div>
-        <h1 className="font-display text-navy text-3xl font-semibold">
-          {t("successTitle")}
-        </h1>
-        <p className="text-charcoal/60 mx-auto mt-4 max-w-sm text-sm leading-relaxed">
-          {t("successText")}
-        </p>
+      <div className="flex min-h-[60vh] items-center justify-center px-4">
+        <div className="max-w-md text-center">
+          <div className="text-gold mx-auto mb-6 text-4xl">✦</div>
+          <h1 className="font-display text-navy text-3xl font-semibold">
+            {t("successTitle")}
+          </h1>
+          <p className="text-charcoal/50 mx-auto mt-5 max-w-sm text-[14px] leading-relaxed">
+            {t("successText")}
+          </p>
+        </div>
       </div>
     );
   }
@@ -38,45 +40,42 @@ export default function CustomPage() {
   return (
     <>
       {/* Header */}
-      <section className="bg-stone py-16">
-        <div className="mx-auto max-w-2xl px-4 text-center lg:px-6">
-          <h1 className="font-display text-navy text-4xl font-semibold">
+      <section className="gradient-luxury relative overflow-hidden py-16 lg:py-20">
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="relative mx-auto max-w-2xl px-4 text-center lg:px-6">
+          <p className="text-gold mb-3 text-[11px] font-semibold tracking-[0.3em] uppercase">
+            {t("subtitle").slice(0, 30)}
+          </p>
+          <h1 className="font-display text-ivory text-3xl font-semibold text-balance lg:text-5xl">
             {t("title")}
           </h1>
-          <p className="text-charcoal/60 mx-auto mt-4 max-w-lg text-sm leading-relaxed">
+          <p className="text-ivory/40 mx-auto mt-5 max-w-lg text-[14px] leading-relaxed">
             {t("subtitle")}
           </p>
         </div>
       </section>
 
       {/* Form */}
-      <section className="mx-auto max-w-xl px-4 py-12 lg:px-6">
+      <section className="mx-auto max-w-xl px-4 py-16 lg:px-6">
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          <div>
-            <label
-              htmlFor="name"
-              className="text-navy mb-1.5 block text-sm font-medium"
-            >
-              {t("nameLabel")}
-            </label>
-            <Input id="name" name="name" required />
-          </div>
+          <Input label={t("nameLabel")} id="name" name="name" required />
 
-          <div>
-            <label
-              htmlFor="email"
-              className="text-navy mb-1.5 block text-sm font-medium"
-            >
-              {t("emailLabel")}
-            </label>
-            <Input id="email" name="email" type="email" required />
-          </div>
+          <Input
+            label={t("emailLabel")}
+            id="email"
+            name="email"
+            type="email"
+            required
+          />
 
-          <div>
-            <label
-              htmlFor="type"
-              className="text-navy mb-1.5 block text-sm font-medium"
-            >
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="type" className="text-navy text-[13px] font-medium">
               {t("typeLabel")}
             </label>
             <Select id="type" name="type" required defaultValue="">
@@ -90,11 +89,8 @@ export default function CustomPage() {
             </Select>
           </div>
 
-          <div>
-            <label
-              htmlFor="description"
-              className="text-navy mb-1.5 block text-sm font-medium"
-            >
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="description" className="text-navy text-[13px] font-medium">
               {t("descriptionLabel")}
             </label>
             <Textarea
@@ -106,11 +102,8 @@ export default function CustomPage() {
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="budget"
-              className="text-navy mb-1.5 block text-sm font-medium"
-            >
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="budget" className="text-navy text-[13px] font-medium">
               {t("budgetLabel")}
             </label>
             <Select id="budget" name="budget" required defaultValue="">

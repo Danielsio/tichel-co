@@ -15,29 +15,33 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 lg:px-6">
-        <div className="bg-stone h-8 w-48 animate-pulse rounded" />
-        <div className="bg-stone mt-6 h-40 animate-pulse rounded" />
+      <div className="mx-auto max-w-2xl px-4 py-20 lg:px-6">
+        <div className="bg-stone h-8 w-48 animate-pulse" />
+        <div className="bg-stone mt-8 h-48 animate-pulse" />
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="mx-auto max-w-sm px-4 py-20 text-center lg:px-6">
-        <h1 className="font-display text-navy text-2xl font-semibold">{t("title")}</h1>
-        <p className="text-charcoal/60 mt-3 text-sm">{tAuth("noAccount")}</p>
-        <div className="mt-6 flex flex-col gap-3">
-          <Link href="/login">
-            <Button size="lg" fullWidth>
-              {tAuth("loginButton")}
-            </Button>
-          </Link>
-          <Link href="/register">
-            <Button variant="secondary" size="lg" fullWidth>
-              {tAuth("registerButton")}
-            </Button>
-          </Link>
+      <div className="flex min-h-[60vh] items-center justify-center px-4">
+        <div className="w-full max-w-sm text-center">
+          <h1 className="font-display text-navy text-2xl font-semibold lg:text-3xl">
+            {t("title")}
+          </h1>
+          <p className="text-charcoal/40 mt-3 text-[13px]">{tAuth("noAccount")}</p>
+          <div className="mt-8 flex flex-col gap-3">
+            <Link href="/login">
+              <Button size="lg" fullWidth>
+                {tAuth("loginButton")}
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button variant="secondary" size="lg" fullWidth>
+                {tAuth("registerButton")}
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -49,37 +53,54 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-12 lg:px-6">
-      <h1 className="font-display text-navy text-3xl font-semibold">
+    <div className="mx-auto max-w-3xl px-4 py-16 lg:px-6 lg:py-24">
+      <h1 className="font-display text-navy text-3xl font-semibold lg:text-4xl">
         {t("welcome", { name: user.displayName || user.email?.split("@")[0] || "" })}
       </h1>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <div className="border-stone/60 mt-2 border-t" />
+
+      <div className="mt-10 grid gap-4 sm:grid-cols-2">
         <Link
           href="/account/orders/latest"
-          className="border-stone hover:border-gold/30 rounded-sm border p-6 transition-colors"
+          className="group border-stone/60 hover:border-navy/20 border p-7 transition-all duration-300"
         >
-          <h3 className="text-navy text-sm font-semibold">{t("orders")}</h3>
-          <p className="text-charcoal/50 mt-1 text-xs">View your order history</p>
+          <h3 className="text-navy text-[13px] font-semibold tracking-wide">
+            {t("orders")}
+          </h3>
+          <p className="text-charcoal/40 mt-1.5 text-[12px]">
+            {t("ordersDesc", { fallback: "View your order history" })}
+          </p>
+          <span className="text-navy/40 group-hover:text-navy mt-4 block text-[11px] font-medium tracking-[0.15em] uppercase transition-colors duration-300">
+            →
+          </span>
         </Link>
 
-        <div className="border-stone rounded-sm border p-6">
-          <h3 className="text-navy text-sm font-semibold">{t("addresses")}</h3>
-          <p className="text-charcoal/50 mt-1 text-xs">Manage shipping addresses</p>
+        <div className="border-stone/60 border p-7">
+          <h3 className="text-navy text-[13px] font-semibold tracking-wide">
+            {t("addresses")}
+          </h3>
+          <p className="text-charcoal/40 mt-1.5 text-[12px]">
+            Manage shipping addresses
+          </p>
         </div>
 
-        <div className="border-stone rounded-sm border p-6">
-          <h3 className="text-navy text-sm font-semibold">{t("wishlist")}</h3>
-          <p className="text-charcoal/50 mt-1 text-xs">Your saved items</p>
+        <div className="border-stone/60 border p-7">
+          <h3 className="text-navy text-[13px] font-semibold tracking-wide">
+            {t("wishlist")}
+          </h3>
+          <p className="text-charcoal/40 mt-1.5 text-[12px]">Your saved items</p>
         </div>
 
-        <div className="border-stone rounded-sm border p-6">
-          <h3 className="text-navy text-sm font-semibold">{t("settings")}</h3>
-          <p className="text-charcoal/50 mt-1 text-xs">{user.email}</p>
+        <div className="border-stone/60 border p-7">
+          <h3 className="text-navy text-[13px] font-semibold tracking-wide">
+            {t("settings")}
+          </h3>
+          <p className="text-charcoal/40 mt-1.5 text-[12px]">{user.email}</p>
         </div>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-10">
         <Button variant="ghost" onClick={handleLogout}>
           {tAuth("logoutButton")}
         </Button>

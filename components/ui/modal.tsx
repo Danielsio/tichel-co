@@ -66,21 +66,23 @@ export function Modal({
         if (e.target === overlayRef.current) onClose();
       }}
     >
-      <div className="bg-navy/50 fixed inset-0 transition-opacity duration-200" />
+      <div className="bg-navy/40 fixed inset-0 backdrop-blur-[2px] transition-opacity duration-300" />
       <div
         className={cn(
-          "relative z-10 w-full rounded-sm bg-white p-6 shadow-xl",
-          "animate-in fade-in duration-200",
+          "relative z-10 w-full bg-white p-8 shadow-2xl",
+          "animate-scale-in",
           sizeStyles[size],
           className,
         )}
       >
         {title && (
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-body text-navy text-lg font-semibold">{title}</h2>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-navy text-[13px] font-semibold tracking-[0.15em] uppercase">
+              {title}
+            </h2>
             <button
               onClick={onClose}
-              className="text-charcoal/50 hover:bg-stone hover:text-charcoal flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm transition-colors"
+              className="text-charcoal/30 hover:text-navy flex h-8 w-8 cursor-pointer items-center justify-center transition-colors duration-200"
               aria-label={closeLabel}
             >
               <svg

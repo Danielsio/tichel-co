@@ -1,14 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ivory: #faf8f4;
-  --color-navy: #1a2744;
+  --color-ivory: #faf8f5;
+  --color-navy: #1b2a4a;
   --color-gold: #c9a84c;
+  --color-gold-light: #d4b96a;
   --color-charcoal: #2c2c2c;
   --color-stone: #f0ede8;
+  --color-stone-dark: #e4e0d8;
   --color-blush: #e8d5c8;
   --color-success: #3d7a5a;
   --color-error: #c0392b;
+  --color-cream: #f7f4ef;
 
   --font-display: var(--font-display-latin), serif;
   --font-body: var(--font-body), sans-serif;
@@ -17,6 +20,7 @@
   --spacing-22: 5.5rem;
 
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-luxe: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 @layer base {
@@ -26,9 +30,9 @@
     background-color: var(--color-ivory);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
   }
 
-  /* Hebrew: use Noto Serif Hebrew for display, Heebo for body */
   [lang="he"] {
     --font-display: var(--font-display-hebrew), serif;
   }
@@ -37,8 +41,13 @@
     text-align: right;
   }
 
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-navy);
+  }
+
   :focus-visible {
-    outline: 3px solid var(--color-gold);
+    outline: 2px solid var(--color-gold);
     outline-offset: 3px;
   }
 
@@ -51,5 +60,92 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s var(--ease-luxe) forwards;
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.7s var(--ease-luxe) forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s var(--ease-luxe) forwards;
+  }
+
+  .hover-lift {
+    transition:
+      transform 0.4s var(--ease-luxe),
+      box-shadow 0.4s var(--ease-luxe);
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(27, 42, 74, 0.08);
+  }
+
+  .line-elegant {
+    position: relative;
+  }
+  .line-elegant::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    inset-inline-start: 0;
+    width: 48px;
+    height: 2px;
+    background: var(--color-gold);
+  }
+
+  .gradient-luxury {
+    background: linear-gradient(
+      135deg,
+      var(--color-navy) 0%,
+      #2a3d66 50%,
+      var(--color-navy) 100%
+    );
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(240, 237, 232, 0.8);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }

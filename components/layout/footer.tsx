@@ -22,30 +22,32 @@ export function Footer() {
   const tNav = useTranslations("nav");
 
   return (
-    <footer className="border-stone border-t bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-16 lg:px-6">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
+    <footer className="gradient-luxury text-ivory">
+      <div className="mx-auto max-w-7xl px-4 py-20 lg:px-6">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-2 lg:grid-cols-4 lg:gap-12">
+          {/* Brand */}
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block">
-              <span className="font-display text-navy text-2xl font-semibold">
+              <span className="font-display text-ivory text-[28px] font-semibold tracking-tight">
                 Tichel & Co.
               </span>
             </Link>
-            <p className="text-charcoal/60 mt-4 text-sm leading-relaxed whitespace-pre-line">
+            <p className="text-ivory/40 mt-5 text-[13px] leading-relaxed whitespace-pre-line">
               {t("brand")}
             </p>
           </div>
 
+          {/* Shop Links */}
           <div>
-            <h3 className="text-navy mb-4 text-sm font-semibold tracking-[0.08em] uppercase">
+            <h3 className="text-gold mb-5 text-[11px] font-semibold tracking-[0.2em] uppercase">
               {t("shop")}
             </h3>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-3">
               {shopLinkKeys.map((link) => (
                 <li key={link.key}>
                   <Link
                     href={link.href}
-                    className="text-charcoal/60 hover:text-gold text-sm transition-colors"
+                    className="text-ivory/50 hover:text-ivory text-[13px] transition-colors duration-300"
                   >
                     {tNav(
                       link.key as
@@ -62,16 +64,17 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Info Links */}
           <div>
-            <h3 className="text-navy mb-4 text-sm font-semibold tracking-[0.08em] uppercase">
+            <h3 className="text-gold mb-5 text-[11px] font-semibold tracking-[0.2em] uppercase">
               {t("info")}
             </h3>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-3">
               {infoLinkKeys.map((link) => (
                 <li key={link.key}>
                   <Link
                     href={link.href}
-                    className="text-charcoal/60 hover:text-gold text-sm transition-colors"
+                    className="text-ivory/50 hover:text-ivory text-[13px] transition-colors duration-300"
                   >
                     {t(`links.${link.key}` as "links.story" | "links.care")}
                   </Link>
@@ -80,20 +83,23 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Newsletter */}
           <div>
-            <h3 className="text-navy mb-4 text-sm font-semibold tracking-[0.08em] uppercase">
+            <h3 className="text-gold mb-5 text-[11px] font-semibold tracking-[0.2em] uppercase">
               {t("newsletter.title")}
             </h3>
-            <p className="text-charcoal/60 mb-4 text-sm">{t("newsletter.text")}</p>
+            <p className="text-ivory/40 mb-5 text-[13px] leading-relaxed">
+              {t("newsletter.text")}
+            </p>
             <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder={t("newsletter.placeholder")}
-                className="border-stone text-charcoal placeholder:text-charcoal/40 focus:border-gold focus:ring-gold h-11 flex-1 rounded-sm border bg-white px-4 text-sm focus:ring-1 focus:outline-none"
+                className="text-ivory placeholder:text-ivory/30 focus:border-gold border-ivory/20 h-12 flex-1 rounded-none border bg-transparent px-4 text-[13px] focus:ring-0 focus:outline-none"
               />
               <button
                 type="submit"
-                className="bg-gold text-navy h-11 cursor-pointer rounded-sm px-5 text-sm font-medium transition-all hover:brightness-110 active:scale-[0.98]"
+                className="bg-gold text-navy hover:bg-gold-light h-12 cursor-pointer px-6 text-[12px] font-semibold tracking-wider uppercase transition-all duration-300 active:scale-[0.97]"
               >
                 {t("newsletter.submit")}
               </button>
@@ -101,11 +107,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-stone mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
-          <p className="text-charcoal/40 text-xs">
+        {/* Bottom */}
+        <div className="border-ivory/10 mt-16 flex flex-col items-center justify-between gap-4 border-t pt-10 md:flex-row">
+          <p className="text-ivory/25 text-[11px] tracking-wider">
             {t("rights", { year: new Date().getFullYear() })}
           </p>
-          <p className="font-display text-charcoal/30 text-sm italic">{t("tagline")}</p>
+          <p className="font-display text-ivory/15 text-sm italic">{t("tagline")}</p>
         </div>
       </div>
     </footer>

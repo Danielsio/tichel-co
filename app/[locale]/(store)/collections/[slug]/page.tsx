@@ -94,141 +94,161 @@ export default function CollectionPage({ params }: Props) {
   ];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
-      <Breadcrumb items={breadcrumbItems} />
-
-      {/* Collection Header */}
-      <div className="mt-4 mb-10">
-        <h1 className="font-display text-navy text-3xl font-semibold md:text-4xl">
-          {collection.title[locale]}
-        </h1>
-        <p className="text-charcoal/60 mt-2 max-w-2xl text-sm leading-relaxed">
-          {collection.description[locale]}
-        </p>
-      </div>
-
-      {/* Toolbar */}
-      <div className="border-stone mb-8 flex flex-wrap items-center justify-between gap-4 border-b pb-4">
-        <p className="text-charcoal/50 text-sm">
-          {tCol("productsCount", { count: filteredProducts.length })}
-        </p>
-        <div className="flex items-center gap-3">
-          <Select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as SortOption)}
-            className="w-auto text-sm"
-          >
-            <option value="newest">{t("sortNewest")}</option>
-            <option value="price-low">{t("sortPriceLow")}</option>
-            <option value="price-high">{t("sortPriceHigh")}</option>
-          </Select>
+    <>
+      {/* Collection Hero */}
+      <section className="gradient-luxury relative overflow-hidden py-16 lg:py-20">
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="relative mx-auto max-w-7xl px-4 lg:px-6">
+          <Breadcrumb
+            items={breadcrumbItems}
+            className="[&_a]:text-ivory/40 [&_a]:hover:text-ivory/70 [&_span]:text-ivory/60 [&_svg]:text-ivory/20 mb-6"
+          />
+          <h1 className="font-display text-ivory text-3xl font-semibold text-balance md:text-4xl lg:text-5xl">
+            {collection.title[locale]}
+          </h1>
+          <p className="text-ivory/40 mt-3 max-w-2xl text-[14px] leading-relaxed">
+            {collection.description[locale]}
+          </p>
         </div>
-      </div>
+      </section>
 
-      <div className="flex gap-8">
-        {/* Filter Sidebar (desktop) */}
-        <aside className="hidden w-56 shrink-0 lg:block">
-          <div className="sticky top-28">
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-navy text-sm font-semibold">{t("title")}</h3>
-              {hasActiveFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="text-gold text-xs font-medium hover:underline"
-                >
-                  {t("clearAll")}
-                </button>
+      <div className="mx-auto max-w-7xl px-4 py-10 lg:px-6">
+        {/* Toolbar */}
+        <div className="border-stone/60 mb-8 flex flex-wrap items-center justify-between gap-4 border-b pb-5">
+          <p className="text-charcoal/40 text-[13px]">
+            {tCol("productsCount", { count: filteredProducts.length })}
+          </p>
+          <div className="flex items-center gap-3">
+            <Select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="w-auto border-0 bg-transparent text-[13px]"
+            >
+              <option value="newest">{t("sortNewest")}</option>
+              <option value="price-low">{t("sortPriceLow")}</option>
+              <option value="price-high">{t("sortPriceHigh")}</option>
+            </Select>
+          </div>
+        </div>
+
+        <div className="flex gap-10">
+          {/* Filter Sidebar (desktop) */}
+          <aside className="hidden w-52 shrink-0 lg:block">
+            <div className="sticky top-28">
+              <div className="mb-6 flex items-center justify-between">
+                <h3 className="text-navy text-[11px] font-semibold tracking-[0.2em] uppercase">
+                  {t("title")}
+                </h3>
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="text-navy/50 hover:text-navy cursor-pointer text-[11px] font-medium transition-colors"
+                  >
+                    {t("clearAll")}
+                  </button>
+                )}
+              </div>
+
+              {/* Fabric Filter */}
+              {fabrics.length > 0 && (
+                <div className="mb-8">
+                  <h4 className="text-navy/60 mb-3 text-[11px] font-semibold tracking-[0.15em] uppercase">
+                    {t("fabric")}
+                  </h4>
+                  <div className="flex flex-col gap-2.5">
+                    {fabrics.map((fabric) => (
+                      <label
+                        key={fabric}
+                        className="flex cursor-pointer items-center gap-2.5 text-[13px]"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedFabrics.includes(fabric)}
+                          onChange={() => toggleFabric(fabric)}
+                          className="accent-navy h-3.5 w-3.5"
+                        />
+                        <span className="text-charcoal/70">{fabric}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
               )}
-            </div>
 
-            {/* Fabric Filter */}
-            {fabrics.length > 0 && (
-              <div className="mb-6">
-                <h4 className="text-navy mb-3 text-xs font-semibold tracking-wider uppercase">
-                  {t("fabric")}
+              {/* Other Collections */}
+              <div className="border-stone/60 border-t pt-8">
+                <h4 className="text-navy/60 mb-4 text-[11px] font-semibold tracking-[0.15em] uppercase">
+                  {tNav("collections")}
                 </h4>
-                <div className="flex flex-col gap-2">
-                  {fabrics.map((fabric) => (
-                    <label
-                      key={fabric}
-                      className="flex cursor-pointer items-center gap-2 text-sm"
+                <div className="flex flex-col gap-1">
+                  {MOCK_COLLECTIONS.map((col) => (
+                    <Link
+                      key={col.id}
+                      href={`/collections/${col.slug}` as never}
+                      className={`py-1.5 text-[13px] transition-colors duration-200 ${
+                        col.slug === slug
+                          ? "text-navy font-medium"
+                          : "text-charcoal/40 hover:text-navy"
+                      }`}
                     >
-                      <input
-                        type="checkbox"
-                        checked={selectedFabrics.includes(fabric)}
-                        onChange={() => toggleFabric(fabric)}
-                        className="accent-gold h-4 w-4 rounded"
-                      />
-                      <span className="text-charcoal/80">{fabric}</span>
-                    </label>
+                      {col.title[locale]}
+                    </Link>
                   ))}
                 </div>
               </div>
-            )}
+            </div>
+          </aside>
 
-            {/* Other Collections */}
-            <div className="border-stone border-t pt-6">
-              <h4 className="text-navy mb-3 text-xs font-semibold tracking-wider uppercase">
-                {tNav("collections")}
-              </h4>
-              <div className="flex flex-col gap-1">
-                {MOCK_COLLECTIONS.map((col) => (
-                  <Link
-                    key={col.id}
-                    href={`/collections/${col.slug}` as never}
-                    className={`rounded-sm px-2 py-1.5 text-sm transition-colors ${
-                      col.slug === slug
-                        ? "text-gold font-medium"
-                        : "text-charcoal/60 hover:text-navy"
-                    }`}
+          {/* Product Grid */}
+          <div className="flex-1">
+            {/* Active Filters */}
+            {hasActiveFilters && (
+              <div className="mb-6 flex flex-wrap gap-2">
+                {selectedFabrics.map((fabric) => (
+                  <button
+                    key={fabric}
+                    onClick={() => toggleFabric(fabric)}
+                    className="border-stone text-charcoal/60 hover:border-navy/30 flex cursor-pointer items-center gap-1.5 border px-3 py-1.5 text-[11px] font-medium tracking-wide transition-colors"
                   >
-                    {col.title[locale]}
-                  </Link>
+                    {fabric}
+                    <span className="text-charcoal/30 text-[10px]">✕</span>
+                  </button>
                 ))}
               </div>
-            </div>
-          </div>
-        </aside>
+            )}
 
-        {/* Product Grid */}
-        <div className="flex-1">
-          {/* Active Filters */}
-          {hasActiveFilters && (
-            <div className="mb-4 flex flex-wrap gap-2">
-              {selectedFabrics.map((fabric) => (
-                <button
-                  key={fabric}
-                  onClick={() => toggleFabric(fabric)}
-                  className="bg-stone text-charcoal/80 hover:bg-stone/80 flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-colors"
+            {filteredProducts.length === 0 ? (
+              <div className="py-24 text-center">
+                <p className="text-charcoal/40 text-[13px]">{t("noResults")}</p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearFilters}
+                  className="mt-4"
                 >
-                  {fabric}
-                  <span className="ms-1 text-[10px]">✕</span>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {filteredProducts.length === 0 ? (
-            <div className="py-20 text-center">
-              <p className="text-charcoal/50 text-sm">{t("noResults")}</p>
-              <Button variant="ghost" size="sm" onClick={clearFilters} className="mt-4">
-                {t("clearAll")}
-              </Button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:gap-x-6">
-              {filteredProducts.map((product) => (
-                <CollectionProductCard
-                  key={product.id}
-                  product={product}
-                  locale={locale}
-                />
-              ))}
-            </div>
-          )}
+                  {t("clearAll")}
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:gap-x-6">
+                {filteredProducts.map((product) => (
+                  <CollectionProductCard
+                    key={product.id}
+                    product={product}
+                    locale={locale}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

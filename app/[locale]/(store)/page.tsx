@@ -40,61 +40,89 @@ function HomePageContent({ locale }: { locale: Locale }) {
 
   return (
     <>
-      {/* Hero */}
-      <section className="bg-stone relative flex min-h-[85vh] items-center justify-center">
-        <div className="from-navy/5 absolute inset-0 bg-gradient-to-b to-transparent" />
+      {/* Hero — Full Impact */}
+      <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden">
+        <div className="gradient-luxury absolute inset-0" />
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+            backgroundSize: "32px 32px",
+          }}
+        />
+
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <p className="text-gold mb-4 text-[11px] font-medium tracking-[0.2em] uppercase">
+          <p className="text-gold animate-fade-in mb-6 text-[11px] font-semibold tracking-[0.3em] uppercase">
             {t("hero.tag")}
           </p>
-          <h1 className="font-display text-navy text-5xl leading-[1.1] font-semibold md:text-7xl lg:text-8xl">
+          <h1 className="font-display text-ivory animate-fade-up text-5xl leading-[1.08] font-semibold text-balance md:text-7xl lg:text-[5.5rem]">
             {t("hero.title")}
           </h1>
-          <p className="text-charcoal/60 mx-auto mt-6 max-w-md text-lg leading-relaxed whitespace-pre-line">
+          <p className="text-ivory/50 animate-fade-up mx-auto mt-8 max-w-lg text-base leading-relaxed [animation-delay:150ms]">
             {t("hero.subtitle")}
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <div className="animate-fade-up mt-12 flex flex-wrap items-center justify-center gap-4 [animation-delay:300ms]">
             <Link href="/collections/signature-collection">
-              <Button size="lg">{t("hero.cta")}</Button>
+              <Button
+                size="lg"
+                className="bg-ivory text-navy hover:bg-ivory/90 border-ivory"
+              >
+                {t("hero.cta")}
+              </Button>
             </Link>
             <Link href="/custom">
-              <Button variant="secondary" size="lg">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="border-ivory/30 text-ivory hover:border-ivory hover:bg-ivory hover:text-navy"
+              >
                 {t("hero.customCta")}
               </Button>
             </Link>
           </div>
         </div>
+
+        {/* Scroll indicator */}
+        <div className="animate-fade-in absolute bottom-10 left-1/2 -translate-x-1/2 [animation-delay:800ms]">
+          <div className="border-ivory/20 flex h-10 w-6 items-start justify-center rounded-full border p-1.5">
+            <div className="bg-ivory/40 h-2 w-1 animate-bounce rounded-full" />
+          </div>
+        </div>
       </section>
 
-      {/* Collections Grid */}
-      <section className="mx-auto max-w-7xl px-4 py-20 lg:px-6">
-        <div className="mb-12 text-center">
-          <h2 className="font-display text-navy text-3xl font-semibold md:text-4xl">
-            {t("collections.title")}
-          </h2>
-          <p className="text-charcoal/50 mx-auto mt-3 max-w-md text-sm">
+      {/* Collections — Editorial Grid */}
+      <section className="mx-auto max-w-7xl px-4 py-24 lg:px-6">
+        <div className="mb-14 text-center">
+          <p className="text-gold mb-3 text-[11px] font-semibold tracking-[0.3em] uppercase">
             {t("collections.subtitle")}
           </p>
+          <h2 className="font-display text-navy text-3xl font-semibold text-balance md:text-4xl lg:text-5xl">
+            {t("collections.title")}
+          </h2>
         </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 lg:gap-6">
-          {MOCK_COLLECTIONS.map((col) => (
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5 lg:gap-4">
+          {MOCK_COLLECTIONS.map((col, i) => (
             <Link
               key={col.id}
               href={`/collections/${col.slug}` as never}
-              className="group flex flex-col"
+              className="group relative flex flex-col overflow-hidden"
+              style={{ animationDelay: `${i * 100}ms` }}
             >
-              <div className="bg-stone relative aspect-[3/4] overflow-hidden rounded-sm">
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <img
                   src={col.imageUrl}
                   alt={col.title[locale]}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  className="h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="from-navy/50 absolute inset-0 bg-gradient-to-t to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-4">
-                  <h3 className="text-ivory font-display text-lg font-semibold">
+                <div className="from-navy/70 via-navy/20 group-hover:from-navy/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500" />
+                <div className="absolute inset-x-0 bottom-0 p-4 lg:p-5">
+                  <h3 className="text-ivory font-display text-lg font-semibold lg:text-xl">
                     {col.title[locale]}
                   </h3>
+                  <span className="text-ivory/50 mt-1 block text-[11px] tracking-[0.15em] uppercase opacity-0 transition-all duration-400 group-hover:opacity-100">
+                    {locale === "he" ? "צפייה בקולקציה" : "View collection"}
+                  </span>
                 </div>
               </div>
             </Link>
@@ -103,22 +131,24 @@ function HomePageContent({ locale }: { locale: Locale }) {
       </section>
 
       {/* Featured Products */}
-      <section className="bg-white py-20">
+      <section className="border-stone/60 border-y bg-white py-24">
         <div className="mx-auto max-w-7xl px-4 lg:px-6">
-          <div className="mb-12 flex items-end justify-between">
+          <div className="mb-14 flex items-end justify-between">
             <div>
+              <p className="text-gold mb-3 text-[11px] font-semibold tracking-[0.3em] uppercase">
+                {t("featured.subtitle")}
+              </p>
               <h2 className="font-display text-navy text-3xl font-semibold md:text-4xl">
                 {t("featured.title")}
               </h2>
-              <p className="text-charcoal/50 mt-3 text-sm">{t("featured.subtitle")}</p>
             </div>
             <Link href="/collections/signature-collection">
               <Button variant="ghost" size="sm">
-                {t("featured.viewAll")}
+                {t("featured.viewAll")} →
               </Button>
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
             {featured.map((product) => (
               <FeaturedProductCard key={product.id} product={product} locale={locale} />
             ))}
@@ -127,21 +157,28 @@ function HomePageContent({ locale }: { locale: Locale }) {
       </section>
 
       {/* Brand Story Banner */}
-      <section className="bg-navy text-ivory py-20">
-        <div className="mx-auto max-w-3xl px-4 text-center">
-          <p className="text-gold mb-4 text-[11px] font-medium tracking-[0.2em] uppercase">
+      <section className="gradient-luxury relative overflow-hidden py-28">
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)`,
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <div className="relative mx-auto max-w-3xl px-4 text-center">
+          <p className="text-gold mb-5 text-[11px] font-semibold tracking-[0.3em] uppercase">
             {t("brand.tag")}
           </p>
-          <h2 className="font-display text-3xl leading-snug font-semibold md:text-4xl">
+          <h2 className="font-display text-ivory text-3xl leading-snug font-semibold text-balance md:text-4xl lg:text-5xl">
             {t("brand.title")}
           </h2>
-          <p className="text-ivory/60 mx-auto mt-6 max-w-xl text-base leading-relaxed">
+          <p className="text-ivory/40 mx-auto mt-8 max-w-xl text-base leading-relaxed">
             {t("brand.text")}
           </p>
-          <Link href="/about" className="mt-8 inline-block">
+          <Link href="/about" className="mt-10 inline-block">
             <Button
               variant="secondary"
-              className="border-ivory/30 text-ivory hover:bg-ivory hover:text-navy"
+              className="border-ivory/20 text-ivory hover:border-ivory hover:bg-ivory hover:text-navy"
             >
               {t("brand.cta")}
             </Button>
@@ -150,14 +187,17 @@ function HomePageContent({ locale }: { locale: Locale }) {
       </section>
 
       {/* Custom Design CTA */}
-      <section className="mx-auto max-w-7xl px-4 py-20 lg:px-6">
-        <div className="bg-stone overflow-hidden rounded-sm">
-          <div className="flex flex-col items-center gap-8 p-8 text-center md:flex-row md:p-12 md:text-start">
+      <section className="mx-auto max-w-7xl px-4 py-24 lg:px-6">
+        <div className="border-stone overflow-hidden border">
+          <div className="flex flex-col items-center gap-10 p-10 text-center md:flex-row md:p-16 md:text-start">
             <div className="flex-1">
-              <h2 className="font-display text-navy text-2xl font-semibold md:text-3xl">
+              <p className="text-gold mb-3 text-[11px] font-semibold tracking-[0.3em] uppercase">
+                {locale === "he" ? "שירות אישי" : "Personal Service"}
+              </p>
+              <h2 className="font-display text-navy text-2xl font-semibold md:text-3xl lg:text-4xl">
                 {t("custom.title")}
               </h2>
-              <p className="text-charcoal/60 mt-3 text-sm leading-relaxed">
+              <p className="text-charcoal/50 mt-4 max-w-md text-[14px] leading-relaxed">
                 {t("custom.text")}
               </p>
             </div>

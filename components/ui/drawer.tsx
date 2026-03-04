@@ -76,7 +76,7 @@ export function Drawer({
       <div
         ref={overlayRef}
         className={cn(
-          "bg-navy/50 fixed inset-0 transition-opacity duration-350",
+          "bg-navy/40 fixed inset-0 backdrop-blur-[2px] transition-opacity duration-400",
           isOpen ? "opacity-100" : "opacity-0",
         )}
         style={{ transitionTimingFunction: "var(--ease-drawer)" }}
@@ -86,7 +86,7 @@ export function Drawer({
       {/* Panel */}
       <div
         className={cn(
-          "z-10 bg-white shadow-xl transition-transform duration-350",
+          "z-10 bg-white shadow-2xl transition-transform duration-400",
           styles.panel,
           isOpen ? styles.open : styles.closed,
           className,
@@ -94,11 +94,13 @@ export function Drawer({
         style={{ transitionTimingFunction: "var(--ease-drawer)" }}
       >
         {title && (
-          <div className="border-stone flex items-center justify-between border-b px-6 py-4">
-            <h2 className="font-body text-navy text-lg font-semibold">{title}</h2>
+          <div className="border-stone/60 flex items-center justify-between border-b px-6 py-5">
+            <h2 className="text-navy text-[13px] font-semibold tracking-[0.15em] uppercase">
+              {title}
+            </h2>
             <button
               onClick={onClose}
-              className="text-charcoal/50 hover:bg-stone hover:text-charcoal flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm transition-colors"
+              className="text-charcoal/30 hover:text-navy flex h-8 w-8 cursor-pointer items-center justify-center transition-colors duration-200"
               aria-label={closeLabel}
             >
               <svg

@@ -15,8 +15,8 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
 
   if (images.length === 0) {
     return (
-      <div className="bg-stone flex aspect-[3/4] items-center justify-center rounded-sm">
-        <span className="font-display text-charcoal/15 text-2xl">Tichel & Co.</span>
+      <div className="bg-stone flex aspect-[3/4] items-center justify-center">
+        <span className="font-display text-charcoal/10 text-2xl">Tichel & Co.</span>
       </div>
     );
   }
@@ -25,27 +25,29 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
 
   return (
     <div className="flex flex-col gap-3 md:flex-row-reverse md:gap-4">
-      <div className="bg-stone relative aspect-[3/4] flex-1 overflow-hidden rounded-sm">
+      {/* Main Image */}
+      <div className="bg-stone group relative aspect-[3/4] flex-1 overflow-hidden">
         {activeImage && (
           <img
             src={activeImage.url}
             alt={activeImage.altText ?? t("productImage")}
-            className="h-full w-full object-cover transition-opacity duration-250"
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           />
         )}
       </div>
 
+      {/* Thumbnails */}
       {images.length > 1 && (
-        <div className="flex gap-2 md:w-20 md:flex-col">
+        <div className="flex gap-2 md:w-[72px] md:flex-col">
           {images.map((image, idx) => (
             <button
               key={idx}
               onClick={() => setActiveIndex(idx)}
               className={cn(
-                "relative aspect-square w-16 shrink-0 cursor-pointer overflow-hidden rounded-sm border-2 transition-all md:w-full",
+                "relative aspect-square w-16 shrink-0 cursor-pointer overflow-hidden transition-all duration-300 md:w-full",
                 activeIndex === idx
-                  ? "border-gold"
-                  : "border-transparent opacity-60 hover:opacity-100",
+                  ? "ring-navy opacity-100 ring-1"
+                  : "opacity-40 hover:opacity-70",
               )}
             >
               <img

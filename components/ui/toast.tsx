@@ -32,8 +32,8 @@ export function useToast() {
 
 const variantStyles: Record<ToastVariant, string> = {
   default: "bg-navy text-ivory",
-  success: "bg-success text-white",
-  error: "bg-error text-white",
+  success: "bg-navy text-ivory border-l-2 border-success",
+  error: "bg-navy text-ivory border-l-2 border-error",
 };
 
 function ToastItem({
@@ -52,15 +52,14 @@ function ToastItem({
     <div
       role="alert"
       className={cn(
-        "flex items-center gap-3 rounded-sm px-4 py-3 text-sm shadow-lg",
-        "animate-in slide-in-from-bottom-2 fade-in duration-300",
+        "animate-fade-up flex items-center gap-3 px-5 py-4 text-[13px] shadow-2xl",
         variantStyles[t.variant],
       )}
     >
       <span className="flex-1">{t.message}</span>
       <button
         onClick={() => onDismiss(t.id)}
-        className="shrink-0 cursor-pointer opacity-70 transition-opacity hover:opacity-100"
+        className="shrink-0 cursor-pointer opacity-50 transition-opacity duration-200 hover:opacity-100"
         aria-label="סגור"
       >
         <svg
