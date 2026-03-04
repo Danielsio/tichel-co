@@ -33,80 +33,86 @@ export default function AdminProductsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-navy text-2xl font-semibold">Products</h1>
+      <div className="mb-10 flex items-center justify-between">
+        <div>
+          <h1 className="font-display text-navy text-3xl font-semibold">מוצרים</h1>
+          <p className="text-charcoal/40 mt-1 text-[13px]">ניהול קטלוג המוצרים</p>
+        </div>
         <Link href="/admin/products/new">
-          <Button size="sm">+ Add Product</Button>
+          <Button size="sm">+ הוספת מוצר</Button>
         </Link>
       </div>
 
-      <div className="mt-6 overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto">
+        <table className="w-full text-[13px]">
           <thead>
-            <tr className="border-stone border-b text-start">
-              <th className="text-charcoal/50 pe-4 pb-3 text-xs font-semibold uppercase">
-                Product
+            <tr className="border-stone/60 border-b">
+              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                מוצר
               </th>
-              <th className="text-charcoal/50 pe-4 pb-3 text-xs font-semibold uppercase">
-                Price
+              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                מחיר
               </th>
-              <th className="text-charcoal/50 pe-4 pb-3 text-xs font-semibold uppercase">
-                Status
+              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                סטטוס
               </th>
-              <th className="text-charcoal/50 pe-4 pb-3 text-xs font-semibold uppercase">
-                Collections
+              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                קולקציות
               </th>
-              <th className="text-charcoal/50 pb-3 text-xs font-semibold uppercase">
-                Actions
+              <th className="text-charcoal/40 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                פעולות
               </th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5} className="text-charcoal/40 py-12 text-center">
-                  Loading...
+                <td colSpan={5} className="text-charcoal/30 py-16 text-center">
+                  טוען...
                 </td>
               </tr>
             ) : products.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-charcoal/40 py-12 text-center">
-                  No products yet
+                <td colSpan={5} className="text-charcoal/30 py-16 text-center">
+                  אין מוצרים עדיין
                 </td>
               </tr>
             ) : (
               products.map((product) => (
-                <tr key={product.id} className="border-stone border-b">
-                  <td className="py-3 pe-4">
-                    <div>
-                      <p className="text-navy text-sm font-medium">
-                        {product.title.en}
-                      </p>
-                      <p className="text-charcoal/40 text-xs">{product.title.he}</p>
-                    </div>
+                <tr
+                  key={product.id}
+                  className="border-stone/60 border-b transition-colors hover:bg-white/50"
+                >
+                  <td className="py-3.5 pe-4">
+                    <p className="text-navy text-[13px] font-medium">
+                      {product.title.he}
+                    </p>
+                    <p className="text-charcoal/30 mt-0.5 text-[11px]">
+                      {product.title.en}
+                    </p>
                   </td>
-                  <td className="text-navy py-3 pe-4 text-sm font-medium">
+                  <td className="text-navy py-3.5 pe-4 text-[13px] font-medium">
                     {formatPrice(product.priceCents)}
                   </td>
-                  <td className="py-3 pe-4">
-                    <div className="flex gap-1">
+                  <td className="py-3.5 pe-4">
+                    <div className="flex gap-1.5">
                       {product.publishedAt ? (
-                        <Badge variant="new">Published</Badge>
+                        <Badge variant="success">פורסם</Badge>
                       ) : (
-                        <Badge variant="outOfStock">Draft</Badge>
+                        <Badge variant="outOfStock">טיוטה</Badge>
                       )}
-                      {product.isFeatured && <Badge variant="sale">Featured</Badge>}
+                      {product.isFeatured && <Badge variant="sale">מומלץ</Badge>}
                     </div>
                   </td>
-                  <td className="text-charcoal/50 py-3 pe-4 text-xs">
+                  <td className="text-charcoal/40 py-3.5 pe-4 text-[12px]">
                     {product.collectionIds?.join(", ") ?? "—"}
                   </td>
-                  <td className="py-3">
+                  <td className="py-3.5">
                     <Link
                       href={`/admin/products/${product.id}` as never}
-                      className="text-gold text-xs font-medium hover:underline"
+                      className="text-navy text-[12px] font-medium hover:underline"
                     >
-                      Edit
+                      עריכה
                     </Link>
                   </td>
                 </tr>

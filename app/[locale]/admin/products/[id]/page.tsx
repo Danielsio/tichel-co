@@ -90,40 +90,45 @@ export default function AdminProductEditPage({ params }: Props) {
           updatedAt: serverTimestamp(),
         });
       });
-      toast("Product saved", "success");
+      toast("המוצר נשמר בהצלחה", "success");
       if (isNew) router.push("/admin/products");
     } catch {
-      toast("Failed to save", "error");
+      toast("שגיאה בשמירה", "error");
     } finally {
       setSaving(false);
     }
   };
 
   if (loading) {
-    return <div className="bg-stone h-96 animate-pulse rounded-sm" />;
+    return <div className="bg-stone/40 h-96 animate-pulse" />;
   }
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-navy text-2xl font-semibold">
-          {isNew ? "New Product" : "Edit Product"}
-        </h1>
+      <div className="mb-10 flex items-start justify-between">
+        <div>
+          <h1 className="font-display text-navy text-3xl font-semibold">
+            {isNew ? "מוצר חדש" : "עריכת מוצר"}
+          </h1>
+          <p className="text-charcoal/40 mt-1 text-[13px]">
+            {isNew ? "הוספת מוצר חדש לקטלוג" : "עדכון פרטי מוצר"}
+          </p>
+        </div>
         <Button onClick={handleSave} isLoading={saving}>
-          Save
+          שמירה
         </Button>
       </div>
 
       {/* Language Tabs */}
-      <div className="border-stone mt-6 flex gap-0 border-b">
+      <div className="border-stone/60 flex gap-0 border-b">
         {(["he", "en"] as const).map((lang) => (
           <button
             key={lang}
             onClick={() => setTab(lang)}
-            className={`px-4 py-2 text-sm font-medium transition-colors ${
+            className={`px-5 py-3 text-[13px] font-medium transition-colors ${
               tab === lang
-                ? "border-gold text-navy border-b-2"
-                : "text-charcoal/40 hover:text-charcoal/70"
+                ? "border-navy text-navy border-b-2"
+                : "text-charcoal/30 hover:text-charcoal/60"
             }`}
           >
             {lang === "he" ? "עברית" : "English"}
@@ -131,10 +136,10 @@ export default function AdminProductEditPage({ params }: Props) {
         ))}
       </div>
 
-      <div className="mt-6 flex flex-col gap-4">
+      <div className="mt-8 flex max-w-2xl flex-col gap-5">
         <div>
-          <label className="text-navy mb-1.5 block text-sm font-medium">
-            Title ({tab})
+          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+            כותרת ({tab === "he" ? "עברית" : "English"})
           </label>
           <Input
             value={form.title[tab]}
@@ -143,7 +148,7 @@ export default function AdminProductEditPage({ params }: Props) {
         </div>
 
         <div>
-          <label className="text-navy mb-1.5 block text-sm font-medium">
+          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
             Slug ({tab})
           </label>
           <Input
@@ -153,8 +158,8 @@ export default function AdminProductEditPage({ params }: Props) {
         </div>
 
         <div>
-          <label className="text-navy mb-1.5 block text-sm font-medium">
-            Description ({tab})
+          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+            תיאור ({tab === "he" ? "עברית" : "English"})
           </label>
           <Textarea
             value={form.description[tab]}
@@ -163,10 +168,10 @@ export default function AdminProductEditPage({ params }: Props) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="text-navy mb-1.5 block text-sm font-medium">
-              Price (agorot/cents)
+            <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+              מחיר (אגורות)
             </label>
             <Input
               type="number"
@@ -175,8 +180,8 @@ export default function AdminProductEditPage({ params }: Props) {
             />
           </div>
           <div>
-            <label className="text-navy mb-1.5 block text-sm font-medium">
-              Compare Price (optional)
+            <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+              מחיר השוואה (אופציונלי)
             </label>
             <Input
               type="number"
@@ -192,7 +197,9 @@ export default function AdminProductEditPage({ params }: Props) {
         </div>
 
         <div>
-          <label className="text-navy mb-1.5 block text-sm font-medium">SKU Base</label>
+          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+            מק&quot;ט בסיס
+          </label>
           <Input
             value={form.skuBase}
             onChange={(e) => updateField("skuBase", e.target.value)}
@@ -200,8 +207,8 @@ export default function AdminProductEditPage({ params }: Props) {
         </div>
 
         <div>
-          <label className="text-navy mb-1.5 block text-sm font-medium">
-            Collection IDs (comma separated)
+          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+            קולקציות (מופרדות בפסיק)
           </label>
           <Input
             value={form.collectionIds?.join(", ") ?? ""}
@@ -217,14 +224,14 @@ export default function AdminProductEditPage({ params }: Props) {
           />
         </div>
 
-        <label className="flex cursor-pointer items-center gap-2">
+        <label className="flex cursor-pointer items-center gap-3">
           <input
             type="checkbox"
             checked={form.isFeatured}
             onChange={(e) => updateField("isFeatured", e.target.checked)}
-            className="accent-gold h-4 w-4"
+            className="accent-navy h-4 w-4"
           />
-          <span className="text-navy text-sm font-medium">Featured product</span>
+          <span className="text-navy text-[13px] font-medium">מוצר מומלץ</span>
         </label>
       </div>
     </div>

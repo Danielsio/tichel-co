@@ -50,14 +50,17 @@ export default function AdminOrdersPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-navy text-2xl font-semibold">Orders</h1>
+      <div className="mb-10 flex items-center justify-between">
+        <div>
+          <h1 className="font-display text-navy text-3xl font-semibold">הזמנות</h1>
+          <p className="text-charcoal/40 mt-1 text-[13px]">ניהול הזמנות לקוחות</p>
+        </div>
         <Select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="w-48 text-sm"
+          className="w-48 text-[13px]"
         >
-          <option value="all">All statuses</option>
+          <option value="all">כל הסטטוסים</option>
           {STATUS_OPTIONS.map((s) => (
             <option key={s} value={s}>
               {s.replace(/_/g, " ")}
@@ -66,74 +69,79 @@ export default function AdminOrdersPage() {
         </Select>
       </div>
 
-      <div className="mt-6 overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto">
+        <table className="w-full text-[13px]">
           <thead>
-            <tr className="border-stone border-b text-start">
-              <th className="text-charcoal/50 pe-4 pb-3 text-xs font-semibold uppercase">
-                Order
+            <tr className="border-stone/60 border-b">
+              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                הזמנה
               </th>
-              <th className="text-charcoal/50 pe-4 pb-3 text-xs font-semibold uppercase">
-                Status
+              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                סטטוס
               </th>
-              <th className="text-charcoal/50 pe-4 pb-3 text-xs font-semibold uppercase">
-                Items
+              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                פריטים
               </th>
-              <th className="text-charcoal/50 pe-4 pb-3 text-xs font-semibold uppercase">
-                Total
+              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                סה&quot;כ
               </th>
-              <th className="text-charcoal/50 pb-3 text-xs font-semibold uppercase">
-                Date
+              <th className="text-charcoal/40 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                תאריך
               </th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5} className="text-charcoal/40 py-12 text-center">
-                  Loading...
+                <td colSpan={5} className="text-charcoal/30 py-16 text-center">
+                  טוען...
                 </td>
               </tr>
             ) : filtered.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-charcoal/40 py-12 text-center">
-                  No orders found
+                <td colSpan={5} className="text-charcoal/30 py-16 text-center">
+                  לא נמצאו הזמנות
                 </td>
               </tr>
             ) : (
               filtered.map((order) => (
-                <tr key={order.id} className="border-stone border-b">
-                  <td className="py-3 pe-4">
+                <tr
+                  key={order.id}
+                  className="border-stone/60 border-b transition-colors hover:bg-white/50"
+                >
+                  <td className="py-3.5 pe-4">
                     <Link
                       href={`/account/orders/${order.id}` as never}
-                      className="text-gold font-mono text-xs hover:underline"
+                      className="text-navy font-mono text-[12px] font-medium hover:underline"
                     >
                       {order.id.slice(0, 8)}...
                     </Link>
                   </td>
-                  <td className="py-3 pe-4">
+                  <td className="py-3.5 pe-4">
                     <Badge
                       variant={
                         order.status === "payment_confirmed" ||
                         order.status === "delivered"
-                          ? "new"
+                          ? "success"
                           : order.status === "cancelled"
                             ? "outOfStock"
-                            : "sale"
+                            : "default"
                       }
                     >
                       {order.status.replace(/_/g, " ")}
                     </Badge>
                   </td>
-                  <td className="text-charcoal/70 py-3 pe-4 text-xs">
-                    {order.items?.length ?? 0} item(s)
+                  <td className="text-charcoal/50 py-3.5 pe-4 text-[12px]">
+                    {order.items?.length ?? 0} פריטים
                   </td>
-                  <td className="text-navy py-3 pe-4 text-xs font-medium">
+                  <td className="text-navy py-3.5 pe-4 text-[12px] font-medium">
                     {formatPrice(order.totalCents)}
                   </td>
-                  <td className="text-charcoal/50 py-3 text-xs">
+                  <td className="text-charcoal/40 py-3.5 text-[12px]">
                     {order.createdAt
-                      ? new Date(order.createdAt.seconds * 1000).toLocaleDateString()
+                      ? new Date(order.createdAt.seconds * 1000).toLocaleDateString(
+                          "he-IL",
+                        )
                       : "—"}
                   </td>
                 </tr>

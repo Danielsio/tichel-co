@@ -1,10 +1,10 @@
 import { Link } from "@/lib/i18n/navigation";
 
 const adminNavLinks = [
-  { href: "/admin" as const, label: "Dashboard" },
-  { href: "/admin/orders" as const, label: "Orders" },
-  { href: "/admin/products" as const, label: "Products" },
-  { href: "/admin/custom-requests" as const, label: "Custom Requests" },
+  { href: "/admin" as const, label: "לוח בקרה", icon: "◈" },
+  { href: "/admin/orders" as const, label: "הזמנות", icon: "◆" },
+  { href: "/admin/products" as const, label: "מוצרים", icon: "◇" },
+  { href: "/admin/custom-requests" as const, label: "בקשות מיוחדות", icon: "✦" },
 ];
 
 export default function AdminLayout({
@@ -13,35 +13,43 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-screen" dir="ltr">
-      <aside className="border-stone w-64 shrink-0 border-r bg-white">
-        <div className="p-6">
-          <Link href="/" className="font-display text-navy text-xl font-semibold">
-            Tichel & Co.
+    <div className="flex min-h-screen">
+      {/* Sidebar — appears on the right in RTL */}
+      <aside className="gradient-luxury order-last w-64 shrink-0">
+        <div className="p-6 pt-8">
+          <Link href="/" className="inline-block">
+            <span className="font-display text-ivory text-xl font-semibold tracking-tight">
+              Tichel & Co.
+            </span>
           </Link>
-          <p className="text-charcoal/50 mt-1 text-xs">Admin Panel</p>
+          <p className="text-ivory/30 mt-1 text-[11px] tracking-[0.15em] uppercase">
+            ניהול
+          </p>
         </div>
-        <nav className="px-3 pb-6">
+        <nav className="mt-4 flex flex-col gap-0.5 px-3">
           {adminNavLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-charcoal/70 hover:bg-stone hover:text-navy block rounded-sm px-3 py-2.5 text-sm transition-colors"
+              className="text-ivory/50 hover:bg-ivory/10 hover:text-ivory flex items-center gap-3 px-3 py-3 text-[13px] font-medium transition-colors duration-200"
             >
+              <span className="text-gold/60 text-xs">{link.icon}</span>
               {link.label}
             </Link>
           ))}
         </nav>
-        <div className="border-stone border-t px-6 py-4">
+        <div className="border-ivory/10 mx-3 mt-auto border-t pt-4">
           <Link
             href="/"
-            className="text-charcoal/40 hover:text-gold text-xs transition-colors"
+            className="text-ivory/30 hover:text-ivory/60 block px-3 py-3 text-[12px] transition-colors duration-200"
           >
-            ← Back to Store
+            ← חזרה לחנות
           </Link>
         </div>
       </aside>
-      <main className="bg-ivory flex-1 p-8">{children}</main>
+
+      {/* Main Content */}
+      <main className="bg-ivory flex-1 p-8 lg:p-10">{children}</main>
     </div>
   );
 }

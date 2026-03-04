@@ -55,40 +55,53 @@ export default function AdminCustomRequestsPage() {
     try {
       await updateDoc(doc(db, "customRequests", id), { status });
       setRequests((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
-      toast("Status updated", "success");
+      toast("הסטטוס עודכן", "success");
     } catch {
-      toast("Failed to update", "error");
+      toast("שגיאה בעדכון", "error");
     }
   };
 
   return (
     <div>
-      <h1 className="text-navy text-2xl font-semibold">Custom Requests</h1>
+      <div className="mb-10">
+        <h1 className="font-display text-navy text-3xl font-semibold">בקשות מיוחדות</h1>
+        <p className="text-charcoal/40 mt-1 text-[13px]">
+          ניהול בקשות הזמנה מותאמות אישית
+        </p>
+      </div>
 
-      <div className="mt-6 flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         {loading ? (
-          <div className="text-charcoal/40 py-12 text-center">Loading...</div>
+          <div className="text-charcoal/30 py-16 text-center">טוען...</div>
         ) : requests.length === 0 ? (
-          <div className="text-charcoal/40 py-12 text-center">
-            No custom requests yet
+          <div className="text-charcoal/30 py-16 text-center">
+            אין בקשות מיוחדות עדיין
           </div>
         ) : (
           requests.map((req) => (
-            <div key={req.id} className="border-stone rounded-sm border bg-white p-5">
+            <div
+              key={req.id}
+              className="border-stone/60 border bg-white p-6 transition-all duration-200 hover:shadow-sm"
+            >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="sale">{req.type}</Badge>
-                    <span className="text-charcoal/40 text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <Badge variant="default">{req.type}</Badge>
+                    <span className="text-charcoal/30 text-[11px]">
                       {req.createdAt
-                        ? new Date(req.createdAt.seconds * 1000).toLocaleDateString()
+                        ? new Date(req.createdAt.seconds * 1000).toLocaleDateString(
+                            "he-IL",
+                          )
                         : "—"}
                     </span>
                   </div>
-                  <p className="text-charcoal/80 mt-2 text-sm">{req.description}</p>
-                  <div className="text-charcoal/50 mt-2 flex gap-4 text-xs">
+                  <p className="text-charcoal/70 mt-3 text-[13px] leading-relaxed">
+                    {req.description}
+                  </p>
+                  <div className="text-charcoal/40 mt-3 flex gap-5 text-[11px] tracking-wide">
                     <span>{req.contactEmail}</span>
-                    <span>Budget: {req.budgetRange}</span>
+                    <span className="text-charcoal/20">|</span>
+                    <span>תקציב: {req.budgetRange}</span>
                   </div>
                 </div>
                 <Select
@@ -96,7 +109,7 @@ export default function AdminCustomRequestsPage() {
                   onChange={(e) =>
                     updateStatus(req.id, e.target.value as CustomRequestStatus)
                   }
-                  className="w-44 text-xs"
+                  className="w-44 text-[12px]"
                 >
                   {STATUS_OPTIONS.map((s) => (
                     <option key={s} value={s}>
