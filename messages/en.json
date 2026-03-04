@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "collections": "Collections",
+    "tichels": "Tichels",
+    "scarves": "Scarves",
+    "headWraps": "Head Wraps",
+    "accessories": "Accessories",
+    "custom": "Custom Design",
+    "lookbook": "Lookbook",
+    "account": "My Account",
+    "search": "Search",
+    "cart": "Shopping Cart",
+    "openMenu": "Open menu",
+    "menu": "Menu"
+  },
+  "home": {
+    "hero": {
+      "tag": "Luxury Modest Fashion",
+      "title": "Tichel & Co.",
+      "subtitle": "Luxury head coverings for women who cover with intention.\nSilk, velvet, cashmere — designed in Israel.",
+      "cta": "Explore the Collection",
+      "customCta": "Custom Design"
+    },
+    "collections": {
+      "title": "Our Collections",
+      "subtitle": "Each collection is crafted with love for detail, fabric, and femininity"
+    },
+    "featured": {
+      "title": "Our Favorites",
+      "subtitle": "The most loved items by our community",
+      "viewAll": "View All →"
+    },
+    "brand": {
+      "tag": "Our Story",
+      "title": "Fashion that honors who you are",
+      "text": "Tichel & Co. was born from the belief that head coverings can be both beautiful and dignified. We design luxury head coverings from premium fabrics — because women who cover with intention deserve fashion at the highest level.",
+      "cta": "Read More"
+    },
+    "custom": {
+      "title": "Dreaming of a unique design?",
+      "text": "Send us your vision and we'll design a custom head covering for you — fabric, color, style, and size exactly as you imagined.",
+      "cta": "Request Custom Design"
+    }
+  },
+  "product": {
+    "addToBag": "Add to Bag",
+    "saveToWishlist": "Save to Wishlist",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "new": "New",
+    "sale": "Sale",
+    "quickAdd": "Quick Add",
+    "completeTheLook": "Complete the Look",
+    "productImage": "Product image",
+    "imageNumber": "Image {n}"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "total": "Total",
+    "checkout": "Checkout",
+    "continueShopping": "Continue Shopping",
+    "remove": "Remove",
+    "removeItem": "Remove {name}",
+    "items": "{count, plural, =0 {No items} one {1 item} other {# items}}",
+    "shippingNote": "Shipping and taxes calculated at checkout",
+    "addedToCart": "{name} added to cart",
+    "decreaseQty": "Decrease quantity",
+    "increaseQty": "Increase quantity"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "continueToPay": "Continue to Payment",
+    "orderSummary": "Order Summary",
+    "freeReturns": "Free returns within 30 days",
+    "steps": {
+      "cart": "Cart",
+      "info": "Information",
+      "shipping": "Shipping",
+      "payment": "Payment"
+    }
+  },
+  "topBar": {
+    "message": "Free shipping on orders over $70 · Free exchanges within 30 days"
+  },
+  "footer": {
+    "shop": "Shop",
+    "info": "Information",
+    "newsletter": {
+      "title": "Stay Updated",
+      "text": "Subscribe to our newsletter and get 10% off your first order.",
+      "placeholder": "Email address",
+      "submit": "Subscribe"
+    },
+    "brand": "Luxury modest fashion for women who cover with intention.\nHead coverings, tichels, and scarves in premium quality.",
+    "rights": "© {year} Tichel & Co. All rights reserved.",
+    "tagline": "Built with intention, for women who cover with intention",
+    "links": {
+      "story": "Our Story",
+      "care": "Care Guide",
+      "contact": "Contact Us",
+      "shipping": "Shipping & Returns",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "backToStore": "← Back to Store"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "fallback": "An unexpected error occurred.",
+    "retry": "Try Again"
+  },
+  "notFound": {
+    "title": "404",
+    "text": "The page you're looking for doesn't exist.",
+    "home": "Back to Home"
+  },
+  "account": {
+    "title": "My Account",
+    "orders": "My Orders",
+    "wishlist": "Wishlist",
+    "addresses": "Addresses",
+    "settings": "Settings"
+  },
+  "common": {
+    "close": "Close",
+    "breadcrumb": "Breadcrumb navigation"
+  },
+  "locale": {
+    "switchTo": "עברית",
+    "current": "English"
+  },
+  "filter": {
+    "price": "Price",
+    "min": "Min",
+    "max": "Max"
+  },
+  "admin": {
+    "title": "Admin",
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "products": "Products",
+    "customRequests": "Custom Requests",
+    "backToStore": "← Back to Store"
+  }
+}

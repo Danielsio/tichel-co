@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "collections": "קולקציות",
+    "tichels": "טישלים",
+    "scarves": "צעיפים",
+    "headWraps": "עטיפות ראש",
+    "accessories": "אביזרים",
+    "custom": "עיצוב אישי",
+    "lookbook": "לוקבוק",
+    "account": "החשבון שלי",
+    "search": "חיפוש",
+    "cart": "עגלת קניות",
+    "openMenu": "פתח תפריט",
+    "menu": "תפריט"
+  },
+  "home": {
+    "hero": {
+      "tag": "אופנה צנועה יוקרתית",
+      "title": "Tichel & Co.",
+      "subtitle": "כיסויי ראש יוקרתיים לנשים שמכסות בכוונה.\nמשי, קטיפה, קשמיר — מעוצבים בישראל.",
+      "cta": "גלו את הקולקציה",
+      "customCta": "עיצוב אישי"
+    },
+    "collections": {
+      "title": "הקולקציות שלנו",
+      "subtitle": "כל קולקציה נוצרה מתוך אהבה לפרט, לבד ולנשיות"
+    },
+    "featured": {
+      "title": "הנבחרים שלנו",
+      "subtitle": "הפריטים האהובים ביותר על הקהילה שלנו",
+      "viewAll": "הכל ←"
+    },
+    "brand": {
+      "tag": "הסיפור שלנו",
+      "title": "אופנה שמכבדת את מי שאת",
+      "text": "Tichel & Co. נולד מתוך אמונה שכיסוי ראש יכול להיות גם יפה וגם מכובד. אנחנו מעצבות כיסויי ראש יוקרתיים מבדים מובחרים — כי נשים שמכסות בכוונה ראויות לאופנה ברמה הגבוהה ביותר.",
+      "cta": "קראו עוד"
+    },
+    "custom": {
+      "title": "חולמת על עיצוב ייחודי?",
+      "text": "שלחי לנו את החזון שלך ונעצב עבורך כיסוי ראש מותאם אישית — בד, צבע, סגנון ומידה בדיוק כמו שדמיינת.",
+      "cta": "בקשת עיצוב מותאם"
+    }
+  },
+  "product": {
+    "addToBag": "הוסיפי לסל",
+    "saveToWishlist": "שמור לרשימת המשאלות",
+    "inStock": "במלאי",
+    "outOfStock": "אזל מהמלאי",
+    "new": "חדש",
+    "sale": "מבצע",
+    "quickAdd": "הוספה מהירה",
+    "completeTheLook": "השלימי את המראה",
+    "productImage": "תמונת מוצר",
+    "imageNumber": "תמונה {n}"
+  },
+  "cart": {
+    "title": "סל קניות",
+    "empty": "הסל ריק",
+    "total": "סה״כ",
+    "checkout": "לתשלום",
+    "continueShopping": "המשך קניות",
+    "remove": "הסר",
+    "removeItem": "הסר {name}",
+    "items": "{count, plural, =0 {אין פריטים} one {פריט אחד} other {# פריטים}}",
+    "shippingNote": "משלוח ומסים יחושבו בקופה",
+    "addedToCart": "{name} נוסף לסל",
+    "decreaseQty": "הפחת כמות",
+    "increaseQty": "הוסף כמות"
+  },
+  "checkout": {
+    "title": "תשלום",
+    "continueToPay": "המשך לתשלום",
+    "orderSummary": "סיכום הזמנה",
+    "freeReturns": "החזרות חינם תוך 30 יום",
+    "steps": {
+      "cart": "עגלה",
+      "info": "פרטים",
+      "shipping": "משלוח",
+      "payment": "תשלום"
+    }
+  },
+  "topBar": {
+    "message": "משלוח חינם בהזמנות מעל ₪250 · החלפות חינם תוך 30 יום"
+  },
+  "footer": {
+    "shop": "חנות",
+    "info": "מידע",
+    "newsletter": {
+      "title": "הישארו מעודכנות",
+      "text": "הרשמו לניוזלטר וקבלו 10% הנחה על ההזמנה הראשונה.",
+      "placeholder": "כתובת אימייל",
+      "submit": "הרשמה"
+    },
+    "brand": "אופנה צנועה יוקרתית לנשים שמכסות בכוונה.\nכיסויי ראש, טישלים וצעיפים באיכות פרימיום.",
+    "rights": "© {year} Tichel & Co. כל הזכויות שמורות.",
+    "tagline": "נבנה בכוונה, לנשים שמכסות בכוונה",
+    "links": {
+      "story": "הסיפור שלנו",
+      "care": "מדריך טיפוח",
+      "contact": "צרו קשר",
+      "shipping": "משלוחים והחזרות",
+      "privacy": "מדיניות פרטיות",
+      "terms": "תנאי שימוש"
+    },
+    "backToStore": "← חזרה לחנות"
+  },
+  "error": {
+    "title": "משהו השתבש",
+    "fallback": "אירעה שגיאה בלתי צפויה.",
+    "retry": "נסו שוב"
+  },
+  "notFound": {
+    "title": "404",
+    "text": "הדף שחיפשת לא נמצא.",
+    "home": "חזרה לדף הבית"
+  },
+  "account": {
+    "title": "החשבון שלי",
+    "orders": "ההזמנות שלי",
+    "wishlist": "רשימת משאלות",
+    "addresses": "כתובות",
+    "settings": "הגדרות"
+  },
+  "common": {
+    "close": "סגור",
+    "breadcrumb": "ניווט פירורי לחם"
+  },
+  "locale": {
+    "switchTo": "English",
+    "current": "עברית"
+  },
+  "filter": {
+    "price": "מחיר",
+    "min": "מינימום",
+    "max": "מקסימום"
+  },
+  "admin": {
+    "title": "ניהול",
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "products": "Products",
+    "customRequests": "Custom Requests",
+    "backToStore": "← Back to Store"
+  }
+}
