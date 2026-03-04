@@ -25,10 +25,31 @@ const heebo = Heebo({
 
 export const metadata: Metadata = {
   title: {
-    default: "Tichel & Co.",
+    default: "Tichel & Co. — Luxury Modest Head Coverings",
     template: "%s | Tichel & Co.",
   },
+  description:
+    "Luxury head coverings, tichels, and scarves for women who cover with intention. Silk, velvet, cashmere — designed in Israel.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
+  openGraph: {
+    type: "website",
+    siteName: "Tichel & Co.",
+    locale: "he_IL",
+    alternateLocale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    languages: {
+      he: "/he",
+      en: "/en",
+    },
+  },
 };
 
 export default async function RootLayout({

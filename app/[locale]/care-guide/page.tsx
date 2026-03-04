@@ -1,9 +1,25 @@
+import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "careGuide" });
+  return {
+    title: t("title"),
+    description:
+      locale === "he"
+        ? "מדריך טיפול בכיסויי ראש — משי, קטיפה, קשמיר"
+        : "Care guide for head coverings — silk, velvet, cashmere",
+    alternates: {
+      languages: { he: "/he/care-guide", en: "/en/care-guide" },
+    },
+  };
+}
 
 export default async function CareGuidePage({ params }: Props) {
   const { locale } = await params;
