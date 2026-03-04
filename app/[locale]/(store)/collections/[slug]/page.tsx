@@ -28,7 +28,6 @@ export default function CollectionPage({ params }: Props) {
   const t = useTranslations("filter");
   const tCol = useTranslations("collection");
   const tNav = useTranslations("nav");
-  const tCommon = useTranslations("common");
 
   const collection = getCollectionBySlug(slug);
   const allProducts = useMemo(() => getProductsByCollection(slug), [slug]);
@@ -96,7 +95,7 @@ export default function CollectionPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
-      <Breadcrumb items={breadcrumbItems} ariaLabel={tCommon("breadcrumb")} />
+      <Breadcrumb items={breadcrumbItems} />
 
       {/* Collection Header */}
       <div className="mt-4 mb-10">

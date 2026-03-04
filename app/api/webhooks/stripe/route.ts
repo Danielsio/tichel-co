@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
           status: "payment_confirmed",
           updatedAt: new Date(),
         });
-        console.log(`Order ${orderDoc.id} → payment_confirmed`);
+        console.warn(`Order ${orderDoc.id} → payment_confirmed`);
       }
       break;
     }
@@ -62,13 +62,13 @@ export async function POST(req: NextRequest) {
           status: "cancelled",
           updatedAt: new Date(),
         });
-        console.log(`Order ${orderDoc.id} → cancelled (payment failed)`);
+        console.warn(`Order ${orderDoc.id} → cancelled (payment failed)`);
       }
       break;
     }
 
     default:
-      console.log(`Unhandled event type: ${event.type}`);
+      console.warn(`Unhandled event type: ${event.type}`);
   }
 
   return NextResponse.json({ received: true });

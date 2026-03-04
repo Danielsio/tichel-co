@@ -22,7 +22,6 @@ export default function ProductPage({ params }: Props) {
   const locale = useLocale() as Locale;
   const t = useTranslations("product");
   const tNav = useTranslations("nav");
-  const tCommon = useTranslations("common");
 
   const product = getProductBySlug(slug);
 
@@ -39,15 +38,7 @@ export default function ProductPage({ params }: Props) {
     );
   }
 
-  return (
-    <ProductPageContent
-      product={product}
-      locale={locale}
-      t={t}
-      tNav={tNav}
-      tCommon={tCommon}
-    />
-  );
+  return <ProductPageContent product={product} locale={locale} t={t} tNav={tNav} />;
 }
 
 function ProductPageContent({
@@ -55,13 +46,11 @@ function ProductPageContent({
   locale,
   t,
   tNav,
-  tCommon,
 }: {
   product: NonNullable<ReturnType<typeof getProductBySlug>>;
   locale: Locale;
   t: ReturnType<typeof useTranslations>;
   tNav: ReturnType<typeof useTranslations>;
-  tCommon: ReturnType<typeof useTranslations>;
 }) {
   const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
   const selectedVariant = product.variants[selectedVariantIdx]!;
@@ -101,7 +90,7 @@ function ProductPageContent({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
-      <Breadcrumb items={breadcrumbItems} ariaLabel={tCommon("breadcrumb")} />
+      <Breadcrumb items={breadcrumbItems} />
 
       <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-12">
         {/* Gallery */}
