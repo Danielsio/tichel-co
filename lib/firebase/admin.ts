@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from "fs";
+import { generateKeyPairSync } from "crypto";
 import { join } from "path";
 import { initializeApp, getApps, cert, type App } from "firebase-admin/app";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
@@ -7,6 +8,19 @@ import { getAuth, type Auth } from "firebase-admin/auth";
 let _app: App | undefined;
 let _db: Firestore | undefined;
 let _auth: Auth | undefined;
+
+function getEmulatorCredential() {
+  const { privateKey } = generateKeyPairSync("rsa", {
+    modulusLength: 2048,
+    privateKeyEncoding: { type: "pkcs1", format: "pem" },
+    publicKeyEncoding: { type: "pkcs1", format: "pem" },
+  });
+  return cert({
+    projectId: "demo-tichel-co",
+    clientEmail: "demo@demo-tichel-co.iam.gserviceaccount.com",
+    privateKey,
+  });
+}
 
 function getCredential() {
   const saPath = join(process.cwd(), "service-account.json");
@@ -29,14 +43,7 @@ function getAdminApp(): App {
   }
 
   if (process.env.FIRESTORE_EMULATOR_HOST) {
-    const emulatorCredential = {
-      getAccessToken: () =>
-        Promise.resolve({ access_token: "emulator", expires_in: 3600 }),
-    };
-    _app = initializeApp({
-      projectId: "demo-tichel-co",
-      credential: emulatorCredential,
-    });
+    _app = initializeApp({ credential: getEmulatorCredential() });
     return _app;
   }
 

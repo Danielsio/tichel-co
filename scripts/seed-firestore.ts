@@ -11,9 +11,23 @@
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore, Timestamp, type Firestore } from "firebase-admin/firestore";
 import { existsSync, readFileSync } from "fs";
+import { generateKeyPairSync } from "crypto";
 import { join } from "path";
 
 const EMULATOR_HOST = "127.0.0.1:8080";
+
+function getEmulatorCredential() {
+  const { privateKey } = generateKeyPairSync("rsa", {
+    modulusLength: 2048,
+    privateKeyEncoding: { type: "pkcs1", format: "pem" },
+    publicKeyEncoding: { type: "pkcs1", format: "pem" },
+  });
+  return cert({
+    projectId: "demo-tichel-co",
+    clientEmail: "demo@demo-tichel-co.iam.gserviceaccount.com",
+    privateKey,
+  });
+}
 
 function init(): Firestore {
   const useEmulator = process.env.SEED_PRODUCTION !== "true";
@@ -27,13 +41,7 @@ function init(): Firestore {
 
   if (!getApps().length) {
     if (useEmulator) {
-      initializeApp({
-        projectId: "demo-tichel-co",
-        credential: {
-          getAccessToken: () =>
-            Promise.resolve({ access_token: "emulator", expires_in: 3600 }),
-        },
-      });
+      initializeApp({ credential: getEmulatorCredential() });
     } else {
       const saPath = join(process.cwd(), "service-account.json");
       if (existsSync(saPath)) {
