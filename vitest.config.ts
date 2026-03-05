@@ -13,7 +13,21 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["lib/**", "components/**", "hooks/**", "stores/**"],
-      exclude: ["**/*.test.*", "**/index.ts"],
+      exclude: [
+        "**/*.test.*",
+        "**/index.ts",
+        "lib/i18n/**",
+        "lib/firebase/admin.ts",
+        "lib/firebase/client.ts",
+        "lib/email/**",
+        "components/layout/locale-switcher.tsx",
+      ],
+      thresholds: {
+        statements: 75,
+        branches: 65,
+        functions: 75,
+        lines: 75,
+      },
     },
   },
   resolve: {
