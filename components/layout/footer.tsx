@@ -27,7 +27,7 @@ export function Footer() {
   return (
     <footer className="gradient-luxury text-ivory">
       <div className="mx-auto max-w-7xl px-4 py-20 lg:px-6">
-        <div className="grid grid-cols-1 gap-14 md:grid-cols-2 lg:grid-cols-4 lg:gap-12">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-2 lg:grid-cols-3 lg:gap-12">
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block">
@@ -91,29 +91,6 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-gold mb-5 text-[11px] font-semibold tracking-[0.2em] uppercase">
-              {t("newsletter.title")}
-            </h3>
-            <p className="text-ivory/50 mb-5 text-[13px] leading-relaxed">
-              {t("newsletter.text")}
-            </p>
-            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder={t("newsletter.placeholder")}
-                className="text-ivory placeholder:text-ivory/30 focus:border-gold border-ivory/20 h-12 flex-1 rounded-none border bg-transparent px-4 text-[13px] focus:ring-0 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="bg-gold text-navy hover:bg-gold-light h-12 cursor-pointer px-6 text-[12px] font-semibold tracking-wider uppercase transition-all duration-300 active:scale-[0.97]"
-              >
-                {t("newsletter.submit")}
-              </button>
-            </form>
           </div>
         </div>
 
