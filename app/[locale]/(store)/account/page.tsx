@@ -232,14 +232,12 @@ export default function AccountPage() {
       </div>
 
       <div className="animate-fade-up mt-14 grid gap-5 sm:grid-cols-2">
-        <Link href="/account/orders/latest" className="block">
-          <AccountCard
-            icon={<OrdersIcon className="h-6 w-6" />}
-            title={t("orders")}
-            description={t("ordersDesc")}
-            interactive
-          />
-        </Link>
+        <AccountCard
+          icon={<OrdersIcon className="h-6 w-6" />}
+          title={t("orders")}
+          description={t("ordersDesc")}
+          badge={t("comingSoon")}
+        />
 
         <AccountCard
           icon={<AddressesIcon className="h-6 w-6" />}
