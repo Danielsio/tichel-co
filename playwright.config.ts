@@ -39,13 +39,13 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: "npx firebase emulators:start --only auth,firestore,storage",
+      command: "pnpm exec firebase emulators:start --only auth,firestore,storage",
       port: 8080,
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
     },
     {
-      command: "npx tsx scripts/seed-firestore.ts && pnpm build && pnpm start",
+      command: "pnpm exec tsx scripts/seed-firestore.ts && pnpm build && pnpm start",
       port: 3000,
       reuseExistingServer: !process.env.CI,
       timeout: 180_000,
