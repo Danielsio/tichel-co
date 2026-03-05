@@ -6,10 +6,6 @@ import { useCartStore } from "@/stores/cart-store";
 import { useUIStore } from "@/stores/ui-store";
 import { useMounted } from "@/hooks/use-mounted";
 import { Drawer } from "@/components/ui/drawer";
-import {
-  LocaleSwitcher,
-  LocaleSwitcherMinimal,
-} from "@/components/layout/locale-switcher";
 
 const navLinks = [
   { href: "/collections/signature-collection" as const, key: "collections" as const },
@@ -22,6 +18,7 @@ const navLinks = [
 
 export function Header() {
   const t = useTranslations("nav");
+  const tCommon = useTranslations("common");
   const tTopBar = useTranslations("topBar");
   const totalItems = useCartStore((s) => s.totalItems);
   const openCart = useCartStore((s) => s.openCart);
@@ -73,7 +70,10 @@ export function Header() {
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex lg:items-center lg:gap-10" aria-label="main">
+            <nav
+              className="hidden lg:flex lg:items-center lg:gap-10"
+              aria-label={tCommon("mainNav")}
+            >
               {navLinks.map((link) => (
                 <Link
                   key={link.key}
@@ -87,8 +87,6 @@ export function Header() {
 
             {/* Actions */}
             <div className="flex items-center gap-0.5">
-              <LocaleSwitcherMinimal />
-
               <button
                 className="text-navy/60 hover:text-navy flex h-10 w-10 cursor-pointer items-center justify-center transition-colors duration-300"
                 aria-label={t("search")}
@@ -166,8 +164,9 @@ export function Header() {
         onClose={closeMobileMenu}
         title={t("menu")}
         side="start"
+        closeLabel={tCommon("close")}
       >
-        <nav className="flex flex-col gap-1 pt-2" aria-label="main">
+        <nav className="flex flex-col gap-1 pt-2" aria-label={tCommon("mainNav")}>
           {navLinks.map((link) => (
             <Link
               key={link.key}
@@ -200,7 +199,6 @@ export function Header() {
             </svg>
             {t("account")}
           </Link>
-          <LocaleSwitcher className="mt-2 w-full justify-start px-3 py-3" />
         </div>
       </Drawer>
     </>

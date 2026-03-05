@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { AddToCartButton } from "@/components/product/add-to-cart-button";
 import { ProductCard } from "@/components/product/product-card";
@@ -9,16 +9,17 @@ import { Badge } from "@/components/ui/badge";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { formatPrice } from "@/lib/utils/format-price";
 import { cn } from "@/lib/utils/cn";
-import type { Locale, StoreProduct } from "@/types";
+import type { StoreProduct } from "@/types";
 
 export function ProductPageClient({
   product,
   relatedProducts,
+  collectionTitle,
 }: {
   product: StoreProduct;
   relatedProducts: StoreProduct[];
+  collectionTitle?: string;
 }) {
-  const locale = useLocale() as Locale;
   const t = useTranslations("product");
   const tNav = useTranslations("nav");
 
@@ -30,7 +31,7 @@ export function ProductPageClient({
 
   const images = selectedVariant.imageUrls.map((url) => ({
     url,
-    altText: product.title[locale],
+    altText: product.title,
   }));
 
   const firstCollection = product.collectionIds[0];
@@ -40,14 +41,12 @@ export function ProductPageClient({
     ...(firstCollection
       ? [
           {
-            label: firstCollection
-              .replace(/-/g, " ")
-              .replace(/\b\w/g, (l: string) => l.toUpperCase()),
+            label: collectionTitle ?? firstCollection,
             href: `/collections/${firstCollection}` as const,
           },
         ]
       : []),
-    { label: product.title[locale] },
+    { label: product.title },
   ];
 
   return (
@@ -66,7 +65,7 @@ export function ProductPageClient({
           )}
 
           <h1 className="font-display text-navy text-2xl font-semibold md:text-3xl lg:text-4xl">
-            {product.title[locale]}
+            {product.title}
           </h1>
 
           <div className="mt-4 flex items-baseline gap-3">
@@ -104,8 +103,7 @@ export function ProductPageClient({
           {product.variants.length > 1 && (
             <div className="mb-6">
               <h3 className="text-navy/60 mb-3 text-[11px] font-semibold tracking-[0.15em] uppercase">
-                {t("color")}:{" "}
-                <span className="text-navy">{selectedVariant.color[locale]}</span>
+                {t("color")}: <span className="text-navy">{selectedVariant.color}</span>
               </h3>
               <div className="flex gap-2">
                 {product.variants.map((variant, idx) => (
@@ -120,7 +118,7 @@ export function ProductPageClient({
                       variant.stockQty === 0 && "opacity-30",
                     )}
                   >
-                    {variant.color[locale]}
+                    {variant.color}
                   </button>
                 ))}
               </div>
@@ -132,18 +130,18 @@ export function ProductPageClient({
               {t("fabric")}:
             </span>{" "}
             <span className="text-navy text-[13px] font-medium">
-              {selectedVariant.fabric[locale]}
+              {selectedVariant.fabric}
             </span>
           </div>
 
           <AddToCartButton
             variantId={selectedVariant.id}
             productId={product.id}
-            name={product.title[locale]}
+            name={product.title}
             price={product.priceCents}
             image={selectedVariant.imageUrls[0] ?? ""}
-            color={selectedVariant.color[locale]}
-            size={selectedVariant.size ?? "One Size"}
+            color={selectedVariant.color}
+            size={selectedVariant.size ?? t("oneSize")}
             stockQty={selectedVariant.stockQty}
           />
 
@@ -152,7 +150,7 @@ export function ProductPageClient({
               {t("description")}
             </h3>
             <p className="text-charcoal/60 text-[14px] leading-[1.8]">
-              {product.description[locale]}
+              {product.description}
             </p>
           </div>
 
@@ -178,11 +176,11 @@ export function ProductPageClient({
                 <ProductCard
                   key={rp.id}
                   slug={rp.slug}
-                  title={rp.title[locale]}
+                  title={rp.title}
                   priceCents={rp.priceCents}
                   comparePriceCents={rp.comparePriceCents}
                   imageUrl={v?.imageUrls[0]}
-                  imageAlt={rp.title[locale]}
+                  imageAlt={rp.title}
                   isNew={rp.isNew}
                   stockQty={stock}
                 />

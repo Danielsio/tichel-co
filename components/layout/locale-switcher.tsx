@@ -51,6 +51,7 @@ export function LocaleSwitcher({ className }: LocaleSwitcherProps) {
 }
 
 export function LocaleSwitcherMinimal({ className }: LocaleSwitcherProps) {
+  const t = useTranslations("locale");
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -69,7 +70,7 @@ export function LocaleSwitcherMinimal({ className }: LocaleSwitcherProps) {
         "text-navy/70 hover:bg-stone hover:text-navy flex h-10 w-10 cursor-pointer items-center justify-center rounded-sm text-xs font-bold uppercase transition-colors",
         className,
       )}
-      aria-label={`Switch to ${otherLocale === "he" ? "Hebrew" : "English"}`}
+      aria-label={t("switchLabel")}
       lang={otherLocale}
     >
       {label}

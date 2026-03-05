@@ -85,7 +85,7 @@ export default function CheckoutPage() {
           userId: user?.uid ?? null,
           guestEmail: user ? null : form.email,
           shippingAddress: {
-            label: "Shipping",
+            label: t("steps.shipping"),
             line1: form.line1,
             line2: form.line2,
             city: form.city,

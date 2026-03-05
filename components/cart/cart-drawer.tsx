@@ -79,6 +79,7 @@ const CartItemRow = memo(function CartItemRow({ item }: { item: CartItem }) {
 
 export function CartDrawer() {
   const t = useTranslations("cart");
+  const tCommon = useTranslations("common");
   const { items, isOpen, closeCart, totalPrice } = useCartStore();
   const mounted = useMounted();
 
@@ -87,7 +88,13 @@ export function CartDrawer() {
   const total = totalPrice();
 
   return (
-    <Drawer isOpen={isOpen} onClose={closeCart} title={t("title")} side="start">
+    <Drawer
+      isOpen={isOpen}
+      onClose={closeCart}
+      title={t("title")}
+      side="start"
+      closeLabel={tCommon("close")}
+    >
       {items.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <svg

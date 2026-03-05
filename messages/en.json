@@ -63,7 +63,8 @@
     "shipping": "Shipping & Returns",
     "shippingText": "Free shipping on orders over $70. Free returns within 30 days.",
     "selectColor": "Select a color",
-    "backToCollection": "Back to Collection"
+    "backToCollection": "Back to Collection",
+    "oneSize": "One Size"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -181,10 +182,12 @@
     "breadcrumb": "Breadcrumb navigation",
     "pagination": "Page navigation",
     "previousPage": "Previous page",
-    "nextPage": "Next page"
+    "nextPage": "Next page",
+    "mainNav": "Main navigation"
   },
   "locale": {
     "switchTo": "עברית",
+    "switchLabel": "Switch to Hebrew",
     "current": "English"
   },
   "filter": {

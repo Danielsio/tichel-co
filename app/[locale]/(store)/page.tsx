@@ -8,7 +8,7 @@ import {
   getFeaturedProducts,
   getPublishedCollections,
 } from "@/lib/firebase/admin-queries";
-import type { Locale, StoreProduct, StoreCollection } from "@/types";
+import type { StoreProduct, StoreCollection } from "@/types";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -35,21 +35,13 @@ export default async function HomePage({ params }: Props) {
     getPublishedCollections(),
   ]);
 
-  return (
-    <HomePageContent
-      locale={locale as Locale}
-      featured={featured}
-      collections={collections}
-    />
-  );
+  return <HomePageContent featured={featured} collections={collections} />;
 }
 
 function HomePageContent({
-  locale,
   featured,
   collections,
 }: {
-  locale: Locale;
   featured: StoreProduct[];
   collections: StoreCollection[];
 }) {
@@ -128,14 +120,14 @@ function HomePageContent({
               <div className="relative aspect-[3/4] overflow-hidden">
                 <img
                   src={col.imageUrl}
-                  alt={col.title[locale]}
+                  alt={col.title}
                   className="h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
                 <div className="from-navy/70 via-navy/20 group-hover:from-navy/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500" />
                 <div className="absolute inset-x-0 bottom-0 p-4 lg:p-5">
                   <h3 className="text-ivory font-display text-lg font-semibold lg:text-xl">
-                    {col.title[locale]}
+                    {col.title}
                   </h3>
                   <span className="text-ivory/50 mt-1 block text-[11px] tracking-[0.15em] uppercase opacity-0 transition-all duration-300 group-hover:opacity-100">
                     {t("collections.viewCollection")}
@@ -161,13 +153,13 @@ function HomePageContent({
             </div>
             <Link href="/collections/signature-collection">
               <Button variant="ghost" size="sm">
-                {t("featured.viewAll")} →
+                {t("featured.viewAll")}
               </Button>
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
             {featured.map((product) => (
-              <FeaturedProductCard key={product.id} product={product} locale={locale} />
+              <FeaturedProductCard key={product.id} product={product} />
             ))}
           </div>
         </div>
@@ -228,24 +220,18 @@ function HomePageContent({
   );
 }
 
-function FeaturedProductCard({
-  product,
-  locale,
-}: {
-  product: StoreProduct;
-  locale: Locale;
-}) {
+function FeaturedProductCard({ product }: { product: StoreProduct }) {
   const firstVariant = product.variants[0];
   const totalStock = product.variants.reduce((s, v) => s + v.stockQty, 0);
 
   return (
     <ProductCard
       slug={product.slug}
-      title={product.title[locale]}
+      title={product.title}
       priceCents={product.priceCents}
       comparePriceCents={product.comparePriceCents}
       imageUrl={firstVariant?.imageUrls[0]}
-      imageAlt={product.title[locale]}
+      imageAlt={product.title}
       isNew={product.isNew}
       stockQty={totalStock}
     />

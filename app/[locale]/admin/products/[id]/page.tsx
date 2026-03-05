@@ -11,9 +11,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/toast";
 
 interface ProductData {
-  title: { he: string; en: string };
-  description: { he: string; en: string };
-  slug: { he: string; en: string };
+  title: string;
+  description: string;
+  slug: string;
   priceCents: number;
   comparePriceCents?: number;
   collectionIds: string[];
@@ -33,12 +33,11 @@ export default function AdminProductEditPage({ params }: Props) {
   const t = useTranslations("admin");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [tab, setTab] = useState<"he" | "en">("he");
 
   const [form, setForm] = useState<ProductData>({
-    title: { he: "", en: "" },
-    description: { he: "", en: "" },
-    slug: { he: "", en: "" },
+    title: "",
+    description: "",
+    slug: "",
     priceCents: 0,
     comparePriceCents: undefined,
     collectionIds: [],
@@ -66,16 +65,6 @@ export default function AdminProductEditPage({ params }: Props) {
 
   const updateField = (field: string, value: unknown) =>
     setForm((prev) => ({ ...prev, [field]: value }));
-
-  const updateLocaleField = (
-    field: "title" | "description" | "slug",
-    locale: "he" | "en",
-    value: string,
-  ) =>
-    setForm((prev) => ({
-      ...prev,
-      [field]: { ...prev[field], [locale]: value },
-    }));
 
   const handleSave = async () => {
     setSaving(true);
@@ -121,51 +110,34 @@ export default function AdminProductEditPage({ params }: Props) {
         </Button>
       </div>
 
-      {/* Language Tabs */}
-      <div className="border-stone/60 flex gap-0 border-b">
-        {(["he", "en"] as const).map((lang) => (
-          <button
-            key={lang}
-            onClick={() => setTab(lang)}
-            className={`px-5 py-3 text-[13px] font-medium transition-colors ${
-              tab === lang
-                ? "border-navy text-navy border-b-2"
-                : "text-charcoal/30 hover:text-charcoal/50"
-            }`}
-          >
-            {lang === "he" ? t("hebrew") : t("english")}
-          </button>
-        ))}
-      </div>
-
       <div className="mt-8 flex max-w-2xl flex-col gap-5">
         <div>
           <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-            {t("titleLabel")} ({tab === "he" ? t("hebrew") : t("english")})
+            {t("titleLabel")}
           </label>
           <Input
-            value={form.title[tab]}
-            onChange={(e) => updateLocaleField("title", tab, e.target.value)}
+            value={form.title}
+            onChange={(e) => updateField("title", e.target.value)}
           />
         </div>
 
         <div>
           <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-            {t("slugLabel")} ({tab})
+            {t("slugLabel")}
           </label>
           <Input
-            value={form.slug[tab]}
-            onChange={(e) => updateLocaleField("slug", tab, e.target.value)}
+            value={form.slug}
+            onChange={(e) => updateField("slug", e.target.value)}
           />
         </div>
 
         <div>
           <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-            {t("descriptionLabel")} ({tab === "he" ? t("hebrew") : t("english")})
+            {t("descriptionLabel")}
           </label>
           <Textarea
-            value={form.description[tab]}
-            onChange={(e) => updateLocaleField("description", tab, e.target.value)}
+            value={form.description}
+            onChange={(e) => updateField("description", e.target.value)}
             rows={4}
           />
         </div>

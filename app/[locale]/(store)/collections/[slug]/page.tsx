@@ -12,12 +12,12 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, slug } = await params;
+  const { slug } = await params;
   const collection = await getCollectionBySlug(slug);
   if (!collection) return {};
 
-  const title = collection.title[locale as "he" | "en"];
-  const description = collection.description[locale as "he" | "en"];
+  const title = collection.title;
+  const description = collection.description;
 
   return {
     title,

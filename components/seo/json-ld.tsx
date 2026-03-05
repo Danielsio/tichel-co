@@ -16,8 +16,7 @@ export function storeJsonLd() {
     "@context": "https://schema.org",
     "@type": "Store",
     name: "Tichel & Co.",
-    description:
-      "Luxury head coverings, tichels, and scarves for women who cover with intention.",
+    description: "כיסויי ראש יוקרתיים, טישלים וצעיפים לנשים שמכסות בכוונה.",
     url: "https://tichel.co",
     priceRange: "₪₪",
     address: {

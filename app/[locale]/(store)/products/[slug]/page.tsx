@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProductBySlug, getRelatedProducts } from "@/lib/firebase/admin-queries";
+import {
+  getProductBySlug,
+  getRelatedProducts,
+  getCollectionById,
+} from "@/lib/firebase/admin-queries";
 import { ProductPageClient } from "./product-client";
 
 type Props = {
@@ -8,12 +12,12 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, slug } = await params;
+  const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) return {};
 
-  const title = product.title[locale as "he" | "en"];
-  const description = product.description[locale as "he" | "en"];
+  const title = product.title;
+  const description = product.description;
 
   return {
     title,
@@ -42,7 +46,19 @@ export default async function ProductPage({ params }: Props) {
     notFound();
   }
 
-  const related = await getRelatedProducts(product);
+  const firstCollectionId = product.collectionIds[0];
+  const [related, firstCollection] = await Promise.all([
+    getRelatedProducts(product),
+    firstCollectionId ? getCollectionById(firstCollectionId) : null,
+  ]);
 
-  return <ProductPageClient product={product} relatedProducts={related} />;
+  const collectionTitle = firstCollection?.title;
+
+  return (
+    <ProductPageClient
+      product={product}
+      relatedProducts={related}
+      collectionTitle={collectionTitle}
+    />
+  );
 }

@@ -27,9 +27,9 @@ function toStoreProduct(
 ): StoreProduct {
   return {
     id,
-    slug: data.slug?.en ?? id,
-    title: data.title,
-    description: data.description,
+    slug: data.slug ?? id,
+    title: data.title ?? "",
+    description: data.description ?? "",
     priceCents: data.priceCents,
     comparePriceCents: data.comparePriceCents ?? undefined,
     collectionIds: data.collectionIds ?? [],
@@ -45,9 +45,9 @@ function toStoreCollection(
 ): StoreCollection {
   return {
     id,
-    slug: data.slug?.en ?? id,
-    title: data.title,
-    description: data.description,
+    slug: data.slug ?? id,
+    title: data.title ?? "",
+    description: data.description ?? "",
     imageUrl: data.imageUrl,
     displayOrder: data.displayOrder ?? 0,
   };
@@ -71,7 +71,7 @@ export async function getCollectionBySlug(
   const db = getAdminDb();
   const snap = await db
     .collection("collections")
-    .where("slug.en", "==", slug)
+    .where("slug", "==", slug)
     .limit(1)
     .get();
   if (snap.empty) return null;
@@ -118,15 +118,21 @@ export async function getProductsByCollection(
 export async function getProductBySlug(slug: string): Promise<StoreProduct | null> {
   if (!isAdminConfigured()) return null;
   const db = getAdminDb();
-  const snap = await db
-    .collection("products")
-    .where("slug.en", "==", slug)
-    .limit(1)
-    .get();
+  const snap = await db.collection("products").where("slug", "==", slug).limit(1).get();
   if (snap.empty) return null;
   const doc = snap.docs[0]!;
   const variants = await fetchVariants(doc.id);
   return toStoreProduct(doc.id, doc.data(), variants);
+}
+
+export async function getCollectionById(
+  collectionId: string,
+): Promise<StoreCollection | null> {
+  if (!isAdminConfigured()) return null;
+  const db = getAdminDb();
+  const doc = await db.collection("collections").doc(collectionId).get();
+  if (!doc.exists) return null;
+  return toStoreCollection(doc.id, doc.data()!);
 }
 
 export async function getProductById(productId: string): Promise<StoreProduct | null> {

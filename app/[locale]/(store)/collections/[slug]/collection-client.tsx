@@ -1,13 +1,13 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/i18n/navigation";
 import { ProductCard } from "@/components/product/product-card";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import type { Locale, StoreProduct, StoreCollection } from "@/types";
+import type { StoreProduct, StoreCollection } from "@/types";
 
 type SortOption = "newest" | "price-low" | "price-high";
 
@@ -20,7 +20,6 @@ export function CollectionPageClient({
   products: StoreProduct[];
   allCollections: StoreCollection[];
 }) {
-  const locale = useLocale() as Locale;
   const t = useTranslations("filter");
   const tCol = useTranslations("collection");
   const tNav = useTranslations("nav");
@@ -32,16 +31,16 @@ export function CollectionPageClient({
 
   const fabrics = useMemo(() => {
     const set = new Set<string>();
-    products.forEach((p) => p.variants.forEach((v) => set.add(v.fabric[locale])));
+    products.forEach((p) => p.variants.forEach((v) => set.add(v.fabric)));
     return Array.from(set);
-  }, [products, locale]);
+  }, [products]);
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
     if (selectedFabrics.length > 0) {
       result = result.filter((p) =>
-        p.variants.some((v) => selectedFabrics.includes(v.fabric[locale])),
+        p.variants.some((v) => selectedFabrics.includes(v.fabric)),
       );
     }
 
@@ -58,7 +57,7 @@ export function CollectionPageClient({
     }
 
     return result;
-  }, [products, sortBy, selectedFabrics, locale]);
+  }, [products, sortBy, selectedFabrics]);
 
   const toggleFabric = (fabric: string) => {
     setSelectedFabrics((prev) =>
@@ -75,7 +74,7 @@ export function CollectionPageClient({
 
   const breadcrumbItems = [
     { label: tNav("collections"), href: "/collections/signature-collection" },
-    { label: collection.title[locale] },
+    { label: collection.title },
   ];
 
   return (
@@ -94,10 +93,10 @@ export function CollectionPageClient({
             className="[&_a]:text-ivory/50 [&_a]:hover:text-ivory/80 [&_span]:text-ivory/50 [&_svg]:text-ivory/30 mb-6"
           />
           <h1 className="font-display text-ivory text-3xl font-semibold text-balance md:text-4xl lg:text-5xl">
-            {collection.title[locale]}
+            {collection.title}
           </h1>
           <p className="text-ivory/50 mt-3 max-w-2xl text-[14px] leading-relaxed">
-            {collection.description[locale]}
+            {collection.description}
           </p>
         </div>
       </section>
@@ -176,7 +175,7 @@ export function CollectionPageClient({
                           : "text-charcoal/50 hover:text-navy"
                       }`}
                     >
-                      {col.title[locale]}
+                      {col.title}
                     </Link>
                   ))}
                 </div>
@@ -215,11 +214,7 @@ export function CollectionPageClient({
             ) : (
               <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:gap-x-6">
                 {filteredProducts.map((product) => (
-                  <CollectionProductCard
-                    key={product.id}
-                    product={product}
-                    locale={locale}
-                  />
+                  <CollectionProductCard key={product.id} product={product} />
                 ))}
               </div>
             )}
@@ -230,24 +225,18 @@ export function CollectionPageClient({
   );
 }
 
-function CollectionProductCard({
-  product,
-  locale,
-}: {
-  product: StoreProduct;
-  locale: Locale;
-}) {
+function CollectionProductCard({ product }: { product: StoreProduct }) {
   const firstVariant = product.variants[0];
   const totalStock = product.variants.reduce((s, v) => s + v.stockQty, 0);
 
   return (
     <ProductCard
       slug={product.slug}
-      title={product.title[locale]}
+      title={product.title}
       priceCents={product.priceCents}
       comparePriceCents={product.comparePriceCents}
       imageUrl={firstVariant?.imageUrls[0]}
-      imageAlt={product.title[locale]}
+      imageAlt={product.title}
       isNew={product.isNew}
       stockQty={totalStock}
     />

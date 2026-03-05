@@ -42,7 +42,10 @@ function init(): Firestore {
     }
   }
 
-  return getFirestore();
+  const app = getApps()[0]!;
+  const db = getFirestore(app, "default");
+  db.settings({ preferRest: true });
+  return db;
 }
 
 const now = Timestamp.now();
@@ -50,60 +53,45 @@ const now = Timestamp.now();
 const collections = [
   {
     id: "signature-collection",
-    slug: { he: "signature-collection", en: "signature-collection" },
-    title: { he: "הקולקציה החתימתית", en: "Signature Collection" },
-    description: {
-      he: "הפריטים המובחרים שלנו — עיצובים קלאסיים מבדים יוקרתיים",
-      en: "Our finest pieces — classic designs in luxurious fabrics",
-    },
+    slug: "signature-collection",
+    title: "הקולקציה החתימתית",
+    description: "הפריטים המובחרים שלנו — עיצובים קלאסיים מבדים יוקרתיים",
     imageUrl: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&q=80",
     displayOrder: 1,
     publishedAt: now,
   },
   {
     id: "silk-dreams",
-    slug: { he: "silk-dreams", en: "silk-dreams" },
-    title: { he: "חלומות משי", en: "Silk Dreams" },
-    description: {
-      he: "טישלים ממשי טהור — רכות, אלגנטיות ונוחות לאורך כל היום",
-      en: "Pure silk tichels — soft, elegant, and comfortable all day long",
-    },
+    slug: "silk-dreams",
+    title: "חלומות משי",
+    description: "טישלים ממשי טהור — רכות, אלגנטיות ונוחות לאורך כל היום",
     imageUrl: "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
     displayOrder: 2,
     publishedAt: now,
   },
   {
     id: "everyday-elegance",
-    slug: { he: "everyday-elegance", en: "everyday-elegance" },
-    title: { he: "אלגנטיות יומיומית", en: "Everyday Elegance" },
-    description: {
-      he: "צעיפים נוחים ומעוצבים ליומיום — כי כל יום ראוי ליופי",
-      en: "Comfortable and stylish scarves for every day — because every day deserves beauty",
-    },
+    slug: "everyday-elegance",
+    title: "אלגנטיות יומיומית",
+    description: "צעיפים נוחים ומעוצבים ליומיום — כי כל יום ראוי ליופי",
     imageUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
     displayOrder: 3,
     publishedAt: now,
   },
   {
     id: "bridal",
-    slug: { he: "bridal", en: "bridal" },
-    title: { he: "קולקציית כלות", en: "Bridal Collection" },
-    description: {
-      he: "כיסויי ראש לכלות — עיצובים מרהיבים ליום המיוחד",
-      en: "Bridal head coverings — stunning designs for your special day",
-    },
+    slug: "bridal",
+    title: "קולקציית כלות",
+    description: "כיסויי ראש לכלות — עיצובים מרהיבים ליום המיוחד",
     imageUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
     displayOrder: 4,
     publishedAt: now,
   },
   {
     id: "accessories",
-    slug: { he: "accessories", en: "accessories" },
-    title: { he: "אביזרים", en: "Accessories" },
-    description: {
-      he: "סיכות, קשתות ופרטים קטנים שמשלימים את המראה",
-      en: "Pins, headbands, and details that complete the look",
-    },
+    slug: "accessories",
+    title: "אביזרים",
+    description: "סיכות, קשתות ופרטים קטנים שמשלימים את המראה",
     imageUrl: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
     displayOrder: 5,
     publishedAt: now,
@@ -113,17 +101,17 @@ const collections = [
 interface VariantSeed {
   id: string;
   sku: string;
-  color: { he: string; en: string };
-  fabric: { he: string; en: string };
+  color: string;
+  fabric: string;
   stockQty: number;
   imageUrls: string[];
 }
 
 interface ProductSeed {
   id: string;
-  slug: { he: string; en: string };
-  title: { he: string; en: string };
-  description: { he: string; en: string };
+  slug: string;
+  title: string;
+  description: string;
   priceCents: number;
   comparePriceCents?: number;
   collectionIds: string[];
@@ -138,12 +126,10 @@ interface ProductSeed {
 const products: ProductSeed[] = [
   {
     id: "prod-001",
-    slug: { he: "ivory-silk-square-tichel", en: "ivory-silk-square-tichel" },
-    title: { he: "טישל משי מרובע — שנהב", en: "Ivory Silk Square Tichel" },
-    description: {
-      he: "טישל מרובע ממשי טהור בגוון שנהב עדין. הבד הרך והמפנק מתאים לכל עונות השנה ומעניק מראה אלגנטי ומכובד. ניתן לקשור במגוון סגנונות.",
-      en: "A square tichel made from pure silk in a delicate ivory shade. The soft, luxurious fabric suits all seasons and offers an elegant, dignified look.",
-    },
+    slug: "ivory-silk-square-tichel",
+    title: "טישל משי מרובע — שנהב",
+    description:
+      "טישל מרובע ממשי טהור בגוון שנהב עדין. הבד הרך והמפנק מתאים לכל עונות השנה ומעניק מראה אלגנטי ומכובד. ניתן לקשור במגוון סגנונות.",
     priceCents: 28900,
     collectionIds: ["signature-collection", "silk-dreams"],
     skuBase: "SILK-SQ",
@@ -155,8 +141,8 @@ const products: ProductSeed[] = [
       {
         id: "var-001-ivory",
         sku: "SILK-SQ-IVR-OS",
-        color: { he: "שנהב", en: "Ivory" },
-        fabric: { he: "משי", en: "Silk" },
+        color: "שנהב",
+        fabric: "משי",
         stockQty: 15,
         imageUrls: [
           "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&q=80",
@@ -166,8 +152,8 @@ const products: ProductSeed[] = [
       {
         id: "var-001-blush",
         sku: "SILK-SQ-BLS-OS",
-        color: { he: "ורוד עתיק", en: "Blush" },
-        fabric: { he: "משי", en: "Silk" },
+        color: "ורוד עתיק",
+        fabric: "משי",
         stockQty: 8,
         imageUrls: [
           "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
@@ -177,15 +163,10 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-002",
-    slug: { he: "navy-velvet-pre-tied", en: "navy-velvet-pre-tied" },
-    title: {
-      he: "טישל קטיפה קשור מראש — כחול כהה",
-      en: "Navy Velvet Pre-Tied Tichel",
-    },
-    description: {
-      he: "טישל קטיפה קשור מראש בגוון כחול כהה עמוק. עשיר ומפואר, מתאים במיוחד לשבת ולאירועים.",
-      en: "A pre-tied velvet tichel in deep navy. Rich and opulent, perfect for Shabbat and events.",
-    },
+    slug: "navy-velvet-pre-tied",
+    title: "טישל קטיפה קשור מראש — כחול כהה",
+    description:
+      "טישל קטיפה קשור מראש בגוון כחול כהה עמוק. עשיר ומפואר, מתאים במיוחד לשבת ולאירועים.",
     priceCents: 34900,
     collectionIds: ["signature-collection"],
     skuBase: "VLV-PT",
@@ -197,8 +178,8 @@ const products: ProductSeed[] = [
       {
         id: "var-002-navy",
         sku: "VLV-PT-NVY-OS",
-        color: { he: "כחול כהה", en: "Navy" },
-        fabric: { he: "קטיפה", en: "Velvet" },
+        color: "כחול כהה",
+        fabric: "קטיפה",
         stockQty: 12,
         imageUrls: [
           "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
@@ -209,12 +190,9 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-003",
-    slug: { he: "cashmere-wrap-stone", en: "cashmere-wrap-stone" },
-    title: { he: "עטיפת קשמיר — אבן", en: "Cashmere Wrap — Stone" },
-    description: {
-      he: "עטיפת ראש מקשמיר רך במיוחד בגוון אבן חמים. תחושה מפנקת ומראה יוקרתי.",
-      en: "An incredibly soft cashmere head wrap in warm stone. Luxurious feel and elegant look.",
-    },
+    slug: "cashmere-wrap-stone",
+    title: "עטיפת קשמיר — אבן",
+    description: "עטיפת ראש מקשמיר רך במיוחד בגוון אבן חמים. תחושה מפנקת ומראה יוקרתי.",
     priceCents: 45900,
     comparePriceCents: 52900,
     collectionIds: ["signature-collection", "everyday-elegance"],
@@ -227,8 +205,8 @@ const products: ProductSeed[] = [
       {
         id: "var-003-stone",
         sku: "CSH-WR-STN-OS",
-        color: { he: "אבן", en: "Stone" },
-        fabric: { he: "קשמיר", en: "Cashmere" },
+        color: "אבן",
+        fabric: "קשמיר",
         stockQty: 6,
         imageUrls: [
           "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
@@ -237,8 +215,8 @@ const products: ProductSeed[] = [
       {
         id: "var-003-camel",
         sku: "CSH-WR-CML-OS",
-        color: { he: "קאמל", en: "Camel" },
-        fabric: { he: "קשמיר", en: "Cashmere" },
+        color: "קאמל",
+        fabric: "קשמיר",
         stockQty: 4,
         imageUrls: [
           "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
@@ -248,18 +226,9 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-004",
-    slug: {
-      he: "linen-everyday-scarf-sage",
-      en: "linen-everyday-scarf-sage",
-    },
-    title: {
-      he: "צעיף פשתן יומיומי — ירוק מרווה",
-      en: "Linen Everyday Scarf — Sage",
-    },
-    description: {
-      he: "צעיף פשתן קל ונושם בגוון ירוק מרווה. אידיאלי ליומיום ולקיץ.",
-      en: "A light and breathable linen scarf in sage green. Ideal for everyday wear and summer.",
-    },
+    slug: "linen-everyday-scarf-sage",
+    title: "צעיף פשתן יומיומי — ירוק מרווה",
+    description: "צעיף פשתן קל ונושם בגוון ירוק מרווה. אידיאלי ליומיום ולקיץ.",
     priceCents: 18900,
     collectionIds: ["everyday-elegance"],
     skuBase: "LIN-SC",
@@ -271,8 +240,8 @@ const products: ProductSeed[] = [
       {
         id: "var-004-sage",
         sku: "LIN-SC-SAG-OS",
-        color: { he: "ירוק מרווה", en: "Sage" },
-        fabric: { he: "פשתן", en: "Linen" },
+        color: "ירוק מרווה",
+        fabric: "פשתן",
         stockQty: 22,
         imageUrls: [
           "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
@@ -281,8 +250,8 @@ const products: ProductSeed[] = [
       {
         id: "var-004-dusty-rose",
         sku: "LIN-SC-DSR-OS",
-        color: { he: "ורוד אבקתי", en: "Dusty Rose" },
-        fabric: { he: "פשתן", en: "Linen" },
+        color: "ורוד אבקתי",
+        fabric: "פשתן",
         stockQty: 18,
         imageUrls: [
           "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
@@ -292,15 +261,10 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-005",
-    slug: { he: "bridal-lace-tichel", en: "bridal-lace-tichel" },
-    title: {
-      he: "טישל תחרה לכלות — לבן",
-      en: "Bridal Lace Tichel — White",
-    },
-    description: {
-      he: "טישל תחרה עדין ומרהיב ליום החתונה. עיטורי תחרה צרפתית על בד משי לבן. כולל סיכת פנינה מתנה.",
-      en: "A delicate and stunning lace tichel for your wedding day. French lace details on white silk. Includes a complimentary pearl pin.",
-    },
+    slug: "bridal-lace-tichel",
+    title: "טישל תחרה לכלות — לבן",
+    description:
+      "טישל תחרה עדין ומרהיב ליום החתונה. עיטורי תחרה צרפתית על בד משי לבן. כולל סיכת פנינה מתנה.",
     priceCents: 69900,
     collectionIds: ["bridal"],
     skuBase: "BRD-LC",
@@ -312,8 +276,8 @@ const products: ProductSeed[] = [
       {
         id: "var-005-white",
         sku: "BRD-LC-WHT-OS",
-        color: { he: "לבן", en: "White" },
-        fabric: { he: "תחרה על משי", en: "Lace on Silk" },
+        color: "לבן",
+        fabric: "תחרה על משי",
         stockQty: 5,
         imageUrls: [
           "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
@@ -323,8 +287,8 @@ const products: ProductSeed[] = [
       {
         id: "var-005-champagne",
         sku: "BRD-LC-CHP-OS",
-        color: { he: "שמפניה", en: "Champagne" },
-        fabric: { he: "תחרה על משי", en: "Lace on Silk" },
+        color: "שמפניה",
+        fabric: "תחרה על משי",
         stockQty: 3,
         imageUrls: [
           "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",
@@ -334,18 +298,9 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-006",
-    slug: {
-      he: "cotton-turban-terracotta",
-      en: "cotton-turban-terracotta",
-    },
-    title: {
-      he: "טורבן כותנה — טרקוטה",
-      en: "Cotton Turban — Terracotta",
-    },
-    description: {
-      he: "טורבן כותנה אורגנית בגוון טרקוטה חם. קל להרכבה ונוח לשימוש יומיומי.",
-      en: "An organic cotton turban in warm terracotta. Easy to wear and comfortable for daily use.",
-    },
+    slug: "cotton-turban-terracotta",
+    title: "טורבן כותנה — טרקוטה",
+    description: "טורבן כותנה אורגנית בגוון טרקוטה חם. קל להרכבה ונוח לשימוש יומיומי.",
     priceCents: 14900,
     collectionIds: ["everyday-elegance"],
     skuBase: "CTN-TB",
@@ -357,8 +312,8 @@ const products: ProductSeed[] = [
       {
         id: "var-006-terracotta",
         sku: "CTN-TB-TRC-OS",
-        color: { he: "טרקוטה", en: "Terracotta" },
-        fabric: { he: "כותנה", en: "Cotton" },
+        color: "טרקוטה",
+        fabric: "כותנה",
         stockQty: 30,
         imageUrls: [
           "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
@@ -367,8 +322,8 @@ const products: ProductSeed[] = [
       {
         id: "var-006-charcoal",
         sku: "CTN-TB-CHR-OS",
-        color: { he: "פחם", en: "Charcoal" },
-        fabric: { he: "כותנה", en: "Cotton" },
+        color: "פחם",
+        fabric: "כותנה",
         stockQty: 25,
         imageUrls: [
           "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
@@ -377,8 +332,8 @@ const products: ProductSeed[] = [
       {
         id: "var-006-white",
         sku: "CTN-TB-WHT-OS",
-        color: { he: "לבן", en: "White" },
-        fabric: { he: "כותנה", en: "Cotton" },
+        color: "לבן",
+        fabric: "כותנה",
         stockQty: 20,
         imageUrls: [
           "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
@@ -388,12 +343,10 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-007",
-    slug: { he: "silk-headband-gold", en: "silk-headband-gold" },
-    title: { he: "סרט ראש משי — זהב", en: "Silk Headband — Gold" },
-    description: {
-      he: "סרט ראש ממשי בגוון זהב מוברש. משתלב בצורה מושלמת עם כל כיסוי ראש ומוסיף נגיעה של יוקרה.",
-      en: "A silk headband in brushed gold. Perfectly complements any head covering and adds a touch of luxury.",
-    },
+    slug: "silk-headband-gold",
+    title: "סרט ראש משי — זהב",
+    description:
+      "סרט ראש ממשי בגוון זהב מוברש. משתלב בצורה מושלמת עם כל כיסוי ראש ומוסיף נגיעה של יוקרה.",
     priceCents: 8900,
     collectionIds: ["accessories"],
     skuBase: "SLK-HB",
@@ -405,8 +358,8 @@ const products: ProductSeed[] = [
       {
         id: "var-007-gold",
         sku: "SLK-HB-GLD-OS",
-        color: { he: "זהב", en: "Gold" },
-        fabric: { he: "משי", en: "Silk" },
+        color: "זהב",
+        fabric: "משי",
         stockQty: 40,
         imageUrls: [
           "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
@@ -415,8 +368,8 @@ const products: ProductSeed[] = [
       {
         id: "var-007-silver",
         sku: "SLK-HB-SLV-OS",
-        color: { he: "כסף", en: "Silver" },
-        fabric: { he: "משי", en: "Silk" },
+        color: "כסף",
+        fabric: "משי",
         stockQty: 35,
         imageUrls: [
           "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
@@ -426,18 +379,9 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-008",
-    slug: {
-      he: "shabbat-velvet-wrap-burgundy",
-      en: "shabbat-velvet-wrap-burgundy",
-    },
-    title: {
-      he: "עטיפת קטיפה לשבת — בורדו",
-      en: "Shabbat Velvet Wrap — Burgundy",
-    },
-    description: {
-      he: "עטיפת קטיפה עשירה בגוון בורדו עמוק. מושלמת לשבת ולחגים.",
-      en: "A rich velvet wrap in deep burgundy. Perfect for Shabbat and holidays.",
-    },
+    slug: "shabbat-velvet-wrap-burgundy",
+    title: "עטיפת קטיפה לשבת — בורדו",
+    description: "עטיפת קטיפה עשירה בגוון בורדו עמוק. מושלמת לשבת ולחגים.",
     priceCents: 38900,
     collectionIds: ["signature-collection"],
     skuBase: "VLV-WR",
@@ -449,8 +393,8 @@ const products: ProductSeed[] = [
       {
         id: "var-008-burgundy",
         sku: "VLV-WR-BRG-OS",
-        color: { he: "בורדו", en: "Burgundy" },
-        fabric: { he: "קטיפה", en: "Velvet" },
+        color: "בורדו",
+        fabric: "קטיפה",
         stockQty: 9,
         imageUrls: [
           "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&q=80",
@@ -460,8 +404,8 @@ const products: ProductSeed[] = [
       {
         id: "var-008-forest",
         sku: "VLV-WR-FOR-OS",
-        color: { he: "ירוק יער", en: "Forest Green" },
-        fabric: { he: "קטיפה", en: "Velvet" },
+        color: "ירוק יער",
+        fabric: "קטיפה",
         stockQty: 7,
         imageUrls: [
           "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&q=80",
@@ -471,12 +415,10 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-009",
-    slug: { he: "pearl-tichel-pin-set", en: "pearl-tichel-pin-set" },
-    title: { he: "סט סיכות פנינה לטישל", en: "Pearl Tichel Pin Set" },
-    description: {
-      he: "סט של 6 סיכות פנינה אלגנטיות. מאבטחות את הכיסוי ומוסיפות נגיעה קלאסית. מגיעות בקופסת מתנה מעוצבת.",
-      en: "A set of 6 elegant pearl pins. Secure your covering while adding a classic touch. Arrives in a designed gift box.",
-    },
+    slug: "pearl-tichel-pin-set",
+    title: "סט סיכות פנינה לטישל",
+    description:
+      "סט של 6 סיכות פנינה אלגנטיות. מאבטחות את הכיסוי ומוסיפות נגיעה קלאסית. מגיעות בקופסת מתנה מעוצבת.",
     priceCents: 12900,
     comparePriceCents: 15900,
     collectionIds: ["accessories"],
@@ -489,8 +431,8 @@ const products: ProductSeed[] = [
       {
         id: "var-009-pearl",
         sku: "ACC-PIN-PRL-6",
-        color: { he: "פנינה", en: "Pearl" },
-        fabric: { he: "מתכת מצופה זהב", en: "Gold-plated metal" },
+        color: "פנינה",
+        fabric: "מתכת מצופה זהב",
         stockQty: 50,
         imageUrls: [
           "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
@@ -500,18 +442,10 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-010",
-    slug: {
-      he: "modal-jersey-tichel-black",
-      en: "modal-jersey-tichel-black",
-    },
-    title: {
-      he: "טישל ג׳רזי מודל — שחור",
-      en: "Modal Jersey Tichel — Black",
-    },
-    description: {
-      he: "טישל ג׳רזי מודל רך במיוחד בגוון שחור קלאסי. הבד הנושם מתאים לכל יום ולכל מזג אוויר.",
-      en: "An ultra-soft modal jersey tichel in classic black. The breathable fabric suits every day and weather.",
-    },
+    slug: "modal-jersey-tichel-black",
+    title: "טישל ג׳רזי מודל — שחור",
+    description:
+      "טישל ג׳רזי מודל רך במיוחד בגוון שחור קלאסי. הבד הנושם מתאים לכל יום ולכל מזג אוויר.",
     priceCents: 16900,
     collectionIds: ["everyday-elegance"],
     skuBase: "MOD-JR",
@@ -523,8 +457,8 @@ const products: ProductSeed[] = [
       {
         id: "var-010-black",
         sku: "MOD-JR-BLK-OS",
-        color: { he: "שחור", en: "Black" },
-        fabric: { he: "ג׳רזי מודל", en: "Modal Jersey" },
+        color: "שחור",
+        fabric: "ג׳רזי מודל",
         stockQty: 35,
         imageUrls: [
           "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
@@ -533,8 +467,8 @@ const products: ProductSeed[] = [
       {
         id: "var-010-navy",
         sku: "MOD-JR-NVY-OS",
-        color: { he: "כחול כהה", en: "Navy" },
-        fabric: { he: "ג׳רזי מודל", en: "Modal Jersey" },
+        color: "כחול כהה",
+        fabric: "ג׳רזי מודל",
         stockQty: 28,
         imageUrls: [
           "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
@@ -544,18 +478,10 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-011",
-    slug: {
-      he: "silk-chiffon-wrap-dusty-pink",
-      en: "silk-chiffon-wrap-dusty-pink",
-    },
-    title: {
-      he: "עטיפת שיפון משי — ורוד אבקתי",
-      en: "Silk Chiffon Wrap — Dusty Pink",
-    },
-    description: {
-      he: "עטיפת שיפון משי קלילה בגוון ורוד אבקתי רומנטי. מושלמת לאירועים ולימי קיץ.",
-      en: "A light silk chiffon wrap in romantic dusty pink. Perfect for events and summer days.",
-    },
+    slug: "silk-chiffon-wrap-dusty-pink",
+    title: "עטיפת שיפון משי — ורוד אבקתי",
+    description:
+      "עטיפת שיפון משי קלילה בגוון ורוד אבקתי רומנטי. מושלמת לאירועים ולימי קיץ.",
     priceCents: 32900,
     collectionIds: ["silk-dreams"],
     skuBase: "SLK-CH",
@@ -567,8 +493,8 @@ const products: ProductSeed[] = [
       {
         id: "var-011-dusty-pink",
         sku: "SLK-CH-DPK-OS",
-        color: { he: "ורוד אבקתי", en: "Dusty Pink" },
-        fabric: { he: "שיפון משי", en: "Silk Chiffon" },
+        color: "ורוד אבקתי",
+        fabric: "שיפון משי",
         stockQty: 10,
         imageUrls: [
           "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
@@ -578,8 +504,8 @@ const products: ProductSeed[] = [
       {
         id: "var-011-lavender",
         sku: "SLK-CH-LVN-OS",
-        color: { he: "לבנדר", en: "Lavender" },
-        fabric: { he: "שיפון משי", en: "Silk Chiffon" },
+        color: "לבנדר",
+        fabric: "שיפון משי",
         stockQty: 0,
         imageUrls: [
           "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
@@ -589,18 +515,10 @@ const products: ProductSeed[] = [
   },
   {
     id: "prod-012",
-    slug: {
-      he: "bridal-crystal-headpiece",
-      en: "bridal-crystal-headpiece",
-    },
-    title: {
-      he: "קישוט קריסטל לכלות",
-      en: "Bridal Crystal Headpiece",
-    },
-    description: {
-      he: "קישוט ראש עדין עם קריסטלים של סברובסקי. מתלבש על הטישל ומעניק נגיעה מנצנצת ומרהיבה ליום החתונה.",
-      en: "A delicate headpiece with Swarovski crystals. Sits on top of the tichel and adds a sparkling, stunning touch to your wedding day.",
-    },
+    slug: "bridal-crystal-headpiece",
+    title: "קישוט קריסטל לכלות",
+    description:
+      "קישוט ראש עדין עם קריסטלים של סברובסקי. מתלבש על הטישל ומעניק נגיעה מנצנצת ומרהיבה ליום החתונה.",
     priceCents: 24900,
     collectionIds: ["bridal", "accessories"],
     skuBase: "BRD-CR",
@@ -612,8 +530,8 @@ const products: ProductSeed[] = [
       {
         id: "var-012-crystal",
         sku: "BRD-CR-CLR-OS",
-        color: { he: "קריסטל שקוף", en: "Clear Crystal" },
-        fabric: { he: "קריסטל סברובסקי", en: "Swarovski Crystal" },
+        color: "קריסטל שקוף",
+        fabric: "קריסטל סברובסקי",
         stockQty: 8,
         imageUrls: [
           "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80",

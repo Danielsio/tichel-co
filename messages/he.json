@@ -63,7 +63,8 @@
     "shipping": "משלוח והחזרות",
     "shippingText": "משלוח חינם בהזמנות מעל ₪250. החזרות חינם תוך 30 יום.",
     "selectColor": "בחרי צבע",
-    "backToCollection": "חזרה לקולקציה"
+    "backToCollection": "חזרה לקולקציה",
+    "oneSize": "מידה אחת"
   },
   "cart": {
     "title": "סל קניות",
@@ -181,10 +182,12 @@
     "breadcrumb": "ניווט פירורי לחם",
     "pagination": "ניווט עמודים",
     "previousPage": "עמוד קודם",
-    "nextPage": "עמוד הבא"
+    "nextPage": "עמוד הבא",
+    "mainNav": "ניווט ראשי"
   },
   "locale": {
     "switchTo": "English",
+    "switchLabel": "החלף לאנגלית",
     "current": "עברית"
   },
   "filter": {
