@@ -47,7 +47,7 @@ export function useCartSync() {
     return () => unsubscribe();
   }, [user, addItem]);
 
-  // Write local cart to Firestore on change
+  // Write local cart to Firestore on change (debounced)
   useEffect(() => {
     if (!user || !initialSynced.current) return;
     if (skipNextWrite.current) {
@@ -55,9 +55,13 @@ export function useCartSync() {
       return;
     }
 
-    const cartRef = doc(db, "cart", user.uid);
-    setDoc(cartRef, { items, updatedAt: serverTimestamp() }).catch(() => {
-      // Silently fail — local cart still works
-    });
+    const timer = setTimeout(() => {
+      const cartRef = doc(db, "cart", user.uid);
+      setDoc(cartRef, { items, updatedAt: serverTimestamp() }).catch(() => {
+        // Silently fail — local cart still works
+      });
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, [user, items]);
 }
