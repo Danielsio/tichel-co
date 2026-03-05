@@ -183,7 +183,10 @@
     "pagination": "ניווט עמודים",
     "previousPage": "עמוד קודם",
     "nextPage": "עמוד הבא",
-    "mainNav": "ניווט ראשי"
+    "mainNav": "ניווט ראשי",
+    "errorTitle": "משהו השתבש",
+    "errorMessage": "מצטערים, אירעה שגיאה. אנא נסו שוב.",
+    "tryAgain": "נסה שוב"
   },
   "locale": {
     "switchTo": "English",

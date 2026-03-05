@@ -183,7 +183,10 @@
     "pagination": "Page navigation",
     "previousPage": "Previous page",
     "nextPage": "Next page",
-    "mainNav": "Main navigation"
+    "mainNav": "Main navigation",
+    "errorTitle": "Something went wrong",
+    "errorMessage": "Sorry, an error occurred. Please try again.",
+    "tryAgain": "Try again"
   },
   "locale": {
     "switchTo": "עברית",

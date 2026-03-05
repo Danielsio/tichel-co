@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
             "default-src 'self'",
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com",
             "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' data: blob: https://firebasestorage.googleapis.com",
+            "img-src 'self' data: blob: https://firebasestorage.googleapis.com https://images.unsplash.com",
             "font-src 'self'",
             "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://api.stripe.com https://*.firebaseapp.com",
             "frame-src https://js.stripe.com https://*.firebaseapp.com",
