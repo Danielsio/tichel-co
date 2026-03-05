@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getAdminDb } from "@/lib/firebase/admin";
+import { sendOrderConfirmation } from "@/lib/email/send-order-confirmation";
 
 function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error("STRIPE_SECRET_KEY is not set");
+  return new Stripe(key);
 }
 
 export async function POST(req: NextRequest) {
@@ -15,14 +18,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing signature" }, { status: 400 });
   }
 
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 500 });
+  }
+
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET!,
-    );
+    event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Webhook signature verification failed:", message);
@@ -42,11 +46,45 @@ export async function POST(req: NextRequest) {
 
       if (!ordersSnap.empty) {
         const orderDoc = ordersSnap.docs[0]!;
+        const orderData = orderDoc.data();
+
+        if (orderData.status === "payment_confirmed") {
+          break;
+        }
+
         await orderDoc.ref.update({
           status: "payment_confirmed",
+          stripeEventId: event.id,
           updatedAt: new Date(),
         });
         console.warn(`Order ${orderDoc.id} → payment_confirmed`);
+
+        const recipientEmail = orderData.guestEmail || orderData.userId;
+        if (
+          recipientEmail &&
+          typeof recipientEmail === "string" &&
+          recipientEmail.includes("@")
+        ) {
+          await sendOrderConfirmation({
+            to: recipientEmail,
+            orderId: orderDoc.id,
+            items: (orderData.items ?? []).map(
+              (item: {
+                productTitle?: string;
+                quantity: number;
+                unitPriceCents: number;
+              }) => ({
+                name: item.productTitle ?? "Item",
+                quantity: item.quantity,
+                priceCents: item.unitPriceCents,
+              }),
+            ),
+            subtotalCents: orderData.subtotalCents ?? 0,
+            shippingCents: orderData.shippingCents ?? 0,
+            taxCents: orderData.taxCents ?? 0,
+            totalCents: orderData.totalCents ?? 0,
+          });
+        }
       }
       break;
     }
@@ -61,8 +99,15 @@ export async function POST(req: NextRequest) {
 
       if (!ordersSnap.empty) {
         const orderDoc = ordersSnap.docs[0]!;
+        const orderData = orderDoc.data();
+
+        if (orderData.status === "cancelled") {
+          break;
+        }
+
         await orderDoc.ref.update({
           status: "cancelled",
+          stripeEventId: event.id,
           updatedAt: new Date(),
         });
         console.warn(`Order ${orderDoc.id} → cancelled (payment failed)`);
