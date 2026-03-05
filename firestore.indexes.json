@@ -1,11 +1,27 @@
 {
   "indexes": [
     {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "publishedAt", "order": "ASCENDING" },
+        { "fieldPath": "displayOrder", "order": "ASCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "products",
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "publishedAt", "order": "ASCENDING" },
-        { "fieldPath": "isFeatured", "order": "DESCENDING" }
+        { "fieldPath": "isFeatured", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "products",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "publishedAt", "order": "ASCENDING" },
+        { "fieldPath": "collectionIds", "arrayConfig": "CONTAINS" }
       ]
     },
     {
