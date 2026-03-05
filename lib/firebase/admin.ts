@@ -28,6 +28,11 @@ function getAdminApp(): App {
     return _app;
   }
 
+  if (process.env.FIRESTORE_EMULATOR_HOST) {
+    _app = initializeApp({ projectId: "demo-tichel-co" });
+    return _app;
+  }
+
   _app = initializeApp({ credential: getCredential() });
   return _app;
 }

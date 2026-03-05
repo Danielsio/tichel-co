@@ -7,9 +7,9 @@ const mockSetDoc = vi.fn();
 const mockDoc = vi.fn(() => "mock-cart-ref");
 
 vi.mock("firebase/firestore", () => ({
-  doc: (...args: unknown[]) => mockDoc(...args),
-  onSnapshot: (...args: unknown[]) => mockOnSnapshot(...args),
-  setDoc: (...args: unknown[]) => mockSetDoc(...args),
+  doc: () => mockDoc(),
+  onSnapshot: () => mockOnSnapshot(),
+  setDoc: () => mockSetDoc(),
   serverTimestamp: () => "server-ts",
   getFirestore: () => "mock-db",
   connectFirestoreEmulator: vi.fn(),

@@ -91,7 +91,7 @@ describe("Drawer", () => {
       </Drawer>,
     );
 
-    const _first = screen.getByLabelText("Close");
+    screen.getByLabelText("Close");
     const last = screen.getByText("Last");
 
     last.focus();
