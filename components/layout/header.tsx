@@ -35,7 +35,7 @@ export function Header() {
       {/* Announcement Bar */}
       <div className="gradient-luxury hidden lg:block">
         <div className="mx-auto max-w-7xl px-6">
-          <p className="text-ivory/70 py-2.5 text-center text-[11px] tracking-[0.15em] uppercase">
+          <p className="text-ivory/50 py-2.5 text-center text-[11px] tracking-[0.15em] uppercase">
             {tTopBar("message")}
           </p>
         </div>

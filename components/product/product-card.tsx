@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils/cn";
@@ -19,7 +20,7 @@ export interface ProductCardProps {
   className?: string;
 }
 
-export function ProductCard({
+export const ProductCard = memo(function ProductCard({
   slug,
   title,
   priceCents,
@@ -67,7 +68,7 @@ export function ProductCard({
 
         {/* Quick add — slides up */}
         {!isOutOfStock && (
-          <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-400 ease-out group-hover:translate-y-0">
+          <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0">
             <div className="bg-navy text-ivory py-3.5 text-center text-[11px] font-medium tracking-[0.15em] uppercase">
               {t("quickAdd")}
             </div>
@@ -98,4 +99,4 @@ export function ProductCard({
       </div>
     </Link>
   );
-}
+});

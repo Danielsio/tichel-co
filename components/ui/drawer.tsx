@@ -109,7 +109,7 @@ export function Drawer({
       <div
         ref={overlayRef}
         className={cn(
-          "bg-navy/40 fixed inset-0 backdrop-blur-[2px] transition-opacity duration-400",
+          "bg-navy/40 fixed inset-0 backdrop-blur-[2px] transition-opacity duration-300",
           isOpen ? "opacity-100" : "opacity-0",
         )}
         style={{ transitionTimingFunction: "var(--ease-drawer)" }}
@@ -120,7 +120,7 @@ export function Drawer({
       <div
         ref={panelRef}
         className={cn(
-          "z-10 bg-white shadow-2xl transition-transform duration-400",
+          "z-10 bg-white shadow-2xl transition-transform duration-300",
           styles.panel,
           isOpen ? styles.open : styles.closed,
           className,

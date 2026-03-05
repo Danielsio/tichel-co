@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/lib/i18n/navigation";
 import { useCartStore, type CartItem } from "@/stores/cart-store";
@@ -8,7 +9,7 @@ import { Drawer } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils/format-price";
 
-function CartItemRow({ item }: { item: CartItem }) {
+const CartItemRow = memo(function CartItemRow({ item }: { item: CartItem }) {
   const t = useTranslations("cart");
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const removeItem = useCartStore((s) => s.removeItem);
@@ -74,7 +75,7 @@ function CartItemRow({ item }: { item: CartItem }) {
       </div>
     </div>
   );
-}
+});
 
 export function CartDrawer() {
   const t = useTranslations("cart");

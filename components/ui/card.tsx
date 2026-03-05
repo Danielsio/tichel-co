@@ -21,7 +21,7 @@ export function Card({
   hover = false,
 }: CardProps) {
   return (
-    <div
+    <article
       className={cn(
         "border-stone rounded-sm border bg-white",
         paddingStyles[padding],
@@ -30,7 +30,7 @@ export function Card({
       )}
     >
       {children}
-    </div>
+    </article>
   );
 }
 

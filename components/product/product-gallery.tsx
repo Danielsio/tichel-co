@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils/cn";
 
@@ -12,6 +12,26 @@ interface ProductImage {
 export function ProductGallery({ images }: { images: ProductImage[] }) {
   const t = useTranslations("product");
   const [activeIndex, setActiveIndex] = useState(0);
+  const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (images.length <= 1) return;
+      const next = (idx: number) => {
+        const nextIdx = Math.max(0, Math.min(idx, images.length - 1));
+        setActiveIndex(nextIdx);
+        thumbnailRefs.current[nextIdx]?.focus();
+      };
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        next(activeIndex + 1);
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        next(activeIndex - 1);
+      }
+    },
+    [images.length, activeIndex],
+  );
 
   if (images.length === 0) {
     return (
@@ -41,10 +61,20 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
 
       {/* Thumbnails */}
       {images.length > 1 && (
-        <div className="flex gap-2 md:w-[72px] md:flex-col">
+        <div
+          className="flex gap-2 md:w-[72px] md:flex-col"
+          role="tablist"
+          onKeyDown={handleKeyDown}
+        >
           {images.map((image, idx) => (
             <button
               key={idx}
+              ref={(el) => {
+                thumbnailRefs.current[idx] = el;
+              }}
+              role="tab"
+              aria-selected={activeIndex === idx}
+              tabIndex={activeIndex === idx ? 0 : -1}
               onClick={() => setActiveIndex(idx)}
               className={cn(
                 "relative aspect-square w-16 shrink-0 cursor-pointer overflow-hidden transition-all duration-300 md:w-full",

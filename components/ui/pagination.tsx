@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils/cn";
 
@@ -18,6 +19,22 @@ export function Pagination({
 }: PaginationProps) {
   const t = useTranslations("common");
 
+  const handlePrev = useCallback(
+    () => onPageChange(currentPage - 1),
+    [currentPage, onPageChange],
+  );
+  const handleNext = useCallback(
+    () => onPageChange(currentPage + 1),
+    [currentPage, onPageChange],
+  );
+  const handlePageClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const page = Number((e.currentTarget as HTMLButtonElement).dataset.page);
+      onPageChange(page);
+    },
+    [onPageChange],
+  );
+
   if (totalPages <= 1) return null;
 
   const pages = getVisiblePages(currentPage, totalPages);
@@ -28,7 +45,7 @@ export function Pagination({
       className={cn("flex items-center justify-center gap-1", className)}
     >
       <button
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={handlePrev}
         disabled={currentPage <= 1}
         className="text-charcoal/60 hover:bg-stone flex h-10 w-10 cursor-pointer items-center justify-center rounded-sm transition-colors disabled:pointer-events-none disabled:opacity-30"
         aria-label={t("previousPage")}
@@ -58,7 +75,8 @@ export function Pagination({
         ) : (
           <button
             key={page}
-            onClick={() => onPageChange(page as number)}
+            data-page={page}
+            onClick={handlePageClick}
             className={cn(
               "flex h-10 w-10 cursor-pointer items-center justify-center rounded-sm text-sm font-medium transition-colors",
               currentPage === page
@@ -73,7 +91,7 @@ export function Pagination({
       )}
 
       <button
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={handleNext}
         disabled={currentPage >= totalPages}
         className="text-charcoal/60 hover:bg-stone flex h-10 w-10 cursor-pointer items-center justify-center rounded-sm transition-colors disabled:pointer-events-none disabled:opacity-30"
         aria-label={t("nextPage")}

@@ -35,7 +35,7 @@ export function Footer() {
                 Tichel & Co.
               </span>
             </Link>
-            <p className="text-ivory/40 mt-5 text-[13px] leading-relaxed whitespace-pre-line">
+            <p className="text-ivory/50 mt-5 text-[13px] leading-relaxed whitespace-pre-line">
               {t("brand")}
             </p>
           </div>
@@ -98,7 +98,7 @@ export function Footer() {
             <h3 className="text-gold mb-5 text-[11px] font-semibold tracking-[0.2em] uppercase">
               {t("newsletter.title")}
             </h3>
-            <p className="text-ivory/40 mb-5 text-[13px] leading-relaxed">
+            <p className="text-ivory/50 mb-5 text-[13px] leading-relaxed">
               {t("newsletter.text")}
             </p>
             <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
@@ -119,10 +119,10 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="border-ivory/10 mt-16 flex flex-col items-center justify-between gap-4 border-t pt-10 md:flex-row">
-          <p className="text-ivory/25 text-[11px] tracking-wider">
+          <p className="text-ivory/30 text-[11px] tracking-wider">
             {t("rights", { year: new Date().getFullYear() })}
           </p>
-          <p className="font-display text-ivory/15 text-sm italic">{t("tagline")}</p>
+          <p className="font-display text-ivory/30 text-sm italic">{t("tagline")}</p>
         </div>
       </div>
     </footer>

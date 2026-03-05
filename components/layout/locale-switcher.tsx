@@ -2,7 +2,6 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/lib/i18n/navigation";
-import type { Locale } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils/cn";
 
 export interface LocaleSwitcherProps {
@@ -11,7 +10,7 @@ export interface LocaleSwitcherProps {
 
 export function LocaleSwitcher({ className }: LocaleSwitcherProps) {
   const t = useTranslations("locale");
-  const locale = useLocale() as Locale;
+  const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -52,7 +51,7 @@ export function LocaleSwitcher({ className }: LocaleSwitcherProps) {
 }
 
 export function LocaleSwitcherMinimal({ className }: LocaleSwitcherProps) {
-  const locale = useLocale() as Locale;
+  const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
 

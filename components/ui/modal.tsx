@@ -29,7 +29,17 @@ export function Modal({
   closeLabel = "Close",
 }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<Element | null>(null);
+
+  const handleOverlayClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (contentRef.current && !contentRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    },
+    [onClose],
+  );
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -62,12 +72,11 @@ export function Modal({
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      onClick={(e) => {
-        if (e.target === overlayRef.current) onClose();
-      }}
+      onClick={handleOverlayClick}
     >
       <div className="bg-navy/40 fixed inset-0 backdrop-blur-[2px] transition-opacity duration-300" />
       <div
+        ref={contentRef}
         className={cn(
           "relative z-10 w-full bg-white p-8 shadow-2xl",
           "animate-scale-in",
