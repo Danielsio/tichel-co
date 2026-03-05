@@ -29,7 +29,14 @@ function getAdminApp(): App {
   }
 
   if (process.env.FIRESTORE_EMULATOR_HOST) {
-    _app = initializeApp({ projectId: "demo-tichel-co" });
+    const emulatorCredential = {
+      getAccessToken: () =>
+        Promise.resolve({ access_token: "emulator", expires_in: 3600 }),
+    };
+    _app = initializeApp({
+      projectId: "demo-tichel-co",
+      credential: emulatorCredential,
+    });
     return _app;
   }
 
