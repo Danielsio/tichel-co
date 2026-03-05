@@ -7,31 +7,43 @@ export async function createEmulatorUser(
   email: string,
   password: string,
 ): Promise<string> {
-  const res = await fetch(
+  const signUpRes = await fetch(
     `${AUTH_EMULATOR}/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-key`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        password,
-        returnSecureToken: true,
-      }),
+      body: JSON.stringify({ email, password, returnSecureToken: true }),
     },
   );
-  const data = await res.json();
-  if (!res.ok) throw new Error(`Failed to create user: ${JSON.stringify(data)}`);
-  return data.localId;
+  const signUpData = await signUpRes.json();
+
+  if (signUpRes.ok) return signUpData.localId;
+
+  if (signUpData?.error?.message === "EMAIL_EXISTS") {
+    const signInRes = await fetch(
+      `${AUTH_EMULATOR}/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=demo-key`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, returnSecureToken: true }),
+      },
+    );
+    const signInData = await signInRes.json();
+    if (!signInRes.ok)
+      throw new Error(`Failed to sign in existing user: ${JSON.stringify(signInData)}`);
+    return signInData.localId;
+  }
+
+  throw new Error(`Failed to create user: ${JSON.stringify(signUpData)}`);
 }
 
 export async function setAdminClaim(uid: string): Promise<void> {
   const res = await fetch(
-    `${AUTH_EMULATOR}/identitytoolkit.googleapis.com/v1/accounts:update`,
+    `${AUTH_EMULATOR}/emulator/v1/projects/${PROJECT_ID}/accounts/${uid}`,
     {
-      method: "POST",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        localId: uid,
         customAttributes: JSON.stringify({ role: "admin" }),
       }),
     },

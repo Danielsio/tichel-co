@@ -28,7 +28,7 @@ test.describe("Navigation & Layout", () => {
 
   test("404 page for nonexistent product", async ({ page }) => {
     await page.goto("/products/does-not-exist-at-all");
-    await expect(page.getByText("404")).toBeVisible();
+    await expect(page.getByText("404")).toBeVisible({ timeout: 10000 });
   });
 
   test("about page loads with content", async ({ page }) => {

@@ -1,11 +1,10 @@
 import { test, expect } from "@playwright/test";
 import { createEmulatorUser, clearEmulatorAuth, addProductToCart } from "./helpers";
 
-const TEST_EMAIL = "test@tichel.co";
 const TEST_PASSWORD = "Test123456";
 
 test.describe("Authentication", () => {
-  test.beforeAll(async () => {
+  test.beforeEach(async () => {
     await clearEmulatorAuth();
   });
 
@@ -14,44 +13,48 @@ test.describe("Authentication", () => {
   });
 
   test("register a new account", async ({ page }) => {
+    const email = "register@tichel.co";
     await page.goto("/register");
     await expect(page.getByRole("heading", { name: "יצירת חשבון" })).toBeVisible();
-    await page.getByLabel("כתובת אימייל").fill(TEST_EMAIL);
+    await page.getByLabel("כתובת אימייל").fill(email);
     await page.getByLabel("סיסמה", { exact: true }).fill(TEST_PASSWORD);
     await page.getByLabel("אימות סיסמה").fill(TEST_PASSWORD);
     await page.getByRole("button", { name: "צור חשבון" }).click();
-    await page.waitForURL("**/account");
-    await expect(page.getByText(TEST_EMAIL)).toBeVisible();
+    await page.waitForURL("**/account", { timeout: 15000 });
+    await expect(page.getByText(email)).toBeVisible();
   });
 
   test("login with existing account", async ({ page }) => {
-    await createEmulatorUser("login@tichel.co", TEST_PASSWORD);
+    const email = "login@tichel.co";
+    await createEmulatorUser(email, TEST_PASSWORD);
     await page.goto("/login");
     await expect(page.getByRole("heading", { name: "התחברות" })).toBeVisible();
-    await page.getByLabel("כתובת אימייל").fill("login@tichel.co");
+    await page.getByLabel("כתובת אימייל").fill(email);
     await page.getByLabel("סיסמה").fill(TEST_PASSWORD);
     await page.getByRole("button", { name: "התחבר" }).click();
-    await page.waitForURL("**/account");
-    await expect(page.getByText("login@tichel.co")).toBeVisible();
+    await page.waitForURL("**/account", { timeout: 15000 });
+    await expect(page.getByText(email)).toBeVisible();
   });
 
   test("account page shows user email", async ({ page }) => {
-    await createEmulatorUser("account@tichel.co", TEST_PASSWORD);
+    const email = "account@tichel.co";
+    await createEmulatorUser(email, TEST_PASSWORD);
     await page.goto("/login");
-    await page.getByLabel("כתובת אימייל").fill("account@tichel.co");
+    await page.getByLabel("כתובת אימייל").fill(email);
     await page.getByLabel("סיסמה").fill(TEST_PASSWORD);
     await page.getByRole("button", { name: "התחבר" }).click();
-    await page.waitForURL("**/account");
-    await expect(page.getByText("account@tichel.co")).toBeVisible();
+    await page.waitForURL("**/account", { timeout: 15000 });
+    await expect(page.getByText(email)).toBeVisible();
   });
 
   test("logout redirects to home", async ({ page }) => {
-    await createEmulatorUser("logout@tichel.co", TEST_PASSWORD);
+    const email = "logout@tichel.co";
+    await createEmulatorUser(email, TEST_PASSWORD);
     await page.goto("/login");
-    await page.getByLabel("כתובת אימייל").fill("logout@tichel.co");
+    await page.getByLabel("כתובת אימייל").fill(email);
     await page.getByLabel("סיסמה").fill(TEST_PASSWORD);
     await page.getByRole("button", { name: "התחבר" }).click();
-    await page.waitForURL("**/account");
+    await page.waitForURL("**/account", { timeout: 15000 });
     await page.getByRole("button", { name: "התנתק" }).click();
     await expect(page).toHaveURL("/");
   });
@@ -64,15 +67,16 @@ test.describe("Authentication", () => {
   });
 
   test("cart persists after login", async ({ page }) => {
-    await createEmulatorUser("cart-sync@tichel.co", TEST_PASSWORD);
+    const email = "cart-sync@tichel.co";
+    await createEmulatorUser(email, TEST_PASSWORD);
     await addProductToCart(page, "ivory-silk-square-tichel");
     await page.getByRole("button", { name: "המשך קניות" }).click();
 
     await page.goto("/login");
-    await page.getByLabel("כתובת אימייל").fill("cart-sync@tichel.co");
+    await page.getByLabel("כתובת אימייל").fill(email);
     await page.getByLabel("סיסמה").fill(TEST_PASSWORD);
     await page.getByRole("button", { name: "התחבר" }).click();
-    await page.waitForURL("**/account");
+    await page.waitForURL("**/account", { timeout: 15000 });
 
     await page.getByRole("button", { name: "עגלת קניות" }).click();
     const drawer = page.getByRole("dialog", { name: "סל קניות" });

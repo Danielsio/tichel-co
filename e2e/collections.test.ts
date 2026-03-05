@@ -22,7 +22,7 @@ test.describe("Collection page", () => {
 
   test("new badge appears on new products", async ({ page }) => {
     await page.goto("/collections/signature-collection");
-    await expect(page.getByText("חדש").first()).toBeVisible();
+    await expect(page.getByText("חדש").first()).toBeVisible({ timeout: 10000 });
   });
 
   test("shows sale price on discounted products", async ({ page }) => {

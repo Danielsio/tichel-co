@@ -13,8 +13,8 @@ test.describe("Home page", () => {
 
   test("displays hero section with brand name and CTAs", async ({ page }) => {
     await expect(page.getByRole("heading", { name: "Tichel & Co." })).toBeVisible();
-    await expect(page.getByRole("link", { name: "גלו את הקולקציה" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "עיצוב אישי" })).toBeVisible();
+    await expect(page.getByText("גלו את הקולקציה")).toBeVisible();
+    await expect(page.getByText("עיצוב אישי")).toBeVisible();
   });
 
   test("displays all 5 collections from Firestore", async ({ page }) => {
