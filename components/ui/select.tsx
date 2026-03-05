@@ -19,6 +19,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, label, error, options, placeholder, id, children, ...props }, ref) => {
     const selectId = id || label?.toLowerCase().replace(/\s+/g, "-");
+    const errorId = error && selectId ? `${selectId}-error` : undefined;
 
     return (
       <div className="flex flex-col gap-1.5">
@@ -40,6 +41,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               className,
             )}
             aria-invalid={!!error}
+            aria-describedby={errorId}
             {...props}
           >
             {placeholder && (
@@ -73,7 +75,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </svg>
         </div>
         {error && (
-          <p className="text-error text-[12px]" role="alert">
+          <p id={errorId} className="text-error text-[12px]" role="alert">
             {error}
           </p>
         )}
