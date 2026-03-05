@@ -1,6 +1,15 @@
 import { getAdminDb } from "./admin";
 import type { StoreProduct, StoreVariant, StoreCollection } from "@/types";
 
+function isAdminConfigured(): boolean {
+  try {
+    getAdminDb();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function fetchVariants(productId: string): Promise<StoreVariant[]> {
   const db = getAdminDb();
   const snap = await db
@@ -45,6 +54,7 @@ function toStoreCollection(
 }
 
 export async function getPublishedCollections(): Promise<StoreCollection[]> {
+  if (!isAdminConfigured()) return [];
   const db = getAdminDb();
   const snap = await db
     .collection("collections")
@@ -57,6 +67,7 @@ export async function getPublishedCollections(): Promise<StoreCollection[]> {
 export async function getCollectionBySlug(
   slug: string,
 ): Promise<StoreCollection | null> {
+  if (!isAdminConfigured()) return null;
   const db = getAdminDb();
   const snap = await db
     .collection("collections")
@@ -69,6 +80,7 @@ export async function getCollectionBySlug(
 }
 
 export async function getFeaturedProducts(): Promise<StoreProduct[]> {
+  if (!isAdminConfigured()) return [];
   const db = getAdminDb();
   const snap = await db
     .collection("products")
@@ -87,6 +99,7 @@ export async function getFeaturedProducts(): Promise<StoreProduct[]> {
 export async function getProductsByCollection(
   collectionId: string,
 ): Promise<StoreProduct[]> {
+  if (!isAdminConfigured()) return [];
   const db = getAdminDb();
   const snap = await db
     .collection("products")
@@ -103,6 +116,7 @@ export async function getProductsByCollection(
 }
 
 export async function getProductBySlug(slug: string): Promise<StoreProduct | null> {
+  if (!isAdminConfigured()) return null;
   const db = getAdminDb();
   const snap = await db
     .collection("products")
@@ -116,6 +130,7 @@ export async function getProductBySlug(slug: string): Promise<StoreProduct | nul
 }
 
 export async function getProductById(productId: string): Promise<StoreProduct | null> {
+  if (!isAdminConfigured()) return null;
   const db = getAdminDb();
   const doc = await db.collection("products").doc(productId).get();
   if (!doc.exists) return null;
@@ -124,6 +139,7 @@ export async function getProductById(productId: string): Promise<StoreProduct | 
 }
 
 export async function getPublishedProducts(): Promise<StoreProduct[]> {
+  if (!isAdminConfigured()) return [];
   const db = getAdminDb();
   const snap = await db.collection("products").where("publishedAt", "!=", null).get();
   const products = await Promise.all(
@@ -153,6 +169,7 @@ export async function lookupProductPrice(
   productId: string,
   variantId: string,
 ): Promise<number | null> {
+  if (!isAdminConfigured()) return null;
   const db = getAdminDb();
   const productDoc = await db.collection("products").doc(productId).get();
   if (!productDoc.exists) return null;
