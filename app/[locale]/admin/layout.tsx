@@ -1,4 +1,9 @@
+"use client";
+
+import { type ReactNode } from "react";
 import { Link } from "@/lib/i18n/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "@/lib/i18n/navigation";
 
 const adminNavLinks = [
   { href: "/admin" as const, label: "לוח בקרה", icon: "◈" },
@@ -10,11 +15,43 @@ const adminNavLinks = [
 export default function AdminLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
+  const { loading, isAdmin, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  if (loading) {
+    return (
+      <div className="bg-ivory flex min-h-screen items-center justify-center">
+        <div className="bg-stone/40 h-8 w-8 animate-pulse rounded-full" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    router.replace("/login");
+    return null;
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="bg-ivory flex min-h-screen flex-col items-center justify-center gap-4 p-8">
+        <div className="text-navy font-display text-2xl font-semibold">אין הרשאה</div>
+        <p className="text-charcoal/50 text-sm">
+          לחשבון זה אין הרשאות ניהול. פנה למנהל המערכת.
+        </p>
+        <Link
+          href="/"
+          className="text-gold hover:text-gold-light mt-2 text-sm font-medium transition-colors"
+        >
+          ← חזרה לחנות
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar — appears on the right in RTL */}
       <aside className="gradient-luxury order-last w-64 shrink-0">
         <div className="p-6 pt-8">
           <Link href="/" className="inline-block">
@@ -48,7 +85,6 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="bg-ivory flex-1 p-8 lg:p-10">{children}</main>
     </div>
   );
