@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t("hero.title"),
     description: t("hero.subtitle"),
     alternates: {
-      languages: { he: "/he", en: "/en" },
+      languages: { he: "/", en: "/en" },
     },
   };
 }

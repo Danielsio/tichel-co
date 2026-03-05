@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t("title"),
     description: t("p1"),
-    alternates: { languages: { he: "/he/about", en: "/en/about" } },
+    alternates: { languages: { he: "/about", en: "/en/about" } },
   };
 }
 

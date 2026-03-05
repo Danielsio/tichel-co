@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "מדריך טיפול בכיסויי ראש — משי, קטיפה, קשמיר"
         : "Care guide for head coverings — silk, velvet, cashmere",
     alternates: {
-      languages: { he: "/he/care-guide", en: "/en/care-guide" },
+      languages: { he: "/care-guide", en: "/en/care-guide" },
     },
   };
 }

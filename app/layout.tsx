@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   alternates: {
     languages: {
-      he: "/he",
+      he: "/",
       en: "/en",
     },
   },

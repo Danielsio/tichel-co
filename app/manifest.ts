@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Tichel & Co.",
     short_name: "Tichel",
     description: "Luxury modest head coverings — designed in Israel",
-    start_url: "/he",
+    start_url: "/",
     display: "standalone",
     background_color: "#FAF8F5",
     theme_color: "#1B2A4A",

@@ -42,7 +42,7 @@ export function productJsonLd(product: {
     name: product.name,
     description: product.description,
     image: product.image,
-    url: `https://tichel.co/he/products/${product.slug}`,
+    url: `https://tichel.co/products/${product.slug}`,
     offers: {
       "@type": "Offer",
       price: (product.price / 100).toFixed(2),

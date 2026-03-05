@@ -89,6 +89,28 @@ export function RangeSlider({
     return () => window.removeEventListener("pointerup", handleGlobalUp);
   }, [activeThumb]);
 
+  const handleKeyDown = useCallback(
+    (thumb: "min" | "max") => (e: React.KeyboardEvent) => {
+      const delta =
+        e.key === "ArrowRight" || e.key === "ArrowUp"
+          ? step
+          : e.key === "ArrowLeft" || e.key === "ArrowDown"
+            ? -step
+            : 0;
+      if (!delta) return;
+      e.preventDefault();
+
+      if (thumb === "min") {
+        const next = clamp(value[0] + delta, min, value[1] - step);
+        onChange([next, value[1]]);
+      } else {
+        const next = clamp(value[1] + delta, value[0] + step, max);
+        onChange([value[0], next]);
+      }
+    },
+    [value, onChange, min, max, step],
+  );
+
   return (
     <div className={cn("flex flex-col gap-3", className)}>
       <div className="text-charcoal/60 flex items-center justify-between text-xs">
@@ -127,6 +149,7 @@ export function RangeSlider({
           )}
           style={{ insetInlineStart: `${minPercent}%`, marginInlineStart: "-10px" }}
           onPointerDown={handlePointerDown("min")}
+          onKeyDown={handleKeyDown("min")}
         />
 
         <button
@@ -144,6 +167,7 @@ export function RangeSlider({
           )}
           style={{ insetInlineStart: `${maxPercent}%`, marginInlineStart: "-10px" }}
           onPointerDown={handlePointerDown("max")}
+          onKeyDown={handleKeyDown("max")}
         />
       </div>
     </div>
