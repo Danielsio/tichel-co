@@ -7,36 +7,37 @@ import { ProductCard } from "@/components/product/product-card";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import {
-  getProductsByCollection,
-  MOCK_COLLECTIONS,
-  type MockProduct,
-  type MockCollection,
-} from "@/lib/mock-data";
-import type { Locale } from "@/types";
+import type { Locale, StoreProduct, StoreCollection } from "@/types";
 
 type SortOption = "newest" | "price-low" | "price-high";
 
-export function CollectionPageClient({ collection }: { collection: MockCollection }) {
+export function CollectionPageClient({
+  collection,
+  products,
+  allCollections,
+}: {
+  collection: StoreCollection;
+  products: StoreProduct[];
+  allCollections: StoreCollection[];
+}) {
   const locale = useLocale() as Locale;
   const t = useTranslations("filter");
   const tCol = useTranslations("collection");
   const tNav = useTranslations("nav");
 
   const slug = collection.slug;
-  const allProducts = useMemo(() => getProductsByCollection(slug), [slug]);
 
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [selectedFabrics, setSelectedFabrics] = useState<string[]>([]);
 
   const fabrics = useMemo(() => {
     const set = new Set<string>();
-    allProducts.forEach((p) => p.variants.forEach((v) => set.add(v.fabric[locale])));
+    products.forEach((p) => p.variants.forEach((v) => set.add(v.fabric[locale])));
     return Array.from(set);
-  }, [allProducts, locale]);
+  }, [products, locale]);
 
   const filteredProducts = useMemo(() => {
-    let result = [...allProducts];
+    let result = [...products];
 
     if (selectedFabrics.length > 0) {
       result = result.filter((p) =>
@@ -57,7 +58,7 @@ export function CollectionPageClient({ collection }: { collection: MockCollectio
     }
 
     return result;
-  }, [allProducts, sortBy, selectedFabrics, locale]);
+  }, [products, sortBy, selectedFabrics, locale]);
 
   const toggleFabric = (fabric: string) => {
     setSelectedFabrics((prev) =>
@@ -90,12 +91,12 @@ export function CollectionPageClient({ collection }: { collection: MockCollectio
         <div className="relative mx-auto max-w-7xl px-4 lg:px-6">
           <Breadcrumb
             items={breadcrumbItems}
-            className="[&_a]:text-ivory/40 [&_a]:hover:text-ivory/70 [&_span]:text-ivory/60 [&_svg]:text-ivory/20 mb-6"
+            className="[&_a]:text-ivory/50 [&_a]:hover:text-ivory/80 [&_span]:text-ivory/50 [&_svg]:text-ivory/30 mb-6"
           />
           <h1 className="font-display text-ivory text-3xl font-semibold text-balance md:text-4xl lg:text-5xl">
             {collection.title[locale]}
           </h1>
-          <p className="text-ivory/40 mt-3 max-w-2xl text-[14px] leading-relaxed">
+          <p className="text-ivory/50 mt-3 max-w-2xl text-[14px] leading-relaxed">
             {collection.description[locale]}
           </p>
         </div>
@@ -103,7 +104,7 @@ export function CollectionPageClient({ collection }: { collection: MockCollectio
 
       <div className="mx-auto max-w-7xl px-4 py-10 lg:px-6">
         <div className="border-stone/60 mb-8 flex flex-wrap items-center justify-between gap-4 border-b pb-5">
-          <p className="text-charcoal/40 text-[13px]">
+          <p className="text-charcoal/50 text-[13px]">
             {tCol("productsCount", { count: filteredProducts.length })}
           </p>
           <div className="flex items-center gap-3">
@@ -153,7 +154,7 @@ export function CollectionPageClient({ collection }: { collection: MockCollectio
                           onChange={() => toggleFabric(fabric)}
                           className="accent-navy h-3.5 w-3.5"
                         />
-                        <span className="text-charcoal/70">{fabric}</span>
+                        <span className="text-charcoal/80">{fabric}</span>
                       </label>
                     ))}
                   </div>
@@ -165,14 +166,14 @@ export function CollectionPageClient({ collection }: { collection: MockCollectio
                   {tNav("collections")}
                 </h4>
                 <div className="flex flex-col gap-1">
-                  {MOCK_COLLECTIONS.map((col) => (
+                  {allCollections.map((col) => (
                     <Link
                       key={col.id}
                       href={`/collections/${col.slug}` as never}
                       className={`py-1.5 text-[13px] transition-colors duration-200 ${
                         col.slug === slug
                           ? "text-navy font-medium"
-                          : "text-charcoal/40 hover:text-navy"
+                          : "text-charcoal/50 hover:text-navy"
                       }`}
                     >
                       {col.title[locale]}
@@ -201,7 +202,7 @@ export function CollectionPageClient({ collection }: { collection: MockCollectio
 
             {filteredProducts.length === 0 ? (
               <div className="py-24 text-center">
-                <p className="text-charcoal/40 text-[13px]">{t("noResults")}</p>
+                <p className="text-charcoal/50 text-[13px]">{t("noResults")}</p>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -233,7 +234,7 @@ function CollectionProductCard({
   product,
   locale,
 }: {
-  product: MockProduct;
+  product: StoreProduct;
   locale: Locale;
 }) {
   const firstVariant = product.variants[0];

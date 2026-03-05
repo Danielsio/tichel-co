@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { z } from "zod";
 import { getAdminDb } from "@/lib/firebase/admin";
-import { MOCK_PRODUCTS } from "@/lib/mock-data";
+import { lookupProductPrice } from "@/lib/firebase/admin-queries";
 
 const checkoutItemSchema = z.object({
   variantId: z.string().min(1),
@@ -33,14 +33,6 @@ const checkoutSchema = z.object({
     .optional(),
 });
 
-function lookupPrice(productId: string, variantId: string): number | null {
-  const product = MOCK_PRODUCTS.find((p) => p.id === productId);
-  if (!product) return null;
-  const variant = product.variants.find((v) => v.id === variantId);
-  if (!variant) return null;
-  return product.priceCents;
-}
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -68,15 +60,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const verifiedItems = items.map((item) => {
-      const serverPrice = lookupPrice(item.productId, item.variantId);
-      if (serverPrice === null) {
-        throw new Error(
-          `Product/variant not found: ${item.productId}/${item.variantId}`,
-        );
-      }
-      return { ...item, unitPriceCents: serverPrice };
-    });
+    const verifiedItems = await Promise.all(
+      items.map(async (item) => {
+        const serverPrice = await lookupProductPrice(item.productId, item.variantId);
+        if (serverPrice === null) {
+          throw new Error(
+            `Product/variant not found: ${item.productId}/${item.variantId}`,
+          );
+        }
+        return { ...item, unitPriceCents: serverPrice };
+      }),
+    );
 
     const totalCents = verifiedItems.reduce(
       (sum, item) => sum + item.unitPriceCents * item.quantity,

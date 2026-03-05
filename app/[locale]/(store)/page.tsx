@@ -5,11 +5,10 @@ import { Link } from "@/lib/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/product-card";
 import {
-  MOCK_COLLECTIONS,
   getFeaturedProducts,
-  type MockProduct,
-} from "@/lib/mock-data";
-import type { Locale } from "@/types";
+  getPublishedCollections,
+} from "@/lib/firebase/admin-queries";
+import type { Locale, StoreProduct, StoreCollection } from "@/types";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -31,12 +30,30 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <HomePageContent locale={locale as Locale} />;
+  const [featured, collections] = await Promise.all([
+    getFeaturedProducts(),
+    getPublishedCollections(),
+  ]);
+
+  return (
+    <HomePageContent
+      locale={locale as Locale}
+      featured={featured}
+      collections={collections}
+    />
+  );
 }
 
-function HomePageContent({ locale }: { locale: Locale }) {
+function HomePageContent({
+  locale,
+  featured,
+  collections,
+}: {
+  locale: Locale;
+  featured: StoreProduct[];
+  collections: StoreCollection[];
+}) {
   const t = useTranslations("home");
-  const featured = getFeaturedProducts();
 
   return (
     <>
@@ -85,7 +102,7 @@ function HomePageContent({ locale }: { locale: Locale }) {
         {/* Scroll indicator */}
         <div className="animate-fade-in absolute bottom-10 left-1/2 -translate-x-1/2 [animation-delay:800ms]">
           <div className="border-ivory/20 flex h-10 w-6 items-start justify-center rounded-full border p-1.5">
-            <div className="bg-ivory/40 h-2 w-1 animate-bounce rounded-full" />
+            <div className="bg-ivory/50 h-2 w-1 animate-bounce rounded-full" />
           </div>
         </div>
       </section>
@@ -101,7 +118,7 @@ function HomePageContent({ locale }: { locale: Locale }) {
           </h2>
         </div>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5 lg:gap-4">
-          {MOCK_COLLECTIONS.map((col, i) => (
+          {collections.map((col, i) => (
             <Link
               key={col.id}
               href={`/collections/${col.slug}` as never}
@@ -120,8 +137,8 @@ function HomePageContent({ locale }: { locale: Locale }) {
                   <h3 className="text-ivory font-display text-lg font-semibold lg:text-xl">
                     {col.title[locale]}
                   </h3>
-                  <span className="text-ivory/50 mt-1 block text-[11px] tracking-[0.15em] uppercase opacity-0 transition-all duration-400 group-hover:opacity-100">
-                    {locale === "he" ? "צפייה בקולקציה" : "View collection"}
+                  <span className="text-ivory/50 mt-1 block text-[11px] tracking-[0.15em] uppercase opacity-0 transition-all duration-300 group-hover:opacity-100">
+                    {t("collections.viewCollection")}
                   </span>
                 </div>
               </div>
@@ -172,7 +189,7 @@ function HomePageContent({ locale }: { locale: Locale }) {
           <h2 className="font-display text-ivory text-3xl leading-snug font-semibold text-balance md:text-4xl lg:text-5xl">
             {t("brand.title")}
           </h2>
-          <p className="text-ivory/40 mx-auto mt-8 max-w-xl text-base leading-relaxed">
+          <p className="text-ivory/50 mx-auto mt-8 max-w-xl text-base leading-relaxed">
             {t("brand.text")}
           </p>
           <Link href="/about" className="mt-10 inline-block">
@@ -192,7 +209,7 @@ function HomePageContent({ locale }: { locale: Locale }) {
           <div className="flex flex-col items-center gap-10 p-10 text-center md:flex-row md:p-16 md:text-start">
             <div className="flex-1">
               <p className="text-gold mb-3 text-[11px] font-semibold tracking-[0.3em] uppercase">
-                {locale === "he" ? "שירות אישי" : "Personal Service"}
+                {t("custom.tag")}
               </p>
               <h2 className="font-display text-navy text-2xl font-semibold md:text-3xl lg:text-4xl">
                 {t("custom.title")}
@@ -215,7 +232,7 @@ function FeaturedProductCard({
   product,
   locale,
 }: {
-  product: MockProduct;
+  product: StoreProduct;
   locale: Locale;
 }) {
   const firstVariant = product.variants[0];

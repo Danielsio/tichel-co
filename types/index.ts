@@ -53,14 +53,15 @@ export interface FirestoreProduct {
   collectionIds: string[];
   skuBase: string;
   isFeatured: boolean;
+  isNew: boolean;
   publishedAt: Timestamp | null;
   createdAt: Timestamp;
 }
 
 export interface FirestoreVariant {
   sku: string;
-  color: string;
-  fabric: string;
+  color: LocaleMap;
+  fabric: LocaleMap;
   size?: string;
   stockQty: number;
   imageUrls: string[];
@@ -73,6 +74,38 @@ export interface FirestoreCollection {
   imageUrl: string;
   displayOrder: number;
   publishedAt: Timestamp | null;
+}
+
+export interface StoreProduct {
+  id: string;
+  slug: string;
+  title: LocaleMap;
+  description: LocaleMap;
+  priceCents: number;
+  comparePriceCents?: number;
+  collectionIds: string[];
+  isFeatured: boolean;
+  isNew: boolean;
+  variants: StoreVariant[];
+}
+
+export interface StoreVariant {
+  id: string;
+  sku: string;
+  color: LocaleMap;
+  fabric: LocaleMap;
+  size?: string;
+  stockQty: number;
+  imageUrls: string[];
+}
+
+export interface StoreCollection {
+  id: string;
+  slug: string;
+  title: LocaleMap;
+  description: LocaleMap;
+  imageUrl: string;
+  displayOrder: number;
 }
 
 export interface FirestoreOrder {

@@ -2,8 +2,8 @@ import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/lib/i18n/navigation";
 import { Button } from "@/components/ui/button";
-import { MOCK_PRODUCTS } from "@/lib/mock-data";
-import type { Locale } from "@/types";
+import { getPublishedProducts } from "@/lib/firebase/admin-queries";
+import type { Locale, StoreProduct } from "@/types";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -45,10 +45,18 @@ export default async function LookbookPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <LookbookContent locale={locale as Locale} />;
+  const allProducts = await getPublishedProducts();
+
+  return <LookbookContent locale={locale as Locale} allProducts={allProducts} />;
 }
 
-function LookbookContent({ locale }: { locale: Locale }) {
+function LookbookContent({
+  locale,
+  allProducts,
+}: {
+  locale: Locale;
+  allProducts: StoreProduct[];
+}) {
   const t = useTranslations("lookbook");
 
   return (
@@ -70,8 +78,8 @@ function LookbookContent({ locale }: { locale: Locale }) {
         <div className="flex flex-col gap-20">
           {LOOKS.map((look, idx) => {
             const products = look.productIds
-              .map((id) => MOCK_PRODUCTS.find((p) => p.id === id))
-              .filter(Boolean);
+              .map((id) => allProducts.find((p) => p.id === id))
+              .filter(Boolean) as StoreProduct[];
             const isReversed = idx % 2 === 1;
 
             return (
@@ -103,7 +111,6 @@ function LookbookContent({ locale }: { locale: Locale }) {
                   {/* Products in this look */}
                   <div className="mt-8 flex flex-col gap-4">
                     {products.map((product) => {
-                      if (!product) return null;
                       const variant = product.variants[0];
                       return (
                         <Link
@@ -128,7 +135,7 @@ function LookbookContent({ locale }: { locale: Locale }) {
                               {variant?.fabric[locale]}
                             </p>
                           </div>
-                          <span className="text-charcoal/70 text-sm font-medium">
+                          <span className="text-charcoal/80 text-sm font-medium">
                             {new Intl.NumberFormat(
                               locale === "he" ? "he-IL" : "en-US",
                               {

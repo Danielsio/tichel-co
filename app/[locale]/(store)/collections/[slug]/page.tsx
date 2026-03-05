@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getCollectionBySlug } from "@/lib/mock-data";
+import {
+  getCollectionBySlug,
+  getProductsByCollection,
+  getPublishedCollections,
+} from "@/lib/firebase/admin-queries";
 import { CollectionPageClient } from "./collection-client";
 
 type Props = {
@@ -9,7 +13,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const collection = getCollectionBySlug(slug);
+  const collection = await getCollectionBySlug(slug);
   if (!collection) return {};
 
   const title = collection.title[locale as "he" | "en"];
@@ -34,11 +38,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CollectionPage({ params }: Props) {
   const { slug } = await params;
-  const collection = getCollectionBySlug(slug);
+  const collection = await getCollectionBySlug(slug);
 
   if (!collection) {
     notFound();
   }
 
-  return <CollectionPageClient collection={collection} />;
+  const [products, allCollections] = await Promise.all([
+    getProductsByCollection(collection.id),
+    getPublishedCollections(),
+  ]);
+
+  return (
+    <CollectionPageClient
+      collection={collection}
+      products={products}
+      allCollections={allCollections}
+    />
+  );
 }

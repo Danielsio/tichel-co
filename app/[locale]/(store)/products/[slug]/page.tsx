@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProductBySlug } from "@/lib/mock-data";
+import { getProductBySlug, getRelatedProducts } from "@/lib/firebase/admin-queries";
 import { ProductPageClient } from "./product-client";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return {};
 
   const title = product.title[locale as "he" | "en"];
@@ -36,11 +36,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
 
-  return <ProductPageClient product={product} />;
+  const related = await getRelatedProducts(product);
+
+  return <ProductPageClient product={product} relatedProducts={related} />;
 }

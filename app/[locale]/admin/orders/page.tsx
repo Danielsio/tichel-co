@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/lib/i18n/navigation";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
@@ -31,6 +32,7 @@ const STATUS_OPTIONS: OrderStatus[] = [
 ];
 
 export default function AdminOrdersPage() {
+  const t = useTranslations("admin");
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true);
@@ -52,15 +54,17 @@ export default function AdminOrdersPage() {
     <div>
       <div className="mb-10 flex items-center justify-between">
         <div>
-          <h1 className="font-display text-navy text-3xl font-semibold">הזמנות</h1>
-          <p className="text-charcoal/40 mt-1 text-[13px]">ניהול הזמנות לקוחות</p>
+          <h1 className="font-display text-navy text-3xl font-semibold">
+            {t("orders")}
+          </h1>
+          <p className="text-charcoal/50 mt-1 text-[13px]">{t("manageOrders")}</p>
         </div>
         <Select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
           className="w-48 text-[13px]"
         >
-          <option value="all">כל הסטטוסים</option>
+          <option value="all">{t("allStatuses")}</option>
           {STATUS_OPTIONS.map((s) => (
             <option key={s} value={s}>
               {s.replace(/_/g, " ")}
@@ -73,20 +77,20 @@ export default function AdminOrdersPage() {
         <table className="w-full text-[13px]">
           <thead>
             <tr className="border-stone/60 border-b">
-              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                הזמנה
+              <th className="text-charcoal/50 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("order")}
               </th>
-              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                סטטוס
+              <th className="text-charcoal/50 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("status")}
               </th>
-              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                פריטים
+              <th className="text-charcoal/50 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("items")}
               </th>
-              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                סה&quot;כ
+              <th className="text-charcoal/50 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("total")}
               </th>
-              <th className="text-charcoal/40 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                תאריך
+              <th className="text-charcoal/50 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("date")}
               </th>
             </tr>
           </thead>
@@ -94,13 +98,13 @@ export default function AdminOrdersPage() {
             {loading ? (
               <tr>
                 <td colSpan={5} className="text-charcoal/30 py-16 text-center">
-                  טוען...
+                  {t("loading")}
                 </td>
               </tr>
             ) : filtered.length === 0 ? (
               <tr>
                 <td colSpan={5} className="text-charcoal/30 py-16 text-center">
-                  לא נמצאו הזמנות
+                  {t("noOrders")}
                 </td>
               </tr>
             ) : (
@@ -111,7 +115,7 @@ export default function AdminOrdersPage() {
                 >
                   <td className="py-3.5 pe-4">
                     <Link
-                      href={`/account/orders/${order.id}` as never}
+                      href={`/admin/orders/${order.id}` as never}
                       className="text-navy font-mono text-[12px] font-medium hover:underline"
                     >
                       {order.id.slice(0, 8)}...
@@ -132,12 +136,12 @@ export default function AdminOrdersPage() {
                     </Badge>
                   </td>
                   <td className="text-charcoal/50 py-3.5 pe-4 text-[12px]">
-                    {order.items?.length ?? 0} פריטים
+                    {t("itemsCount", { count: order.items?.length ?? 0 })}
                   </td>
                   <td className="text-navy py-3.5 pe-4 text-[12px] font-medium">
                     {formatPrice(order.totalCents)}
                   </td>
-                  <td className="text-charcoal/40 py-3.5 text-[12px]">
+                  <td className="text-charcoal/50 py-3.5 text-[12px]">
                     {order.createdAt
                       ? new Date(order.createdAt.seconds * 1000).toLocaleDateString(
                           "he-IL",

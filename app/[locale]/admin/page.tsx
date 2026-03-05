@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { collection, getCountFromServer, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
 
@@ -11,15 +12,16 @@ interface Stats {
   customRequests: number;
 }
 
-const STAT_CARDS = [
-  { key: "totalProducts" as const, label: "מוצרים", icon: "◇" },
-  { key: "totalOrders" as const, label: "הזמנות", icon: "◆" },
-  { key: "pendingOrders" as const, label: "ממתינות לתשלום", icon: "◈" },
-  { key: "customRequests" as const, label: "בקשות מיוחדות", icon: "✦" },
-];
-
 export default function AdminDashboardPage() {
+  const t = useTranslations("admin");
   const [stats, setStats] = useState<Stats | null>(null);
+
+  const statCards = [
+    { key: "totalProducts" as const, label: t("totalProducts"), icon: "◇" },
+    { key: "totalOrders" as const, label: t("totalOrders"), icon: "◆" },
+    { key: "pendingOrders" as const, label: t("pendingOrders"), icon: "◈" },
+    { key: "customRequests" as const, label: t("customRequests"), icon: "✦" },
+  ];
 
   useEffect(() => {
     async function load() {
@@ -53,18 +55,20 @@ export default function AdminDashboardPage() {
   return (
     <div>
       <div className="mb-10">
-        <h1 className="font-display text-navy text-3xl font-semibold">לוח בקרה</h1>
-        <p className="text-charcoal/40 mt-1 text-[13px]">סקירה כללית של החנות</p>
+        <h1 className="font-display text-navy text-3xl font-semibold">
+          {t("dashboard")}
+        </h1>
+        <p className="text-charcoal/50 mt-1 text-[13px]">{t("storeOverview")}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
-        {STAT_CARDS.map((card) => (
-          <div
+        {statCards.map((card) => (
+          <article
             key={card.key}
             className="border-stone/60 border bg-white p-6 transition-all duration-200 hover:shadow-sm"
           >
             <div className="flex items-center justify-between">
-              <p className="text-charcoal/40 text-[11px] tracking-[0.12em] uppercase">
+              <p className="text-charcoal/50 text-[11px] tracking-[0.12em] uppercase">
                 {card.label}
               </p>
               <span className="text-gold/50 text-sm">{card.icon}</span>
@@ -72,7 +76,7 @@ export default function AdminDashboardPage() {
             <p className="text-navy mt-3 text-3xl font-semibold">
               {stats?.[card.key] ?? "—"}
             </p>
-          </div>
+          </article>
         ))}
       </div>
     </div>

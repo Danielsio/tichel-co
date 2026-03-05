@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/lib/i18n/navigation";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
@@ -19,6 +20,7 @@ interface ProductRow {
 }
 
 export default function AdminProductsPage() {
+  const t = useTranslations("admin");
   const [products, setProducts] = useState<ProductRow[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,11 +37,13 @@ export default function AdminProductsPage() {
     <div>
       <div className="mb-10 flex items-center justify-between">
         <div>
-          <h1 className="font-display text-navy text-3xl font-semibold">מוצרים</h1>
-          <p className="text-charcoal/40 mt-1 text-[13px]">ניהול קטלוג המוצרים</p>
+          <h1 className="font-display text-navy text-3xl font-semibold">
+            {t("products")}
+          </h1>
+          <p className="text-charcoal/50 mt-1 text-[13px]">{t("manageCatalog")}</p>
         </div>
         <Link href="/admin/products/new">
-          <Button size="sm">+ הוספת מוצר</Button>
+          <Button size="sm">{t("addProduct")}</Button>
         </Link>
       </div>
 
@@ -47,20 +51,20 @@ export default function AdminProductsPage() {
         <table className="w-full text-[13px]">
           <thead>
             <tr className="border-stone/60 border-b">
-              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                מוצר
+              <th className="text-charcoal/50 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("product")}
               </th>
-              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                מחיר
+              <th className="text-charcoal/50 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("price")}
               </th>
-              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                סטטוס
+              <th className="text-charcoal/50 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("status")}
               </th>
-              <th className="text-charcoal/40 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                קולקציות
+              <th className="text-charcoal/50 pe-4 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("collections")}
               </th>
-              <th className="text-charcoal/40 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
-                פעולות
+              <th className="text-charcoal/50 pb-3 text-start text-[11px] font-semibold tracking-[0.1em] uppercase">
+                {t("actions")}
               </th>
             </tr>
           </thead>
@@ -68,13 +72,13 @@ export default function AdminProductsPage() {
             {loading ? (
               <tr>
                 <td colSpan={5} className="text-charcoal/30 py-16 text-center">
-                  טוען...
+                  {t("loading")}
                 </td>
               </tr>
             ) : products.length === 0 ? (
               <tr>
                 <td colSpan={5} className="text-charcoal/30 py-16 text-center">
-                  אין מוצרים עדיין
+                  {t("noProducts")}
                 </td>
               </tr>
             ) : (
@@ -97,14 +101,16 @@ export default function AdminProductsPage() {
                   <td className="py-3.5 pe-4">
                     <div className="flex gap-1.5">
                       {product.publishedAt ? (
-                        <Badge variant="success">פורסם</Badge>
+                        <Badge variant="success">{t("published")}</Badge>
                       ) : (
-                        <Badge variant="outOfStock">טיוטה</Badge>
+                        <Badge variant="outOfStock">{t("draft")}</Badge>
                       )}
-                      {product.isFeatured && <Badge variant="sale">מומלץ</Badge>}
+                      {product.isFeatured && (
+                        <Badge variant="sale">{t("featured")}</Badge>
+                      )}
                     </div>
                   </td>
-                  <td className="text-charcoal/40 py-3.5 pe-4 text-[12px]">
+                  <td className="text-charcoal/50 py-3.5 pe-4 text-[12px]">
                     {product.collectionIds?.join(", ") ?? "—"}
                   </td>
                   <td className="py-3.5">
@@ -112,7 +118,7 @@ export default function AdminProductsPage() {
                       href={`/admin/products/${product.id}` as never}
                       className="text-navy text-[12px] font-medium hover:underline"
                     >
-                      עריכה
+                      {t("edit")}
                     </Link>
                   </td>
                 </tr>

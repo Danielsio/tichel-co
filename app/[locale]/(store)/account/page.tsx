@@ -111,7 +111,7 @@ function AccountCard({
 }: AccountCardProps) {
   return (
     <div
-      className={`glass-card group relative overflow-hidden rounded-sm p-8 transition-all duration-400 ${
+      className={`glass-card group relative overflow-hidden rounded-sm p-8 transition-all duration-300 ${
         interactive ? "hover-lift cursor-pointer" : ""
       }`}
     >
@@ -128,7 +128,7 @@ function AccountCard({
         </span>
       ) : null}
       {interactive && (
-        <div className="bg-gold/5 group-hover:bg-gold/10 pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-400 group-hover:opacity-100" />
+        <div className="bg-gold/5 group-hover:bg-gold/10 pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       )}
     </div>
   );

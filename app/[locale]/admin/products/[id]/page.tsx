@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/lib/i18n/navigation";
 import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
@@ -29,6 +30,7 @@ export default function AdminProductEditPage({ params }: Props) {
   const { id } = use(params);
   const router = useRouter();
   const { toast } = useToast();
+  const t = useTranslations("admin");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [tab, setTab] = useState<"he" | "en">("he");
@@ -90,17 +92,17 @@ export default function AdminProductEditPage({ params }: Props) {
           updatedAt: serverTimestamp(),
         });
       });
-      toast("המוצר נשמר בהצלחה", "success");
+      toast(t("productSaved"), "success");
       if (isNew) router.push("/admin/products");
     } catch {
-      toast("שגיאה בשמירה", "error");
+      toast(t("saveError"), "error");
     } finally {
       setSaving(false);
     }
   };
 
   if (loading) {
-    return <div className="bg-stone/40 h-96 animate-pulse" />;
+    return <div className="bg-stone/50 h-96 animate-pulse" />;
   }
 
   return (
@@ -108,14 +110,14 @@ export default function AdminProductEditPage({ params }: Props) {
       <div className="mb-10 flex items-start justify-between">
         <div>
           <h1 className="font-display text-navy text-3xl font-semibold">
-            {isNew ? "מוצר חדש" : "עריכת מוצר"}
+            {isNew ? t("newProduct") : t("editProduct")}
           </h1>
-          <p className="text-charcoal/40 mt-1 text-[13px]">
-            {isNew ? "הוספת מוצר חדש לקטלוג" : "עדכון פרטי מוצר"}
+          <p className="text-charcoal/50 mt-1 text-[13px]">
+            {isNew ? t("addNewProduct") : t("updateProduct")}
           </p>
         </div>
         <Button onClick={handleSave} isLoading={saving}>
-          שמירה
+          {t("save")}
         </Button>
       </div>
 
@@ -128,18 +130,18 @@ export default function AdminProductEditPage({ params }: Props) {
             className={`px-5 py-3 text-[13px] font-medium transition-colors ${
               tab === lang
                 ? "border-navy text-navy border-b-2"
-                : "text-charcoal/30 hover:text-charcoal/60"
+                : "text-charcoal/30 hover:text-charcoal/50"
             }`}
           >
-            {lang === "he" ? "עברית" : "English"}
+            {lang === "he" ? t("hebrew") : t("english")}
           </button>
         ))}
       </div>
 
       <div className="mt-8 flex max-w-2xl flex-col gap-5">
         <div>
-          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-            כותרת ({tab === "he" ? "עברית" : "English"})
+          <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+            {t("titleLabel")} ({tab === "he" ? t("hebrew") : t("english")})
           </label>
           <Input
             value={form.title[tab]}
@@ -148,8 +150,8 @@ export default function AdminProductEditPage({ params }: Props) {
         </div>
 
         <div>
-          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-            Slug ({tab})
+          <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+            {t("slugLabel")} ({tab})
           </label>
           <Input
             value={form.slug[tab]}
@@ -158,8 +160,8 @@ export default function AdminProductEditPage({ params }: Props) {
         </div>
 
         <div>
-          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-            תיאור ({tab === "he" ? "עברית" : "English"})
+          <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+            {t("descriptionLabel")} ({tab === "he" ? t("hebrew") : t("english")})
           </label>
           <Textarea
             value={form.description[tab]}
@@ -170,8 +172,8 @@ export default function AdminProductEditPage({ params }: Props) {
 
         <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-              מחיר (אגורות)
+            <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+              {t("priceLabel")}
             </label>
             <Input
               type="number"
@@ -180,8 +182,8 @@ export default function AdminProductEditPage({ params }: Props) {
             />
           </div>
           <div>
-            <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-              מחיר השוואה (אופציונלי)
+            <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+              {t("comparePriceLabel")}
             </label>
             <Input
               type="number"
@@ -197,8 +199,8 @@ export default function AdminProductEditPage({ params }: Props) {
         </div>
 
         <div>
-          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-            מק&quot;ט בסיס
+          <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+            {t("skuLabel")}
           </label>
           <Input
             value={form.skuBase}
@@ -207,8 +209,8 @@ export default function AdminProductEditPage({ params }: Props) {
         </div>
 
         <div>
-          <label className="text-charcoal/60 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
-            קולקציות (מופרדות בפסיק)
+          <label className="text-charcoal/50 mb-1.5 block text-[12px] font-semibold tracking-[0.1em] uppercase">
+            {t("collectionsLabel")}
           </label>
           <Input
             value={form.collectionIds?.join(", ") ?? ""}
@@ -231,7 +233,9 @@ export default function AdminProductEditPage({ params }: Props) {
             onChange={(e) => updateField("isFeatured", e.target.checked)}
             className="accent-navy h-4 w-4"
           />
-          <span className="text-navy text-[13px] font-medium">מוצר מומלץ</span>
+          <span className="text-navy text-[13px] font-medium">
+            {t("featuredProduct")}
+          </span>
         </label>
       </div>
     </div>

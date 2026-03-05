@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   collection,
   getDocs,
@@ -37,6 +38,7 @@ const STATUS_OPTIONS: CustomRequestStatus[] = [
 ];
 
 export default function AdminCustomRequestsPage() {
+  const t = useTranslations("admin");
   const [requests, setRequests] = useState<RequestRow[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
@@ -55,31 +57,29 @@ export default function AdminCustomRequestsPage() {
     try {
       await updateDoc(doc(db, "customRequests", id), { status });
       setRequests((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
-      toast("הסטטוס עודכן", "success");
+      toast(t("statusUpdated"), "success");
     } catch {
-      toast("שגיאה בעדכון", "error");
+      toast(t("statusUpdateError"), "error");
     }
   };
 
   return (
     <div>
       <div className="mb-10">
-        <h1 className="font-display text-navy text-3xl font-semibold">בקשות מיוחדות</h1>
-        <p className="text-charcoal/40 mt-1 text-[13px]">
-          ניהול בקשות הזמנה מותאמות אישית
-        </p>
+        <h1 className="font-display text-navy text-3xl font-semibold">
+          {t("customRequests")}
+        </h1>
+        <p className="text-charcoal/50 mt-1 text-[13px]">{t("manageCustomRequests")}</p>
       </div>
 
       <div className="flex flex-col gap-4">
         {loading ? (
-          <div className="text-charcoal/30 py-16 text-center">טוען...</div>
+          <div className="text-charcoal/30 py-16 text-center">{t("loading")}</div>
         ) : requests.length === 0 ? (
-          <div className="text-charcoal/30 py-16 text-center">
-            אין בקשות מיוחדות עדיין
-          </div>
+          <div className="text-charcoal/30 py-16 text-center">{t("noRequests")}</div>
         ) : (
           requests.map((req) => (
-            <div
+            <article
               key={req.id}
               className="border-stone/60 border bg-white p-6 transition-all duration-200 hover:shadow-sm"
             >
@@ -95,13 +95,15 @@ export default function AdminCustomRequestsPage() {
                         : "—"}
                     </span>
                   </div>
-                  <p className="text-charcoal/70 mt-3 text-[13px] leading-relaxed">
+                  <p className="text-charcoal/80 mt-3 text-[13px] leading-relaxed">
                     {req.description}
                   </p>
-                  <div className="text-charcoal/40 mt-3 flex gap-5 text-[11px] tracking-wide">
+                  <div className="text-charcoal/50 mt-3 flex gap-5 text-[11px] tracking-wide">
                     <span>{req.contactEmail}</span>
                     <span className="text-charcoal/20">|</span>
-                    <span>תקציב: {req.budgetRange}</span>
+                    <span>
+                      {t("budget")}: {req.budgetRange}
+                    </span>
                   </div>
                 </div>
                 <Select
@@ -118,7 +120,7 @@ export default function AdminCustomRequestsPage() {
                   ))}
                 </Select>
               </div>
-            </div>
+            </article>
           ))
         )}
       </div>

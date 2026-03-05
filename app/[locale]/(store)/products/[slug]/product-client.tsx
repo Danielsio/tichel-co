@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { AddToCartButton } from "@/components/product/add-to-cart-button";
@@ -8,11 +8,16 @@ import { ProductCard } from "@/components/product/product-card";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { formatPrice } from "@/lib/utils/format-price";
-import { MOCK_PRODUCTS, type MockProduct } from "@/lib/mock-data";
 import { cn } from "@/lib/utils/cn";
-import type { Locale } from "@/types";
+import type { Locale, StoreProduct } from "@/types";
 
-export function ProductPageClient({ product }: { product: MockProduct }) {
+export function ProductPageClient({
+  product,
+  relatedProducts,
+}: {
+  product: StoreProduct;
+  relatedProducts: StoreProduct[];
+}) {
   const locale = useLocale() as Locale;
   const t = useTranslations("product");
   const tNav = useTranslations("nav");
@@ -27,14 +32,6 @@ export function ProductPageClient({ product }: { product: MockProduct }) {
     url,
     altText: product.title[locale],
   }));
-
-  const relatedProducts = useMemo(() => {
-    return MOCK_PRODUCTS.filter(
-      (p) =>
-        p.id !== product.id &&
-        p.collectionIds.some((c) => product.collectionIds.includes(c)),
-    ).slice(0, 4);
-  }, [product]);
 
   const firstCollection = product.collectionIds[0];
 
