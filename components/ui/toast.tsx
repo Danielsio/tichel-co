@@ -8,6 +8,7 @@ import {
   useContext,
   type ReactNode,
 } from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils/cn";
 
 type ToastVariant = "default" | "success" | "error";
@@ -43,6 +44,8 @@ function ToastItem({
   toast: Toast;
   onDismiss: (id: string) => void;
 }) {
+  const tc = useTranslations("common");
+
   useEffect(() => {
     const timer = setTimeout(() => onDismiss(t.id), 4000);
     return () => clearTimeout(timer);
@@ -60,7 +63,7 @@ function ToastItem({
       <button
         onClick={() => onDismiss(t.id)}
         className="shrink-0 cursor-pointer opacity-50 transition-opacity duration-200 hover:opacity-100"
-        aria-label="סגור"
+        aria-label={tc("close")}
       >
         <svg
           className="h-4 w-4"

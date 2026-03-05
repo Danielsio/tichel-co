@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils/cn";
 
 export interface PaginationProps {
@@ -15,20 +16,22 @@ export function Pagination({
   onPageChange,
   className,
 }: PaginationProps) {
+  const t = useTranslations("common");
+
   if (totalPages <= 1) return null;
 
   const pages = getVisiblePages(currentPage, totalPages);
 
   return (
     <nav
-      aria-label="ניווט עמודים"
+      aria-label={t("pagination")}
       className={cn("flex items-center justify-center gap-1", className)}
     >
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
         className="text-charcoal/60 hover:bg-stone flex h-10 w-10 cursor-pointer items-center justify-center rounded-sm transition-colors disabled:pointer-events-none disabled:opacity-30"
-        aria-label="עמוד קודם"
+        aria-label={t("previousPage")}
       >
         <svg
           className="h-4 w-4 rtl:rotate-180"
@@ -73,7 +76,7 @@ export function Pagination({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage >= totalPages}
         className="text-charcoal/60 hover:bg-stone flex h-10 w-10 cursor-pointer items-center justify-center rounded-sm transition-colors disabled:pointer-events-none disabled:opacity-30"
-        aria-label="עמוד הבא"
+        aria-label={t("nextPage")}
       >
         <svg
           className="h-4 w-4 rtl:rotate-180"
