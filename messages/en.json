@@ -87,7 +87,24 @@
       "info": "Information",
       "shipping": "Shipping",
       "payment": "Payment"
-    }
+    },
+    "email": "Email",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "address": "Address",
+    "apartment": "Apartment / Suite (optional)",
+    "city": "City",
+    "postalCode": "Postal Code",
+    "continueToShipping": "Continue to Shipping",
+    "back": "Back",
+    "stripeNote": "Stripe Elements will be rendered here. For testing, the order is created directly via the API.",
+    "testCard": "Test card: 4242 4242 4242 4242 · Any future date · Any CVC",
+    "genericError": "Something went wrong. Please try again.",
+    "orderConfirmed": "Order Confirmed!",
+    "orderNumber": "Order #{id}",
+    "status": "Status",
+    "backToStore": "Continue Shopping",
+    "orderNotFound": "Order not found"
   },
   "topBar": {
     "message": "Free shipping on orders over $70 · Free exchanges within 30 days"

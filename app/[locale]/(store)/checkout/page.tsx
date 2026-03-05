@@ -106,7 +106,7 @@ export default function CheckoutPage() {
       clearCart();
       router.push(`/order-confirmation/${result.data.orderId}` as never);
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(t("genericError"));
     } finally {
       setIsProcessing(false);
     }
@@ -157,7 +157,7 @@ export default function CheckoutPage() {
               </h2>
               {!user && (
                 <Input
-                  label="Email"
+                  label={t("email")}
                   type="email"
                   value={form.email}
                   onChange={(e) => updateForm("email", e.target.value)}
@@ -166,20 +166,20 @@ export default function CheckoutPage() {
               )}
               <div className="grid grid-cols-2 gap-4">
                 <Input
-                  label="First Name"
+                  label={t("firstName")}
                   value={form.firstName}
                   onChange={(e) => updateForm("firstName", e.target.value)}
                   required
                 />
                 <Input
-                  label="Last Name"
+                  label={t("lastName")}
                   value={form.lastName}
                   onChange={(e) => updateForm("lastName", e.target.value)}
                   required
                 />
               </div>
               <Button size="lg" onClick={() => setStep("shipping")} className="mt-4">
-                Continue to Shipping
+                {t("continueToShipping")}
               </Button>
             </div>
           )}
@@ -190,35 +190,35 @@ export default function CheckoutPage() {
                 {t("steps.shipping")}
               </h2>
               <Input
-                label="Address"
+                label={t("address")}
                 value={form.line1}
                 onChange={(e) => updateForm("line1", e.target.value)}
                 required
               />
               <Input
-                label="Apartment / Suite (optional)"
+                label={t("apartment")}
                 value={form.line2}
                 onChange={(e) => updateForm("line2", e.target.value)}
               />
               <div className="grid grid-cols-2 gap-4">
                 <Input
-                  label="City"
+                  label={t("city")}
                   value={form.city}
                   onChange={(e) => updateForm("city", e.target.value)}
                   required
                 />
                 <Input
-                  label="Postal Code"
+                  label={t("postalCode")}
                   value={form.postalCode}
                   onChange={(e) => updateForm("postalCode", e.target.value)}
                 />
               </div>
               <div className="mt-4 flex gap-3">
                 <Button variant="ghost" onClick={() => setStep("info")}>
-                  Back
+                  {t("back")}
                 </Button>
                 <Button size="lg" onClick={() => setStep("payment")} className="flex-1">
-                  Continue to Payment
+                  {t("continueToPay")}
                 </Button>
               </div>
             </div>
@@ -231,14 +231,9 @@ export default function CheckoutPage() {
               </h2>
 
               <div className="border-stone/60 border p-7">
-                <p className="text-charcoal/50 text-[13px]">
-                  Stripe Elements will be rendered here. For testing, the order is
-                  created directly via the API.
-                </p>
+                <p className="text-charcoal/50 text-[13px]">{t("stripeNote")}</p>
                 <div className="bg-stone mt-4 p-4">
-                  <p className="text-charcoal/40 text-[11px]">
-                    Test card: 4242 4242 4242 4242 · Any future date · Any CVC
-                  </p>
+                  <p className="text-charcoal/40 text-[11px]">{t("testCard")}</p>
                 </div>
               </div>
 
@@ -252,7 +247,7 @@ export default function CheckoutPage() {
 
               <div className="mt-2 flex gap-3">
                 <Button variant="ghost" onClick={() => setStep("shipping")}>
-                  Back
+                  {t("back")}
                 </Button>
                 <Button
                   size="lg"

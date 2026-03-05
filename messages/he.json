@@ -87,7 +87,24 @@
       "info": "פרטים",
       "shipping": "משלוח",
       "payment": "תשלום"
-    }
+    },
+    "email": "אימייל",
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "address": "כתובת",
+    "apartment": "דירה / קומה (אופציונלי)",
+    "city": "עיר",
+    "postalCode": "מיקוד",
+    "continueToShipping": "המשך למשלוח",
+    "back": "חזרה",
+    "stripeNote": "כאן יופיע טופס התשלום של Stripe. לצורך בדיקה, ההזמנה נוצרת ישירות דרך ה-API.",
+    "testCard": "כרטיס בדיקה: 4242 4242 4242 4242 · תאריך עתידי כלשהו · CVC כלשהו",
+    "genericError": "משהו השתבש. נסו שוב.",
+    "orderConfirmed": "ההזמנה אושרה!",
+    "orderNumber": "הזמנה מס׳ {id}",
+    "status": "סטטוס",
+    "backToStore": "חזרה לחנות",
+    "orderNotFound": "ההזמנה לא נמצאה"
   },
   "topBar": {
     "message": "משלוח חינם בהזמנות מעל ₪250 · החלפות חינם תוך 30 יום"
