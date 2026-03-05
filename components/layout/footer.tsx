@@ -15,6 +15,9 @@ const shopLinkKeys = [
 const infoLinkKeys = [
   { href: "/about" as const, key: "story" },
   { href: "/care-guide" as const, key: "care" },
+  { href: "/terms" as const, key: "terms" },
+  { href: "/returns" as const, key: "shipping" },
+  { href: "/privacy" as const, key: "privacy" },
 ];
 
 export function Footer() {
@@ -76,7 +79,14 @@ export function Footer() {
                     href={link.href}
                     className="text-ivory/50 hover:text-ivory text-[13px] transition-colors duration-300"
                   >
-                    {t(`links.${link.key}` as "links.story" | "links.care")}
+                    {t(
+                      `links.${link.key}` as
+                        | "links.story"
+                        | "links.care"
+                        | "links.terms"
+                        | "links.shipping"
+                        | "links.privacy",
+                    )}
                   </Link>
                 </li>
               ))}
