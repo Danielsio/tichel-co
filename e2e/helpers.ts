@@ -39,10 +39,13 @@ export async function createEmulatorUser(
 
 export async function setAdminClaim(uid: string): Promise<void> {
   const res = await fetch(
-    `${AUTH_EMULATOR}/identitytoolkit.googleapis.com/v1/accounts:update?key=demo-key`,
+    `${AUTH_EMULATOR}/identitytoolkit.googleapis.com/v1/projects/${PROJECT_ID}/accounts:update`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer owner",
+      },
       body: JSON.stringify({
         localId: uid,
         customAttributes: JSON.stringify({ role: "admin" }),
