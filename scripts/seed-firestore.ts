@@ -26,19 +26,29 @@ function init(): Firestore {
   }
 
   if (!getApps().length) {
-    const saPath = join(process.cwd(), "service-account.json");
-    if (existsSync(saPath)) {
+    if (useEmulator) {
       initializeApp({
-        credential: cert(JSON.parse(readFileSync(saPath, "utf-8"))),
+        projectId: "demo-tichel-co",
+        credential: {
+          getAccessToken: () =>
+            Promise.resolve({ access_token: "emulator", expires_in: 3600 }),
+        },
       });
     } else {
-      initializeApp({
-        credential: cert({
-          projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
-          clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-          privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-        }),
-      });
+      const saPath = join(process.cwd(), "service-account.json");
+      if (existsSync(saPath)) {
+        initializeApp({
+          credential: cert(JSON.parse(readFileSync(saPath, "utf-8"))),
+        });
+      } else {
+        initializeApp({
+          credential: cert({
+            projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
+            clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+          }),
+        });
+      }
     }
   }
 
@@ -571,4 +581,7 @@ async function seed() {
   );
 }
 
-seed().catch(console.error);
+seed().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
