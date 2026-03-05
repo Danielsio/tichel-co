@@ -159,7 +159,10 @@
   },
   "common": {
     "close": "סגור",
-    "breadcrumb": "ניווט פירורי לחם"
+    "breadcrumb": "ניווט פירורי לחם",
+    "pagination": "ניווט עמודים",
+    "previousPage": "עמוד קודם",
+    "nextPage": "עמוד הבא"
   },
   "locale": {
     "switchTo": "English",

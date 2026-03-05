@@ -159,7 +159,10 @@
   },
   "common": {
     "close": "Close",
-    "breadcrumb": "Breadcrumb navigation"
+    "breadcrumb": "Breadcrumb navigation",
+    "pagination": "Page navigation",
+    "previousPage": "Previous page",
+    "nextPage": "Next page"
   },
   "locale": {
     "switchTo": "עברית",

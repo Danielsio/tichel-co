@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils/cn";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils/format-price";
@@ -28,6 +31,7 @@ export function ProductCard({
   stockQty,
   className,
 }: ProductCardProps) {
+  const t = useTranslations("product");
   const isOnSale = comparePriceCents && comparePriceCents > priceCents;
   const isOutOfStock = stockQty !== undefined && stockQty <= 0;
 
@@ -53,16 +57,16 @@ export function ProductCard({
 
         {/* Badges */}
         <div className="absolute start-3 top-3 flex flex-col gap-1.5">
-          {isNew && <Badge variant="new">חדש</Badge>}
-          {isOnSale && <Badge variant="sale">מבצע</Badge>}
-          {isOutOfStock && <Badge variant="outOfStock">אזל</Badge>}
+          {isNew && <Badge variant="new">{t("new")}</Badge>}
+          {isOnSale && <Badge variant="sale">{t("sale")}</Badge>}
+          {isOutOfStock && <Badge variant="outOfStock">{t("outOfStock")}</Badge>}
         </div>
 
         {/* Quick add — slides up */}
         {!isOutOfStock && (
           <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-400 ease-out group-hover:translate-y-0">
             <div className="bg-navy text-ivory py-3.5 text-center text-[11px] font-medium tracking-[0.15em] uppercase">
-              הוספה מהירה
+              {t("quickAdd")}
             </div>
           </div>
         )}
