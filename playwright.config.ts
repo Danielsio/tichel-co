@@ -39,7 +39,8 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: "pnpm exec firebase emulators:start --only auth,firestore,storage",
+      command:
+        "pnpm exec firebase emulators:start --only auth,firestore,storage --project demo-tichel-co",
       port: 8080,
       reuseExistingServer: !process.env.CI,
       timeout: 60_000,
