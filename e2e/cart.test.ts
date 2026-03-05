@@ -19,7 +19,7 @@ test.describe("Cart", () => {
     await addProductToCart(page, "ivory-silk-square-tichel");
     const drawer = page.getByRole("dialog", { name: "סל קניות" });
     await drawer.getByRole("button", { name: "הוסף כמות" }).click();
-    await expect(drawer.getByText(/578/)).toBeVisible();
+    await expect(drawer.getByText(/578/).first()).toBeVisible();
   });
 
   test("decrement quantity below 1 removes item", async ({ page }) => {
@@ -68,6 +68,6 @@ test.describe("Cart", () => {
     await addProductToCart(page, "cotton-turban-terracotta");
     const drawer = page.getByRole("dialog", { name: "סל קניות" });
     await drawer.getByRole("button", { name: "הוסף כמות" }).click();
-    await expect(drawer.getByText(/298/)).toBeVisible();
+    await expect(drawer.getByText(/298/).first()).toBeVisible();
   });
 });

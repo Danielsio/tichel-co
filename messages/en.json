@@ -186,7 +186,9 @@
     "mainNav": "Main navigation",
     "errorTitle": "Something went wrong",
     "errorMessage": "Sorry, an error occurred. Please try again.",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "notFoundText": "The page you're looking for doesn't exist.",
+    "backToHome": "Back to Home"
   },
   "locale": {
     "switchTo": "עברית",

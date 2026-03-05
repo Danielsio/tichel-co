@@ -55,7 +55,9 @@ test.describe("Product detail page", () => {
   });
 
   test("image gallery has clickable thumbnails", async ({ page }) => {
+    await page.goto("/products/navy-velvet-pre-tied");
     const thumbnails = page.getByRole("tab");
+    await expect(thumbnails.first()).toBeVisible({ timeout: 5000 });
     const count = await thumbnails.count();
     expect(count).toBeGreaterThanOrEqual(2);
     await thumbnails.nth(1).click();
