@@ -1,26 +1,96 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { z } from "zod";
 import { getAdminDb } from "@/lib/firebase/admin";
+import { MOCK_PRODUCTS } from "@/lib/mock-data";
+
+const checkoutItemSchema = z.object({
+  variantId: z.string().min(1),
+  productId: z.string().min(1),
+  quantity: z.number().int().min(1).max(20),
+  productTitle: z.string().optional(),
+  variantLabel: z.string().optional(),
+  imageUrl: z.string().optional(),
+  unitPriceCents: z.number().optional(),
+});
+
+const checkoutSchema = z.object({
+  items: z.array(checkoutItemSchema).min(1, "Cart is empty"),
+  currency: z.enum(["ils", "usd", "eur"]).default("ils"),
+  userId: z.string().nullable().optional(),
+  guestEmail: z.string().email().nullable().optional(),
+  shippingAddress: z
+    .object({
+      label: z.string().optional(),
+      line1: z.string().min(1),
+      line2: z.string().optional(),
+      city: z.string().min(1),
+      country: z.string().min(1),
+      postalCode: z.string().optional(),
+      isDefault: z.boolean().optional(),
+    })
+    .nullable()
+    .optional(),
+});
+
+function lookupPrice(productId: string, variantId: string): number | null {
+  const product = MOCK_PRODUCTS.find((p) => p.id === productId);
+  if (!product) return null;
+  const variant = product.variants.find((v) => v.id === variantId);
+  if (!variant) return null;
+  return product.priceCents;
+}
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { items, currency = "ils", shippingAddress, userId, guestEmail } = body;
+    const parsed = checkoutSchema.safeParse(body);
 
-    if (!items?.length) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: { message: "Cart is empty", code: "EMPTY_CART" } },
+        {
+          error: {
+            message: parsed.error.issues[0]?.message ?? "Invalid input",
+            code: "VALIDATION_ERROR",
+          },
+        },
         { status: 400 },
       );
     }
 
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+    const { items, currency, shippingAddress, userId, guestEmail } = parsed.data;
 
-    const totalCents = items.reduce(
-      (sum: number, item: { unitPriceCents: number; quantity: number }) =>
-        sum + item.unitPriceCents * item.quantity,
+    const secretKey = process.env.STRIPE_SECRET_KEY;
+    if (!secretKey) {
+      return NextResponse.json(
+        { error: { message: "Payment not configured", code: "CONFIG_ERROR" } },
+        { status: 500 },
+      );
+    }
+
+    const verifiedItems = items.map((item) => {
+      const serverPrice = lookupPrice(item.productId, item.variantId);
+      if (serverPrice === null) {
+        throw new Error(
+          `Product/variant not found: ${item.productId}/${item.variantId}`,
+        );
+      }
+      return { ...item, unitPriceCents: serverPrice };
+    });
+
+    const totalCents = verifiedItems.reduce(
+      (sum, item) => sum + item.unitPriceCents * item.quantity,
       0,
     );
+
+    if (totalCents <= 0) {
+      return NextResponse.json(
+        { error: { message: "Invalid order total", code: "INVALID_TOTAL" } },
+        { status: 400 },
+      );
+    }
+
+    const stripe = new Stripe(secretKey);
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalCents,
@@ -41,7 +111,7 @@ export async function POST(req: NextRequest) {
       currency,
       stripePaymentIntentId: paymentIntent.id,
       shippingAddress: shippingAddress ?? null,
-      items,
+      items: verifiedItems,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -55,8 +125,9 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("Checkout error:", error);
+    const message = error instanceof Error ? error.message : "Checkout failed";
     return NextResponse.json(
-      { error: { message: "Checkout failed", code: "CHECKOUT_ERROR" } },
+      { error: { message, code: "CHECKOUT_ERROR" } },
       { status: 500 },
     );
   }
