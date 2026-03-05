@@ -21,6 +21,9 @@ function CartItemRow({ item }: { item: CartItem }) {
             src={item.image}
             alt={item.name}
             className="h-full w-full object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
           />
         )}
       </div>

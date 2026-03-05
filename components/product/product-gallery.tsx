@@ -32,6 +32,9 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
             src={activeImage.url}
             alt={activeImage.altText ?? t("productImage")}
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
           />
         )}
       </div>
