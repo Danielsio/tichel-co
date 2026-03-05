@@ -9,9 +9,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "uid and role are required" }, { status: 400 });
     }
 
+    const adminSecret = process.env.ADMIN_SECRET;
+    if (!adminSecret) {
+      return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
+    }
+
     const secret = req.headers.get("x-admin-secret");
-    if (secret !== process.env.ADMIN_SECRET) {
+    if (secret !== adminSecret) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const allowedRoles = ["admin", "user"];
+    if (!allowedRoles.includes(role)) {
+      return NextResponse.json(
+        { error: `Invalid role. Allowed: ${allowedRoles.join(", ")}` },
+        { status: 400 },
+      );
     }
 
     const auth = getAdminAuth();
