@@ -3,6 +3,9 @@
 import { useEffect, useRef, useCallback, type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
 type DrawerSide = "start" | "end" | "bottom";
 
 export interface DrawerProps {
@@ -44,22 +47,52 @@ export function Drawer({
   closeLabel = "Close",
 }: DrawerProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (e.key === "Tab" && panelRef.current) {
+        const focusable =
+          panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+        if (focusable.length === 0) return;
+
+        const first = focusable[0]!;
+        const last = focusable[focusable.length - 1]!;
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     },
     [onClose],
   );
 
   useEffect(() => {
     if (isOpen) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
       document.body.style.overflow = "hidden";
       document.addEventListener("keydown", handleKeyDown);
+
+      requestAnimationFrame(() => {
+        const firstFocusable =
+          panelRef.current?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+        firstFocusable?.focus();
+      });
     }
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
+      previousFocusRef.current?.focus();
     };
   }, [isOpen, handleKeyDown]);
 
@@ -85,6 +118,7 @@ export function Drawer({
 
       {/* Panel */}
       <div
+        ref={panelRef}
         className={cn(
           "z-10 bg-white shadow-2xl transition-transform duration-400",
           styles.panel,
