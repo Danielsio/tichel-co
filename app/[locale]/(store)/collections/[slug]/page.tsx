@@ -7,6 +7,8 @@ import {
 } from "@/lib/firebase/admin-queries";
 import { CollectionPageClient } from "./collection-client";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };

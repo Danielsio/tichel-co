@@ -10,6 +10,8 @@ import {
 } from "@/lib/firebase/admin-queries";
 import type { StoreProduct, StoreCollection } from "@/types";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   params: Promise<{ locale: string }>;
 };
