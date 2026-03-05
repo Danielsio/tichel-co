@@ -70,10 +70,10 @@ export default function OrderConfirmationPage({ params }: Props) {
     return (
       <div className="mx-auto max-w-lg px-4 py-20 text-center lg:px-6">
         <h1 className="font-display text-navy text-2xl font-semibold">
-          Order not found
+          {t("orderNotFound")}
         </h1>
         <Link href="/" className="mt-4 inline-block">
-          <Button variant="secondary">Back to Store</Button>
+          <Button variant="secondary">{t("backToStore")}</Button>
         </Link>
       </div>
     );
@@ -92,17 +92,15 @@ export default function OrderConfirmationPage({ params }: Props) {
       <div className="text-center">
         <div className="text-success mx-auto mb-4 text-4xl">✓</div>
         <h1 className="font-display text-navy text-3xl font-semibold">
-          {locale === "he" ? "ההזמנה אושרה!" : "Order Confirmed!"}
+          {t("orderConfirmed")}
         </h1>
-        <p className="text-charcoal/60 mt-2 text-sm">
-          {locale === "he" ? `מספר הזמנה: ${id}` : `Order #${id}`}
-        </p>
+        <p className="text-charcoal/60 mt-2 text-sm">{t("orderNumber", { id })}</p>
       </div>
 
       {/* Status */}
       <div className="bg-stone mt-8 rounded-sm p-6 text-center">
         <p className="text-charcoal/50 text-xs tracking-wider uppercase">
-          {locale === "he" ? "סטטוס" : "Status"}
+          {t("status")}
         </p>
         <p className={`mt-1 text-lg font-semibold ${statusColor}`}>{statusLabel}</p>
       </div>
@@ -145,9 +143,7 @@ export default function OrderConfirmationPage({ params }: Props) {
 
       <div className="mt-8 text-center">
         <Link href="/">
-          <Button variant="secondary">
-            {locale === "he" ? "חזרה לחנות" : "Continue Shopping"}
-          </Button>
+          <Button variant="secondary">{t("backToStore")}</Button>
         </Link>
       </div>
     </div>
