@@ -37,23 +37,28 @@ export async function createEmulatorUser(
   throw new Error(`Failed to create user: ${JSON.stringify(signUpData)}`);
 }
 
-export async function setAdminClaim(uid: string): Promise<void> {
-  const res = await fetch(
-    `${AUTH_EMULATOR}/identitytoolkit.googleapis.com/v1/projects/${PROJECT_ID}/accounts:update`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer owner",
+export async function setAdminClaim(uid: string, retries = 3): Promise<void> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const res = await fetch(
+      `${AUTH_EMULATOR}/identitytoolkit.googleapis.com/v1/projects/${PROJECT_ID}/accounts:update`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer owner",
+        },
+        body: JSON.stringify({
+          localId: uid,
+          customAttributes: JSON.stringify({ role: "admin" }),
+        }),
       },
-      body: JSON.stringify({
-        localId: uid,
-        customAttributes: JSON.stringify({ role: "admin" }),
-      }),
-    },
-  );
-  if (!res.ok) {
+    );
+    if (res.ok) return;
     const data = await res.json();
+    if (attempt < retries && data?.error?.message === "USER_NOT_FOUND") {
+      await new Promise((r) => setTimeout(r, 500 * attempt));
+      continue;
+    }
     throw new Error(`Failed to set admin claim: ${JSON.stringify(data)}`);
   }
 }
