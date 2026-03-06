@@ -58,7 +58,7 @@ export default function AdminLayout({
 
   return (
     <div className="flex min-h-screen">
-      <aside className="gradient-luxury order-last w-64 shrink-0">
+      <aside className="gradient-luxury w-64 shrink-0">
         <div className="p-6 pt-8">
           <Link href="/" className="inline-block">
             <span className="font-display text-ivory text-xl font-semibold tracking-tight">
