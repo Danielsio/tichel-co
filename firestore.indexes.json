@@ -4,24 +4,24 @@
       "collectionGroup": "collections",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "publishedAt", "order": "ASCENDING" },
-        { "fieldPath": "displayOrder", "order": "ASCENDING" }
+        { "fieldPath": "displayOrder", "order": "ASCENDING" },
+        { "fieldPath": "publishedAt", "order": "ASCENDING" }
       ]
     },
     {
       "collectionGroup": "products",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "publishedAt", "order": "ASCENDING" },
-        { "fieldPath": "isFeatured", "order": "ASCENDING" }
+        { "fieldPath": "isFeatured", "order": "ASCENDING" },
+        { "fieldPath": "publishedAt", "order": "ASCENDING" }
       ]
     },
     {
       "collectionGroup": "products",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "publishedAt", "order": "ASCENDING" },
-        { "fieldPath": "collectionIds", "arrayConfig": "CONTAINS" }
+        { "fieldPath": "collectionIds", "arrayConfig": "CONTAINS" },
+        { "fieldPath": "publishedAt", "order": "ASCENDING" }
       ]
     },
     {
