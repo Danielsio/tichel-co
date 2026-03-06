@@ -5,6 +5,7 @@ async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
   const start = performance.now();
   const result = await fn();
   const ms = (performance.now() - start).toFixed(1);
+  // eslint-disable-next-line no-console
   console.log(`[perf] ${label}: ${ms}ms`);
   return result;
 }

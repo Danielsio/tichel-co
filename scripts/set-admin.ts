@@ -34,8 +34,8 @@ async function main() {
   const auth = getAuth();
   const user = await auth.getUserByEmail(email!);
   await auth.setCustomUserClaims(user.uid, { role: "admin" });
-  console.log(`✓ ${email} (uid: ${user.uid}) is now an admin.`);
-  console.log("  The user must sign out and back in for the claim to take effect.");
+  console.warn(`✓ ${email} (uid: ${user.uid}) is now an admin.`);
+  console.warn("  The user must sign out and back in for the claim to take effect.");
 }
 
 main().catch((err) => {
