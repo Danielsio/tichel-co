@@ -53,7 +53,7 @@ function getAdminApp(): App {
 
 export function getAdminDb(): Firestore {
   if (!_db) {
-    const db = getFirestore(getAdminApp());
+    const db = getFirestore(getAdminApp(), "tichel-co-db");
     db.settings({ preferRest: true });
     _db = db;
   }

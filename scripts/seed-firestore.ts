@@ -61,7 +61,7 @@ function init(): Firestore {
   }
 
   const app = getApps()[0]!;
-  const db = getFirestore(app);
+  const db = getFirestore(app, "tichel-co-db");
   db.settings({ preferRest: true });
   return db;
 }
