@@ -4,8 +4,8 @@
       "collectionGroup": "collections",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "displayOrder", "order": "ASCENDING" },
-        { "fieldPath": "publishedAt", "order": "ASCENDING" }
+        { "fieldPath": "publishedAt", "order": "ASCENDING" },
+        { "fieldPath": "displayOrder", "order": "ASCENDING" }
       ]
     },
     {
