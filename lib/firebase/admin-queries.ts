@@ -1,6 +1,15 @@
 import { getAdminDb } from "./admin";
 import type { StoreProduct, StoreVariant, StoreCollection } from "@/types";
 
+async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
+  const start = performance.now();
+  const result = await fn();
+  const ms = (performance.now() - start).toFixed(1);
+  // eslint-disable-next-line no-console
+  console.log(`[perf] ${label}: ${ms}ms`);
+  return result;
+}
+
 async function fetchVariants(productId: string): Promise<StoreVariant[]> {
   const db = getAdminDb();
   const snap = await db
@@ -45,13 +54,15 @@ function toStoreCollection(
 }
 
 export async function getPublishedCollections(): Promise<StoreCollection[]> {
-  const db = getAdminDb();
-  const snap = await db
-    .collection("collections")
-    .where("publishedAt", "!=", null)
-    .orderBy("displayOrder", "asc")
-    .get();
-  return snap.docs.map((d) => toStoreCollection(d.id, d.data()));
+  return timed("getPublishedCollections", async () => {
+    const db = getAdminDb();
+    const snap = await db
+      .collection("collections")
+      .where("publishedAt", "!=", null)
+      .orderBy("displayOrder", "asc")
+      .get();
+    return snap.docs.map((d) => toStoreCollection(d.id, d.data()));
+  });
 }
 
 export async function getCollectionBySlug(
@@ -69,44 +80,54 @@ export async function getCollectionBySlug(
 }
 
 export async function getFeaturedProducts(): Promise<StoreProduct[]> {
-  const db = getAdminDb();
-  const snap = await db
-    .collection("products")
-    .where("publishedAt", "!=", null)
-    .where("isFeatured", "==", true)
-    .get();
-  return Promise.all(
-    snap.docs.map(async (d) => {
-      const variants = await fetchVariants(d.id);
-      return toStoreProduct(d.id, d.data(), variants);
-    }),
-  );
+  return timed("getFeaturedProducts", async () => {
+    const db = getAdminDb();
+    const snap = await db
+      .collection("products")
+      .where("publishedAt", "!=", null)
+      .where("isFeatured", "==", true)
+      .get();
+    return Promise.all(
+      snap.docs.map(async (d) => {
+        const variants = await fetchVariants(d.id);
+        return toStoreProduct(d.id, d.data(), variants);
+      }),
+    );
+  });
 }
 
 export async function getProductsByCollection(
   collectionId: string,
 ): Promise<StoreProduct[]> {
-  const db = getAdminDb();
-  const snap = await db
-    .collection("products")
-    .where("publishedAt", "!=", null)
-    .where("collectionIds", "array-contains", collectionId)
-    .get();
-  return Promise.all(
-    snap.docs.map(async (d) => {
-      const variants = await fetchVariants(d.id);
-      return toStoreProduct(d.id, d.data(), variants);
-    }),
-  );
+  return timed(`getProductsByCollection(${collectionId})`, async () => {
+    const db = getAdminDb();
+    const snap = await db
+      .collection("products")
+      .where("publishedAt", "!=", null)
+      .where("collectionIds", "array-contains", collectionId)
+      .get();
+    return Promise.all(
+      snap.docs.map(async (d) => {
+        const variants = await fetchVariants(d.id);
+        return toStoreProduct(d.id, d.data(), variants);
+      }),
+    );
+  });
 }
 
 export async function getProductBySlug(slug: string): Promise<StoreProduct | null> {
-  const db = getAdminDb();
-  const snap = await db.collection("products").where("slug", "==", slug).limit(1).get();
-  if (snap.empty) return null;
-  const doc = snap.docs[0]!;
-  const variants = await fetchVariants(doc.id);
-  return toStoreProduct(doc.id, doc.data(), variants);
+  return timed(`getProductBySlug(${slug})`, async () => {
+    const db = getAdminDb();
+    const snap = await db
+      .collection("products")
+      .where("slug", "==", slug)
+      .limit(1)
+      .get();
+    if (snap.empty) return null;
+    const doc = snap.docs[0]!;
+    const variants = await fetchVariants(doc.id);
+    return toStoreProduct(doc.id, doc.data(), variants);
+  });
 }
 
 export async function getCollectionById(
@@ -127,14 +148,16 @@ export async function getProductById(productId: string): Promise<StoreProduct | 
 }
 
 export async function getPublishedProducts(): Promise<StoreProduct[]> {
-  const db = getAdminDb();
-  const snap = await db.collection("products").where("publishedAt", "!=", null).get();
-  return Promise.all(
-    snap.docs.map(async (d) => {
-      const variants = await fetchVariants(d.id);
-      return toStoreProduct(d.id, d.data(), variants);
-    }),
-  );
+  return timed("getPublishedProducts", async () => {
+    const db = getAdminDb();
+    const snap = await db.collection("products").where("publishedAt", "!=", null).get();
+    return Promise.all(
+      snap.docs.map(async (d) => {
+        const variants = await fetchVariants(d.id);
+        return toStoreProduct(d.id, d.data(), variants);
+      }),
+    );
+  });
 }
 
 export async function getRelatedProducts(

@@ -1,0 +1,25 @@
+---
+description: Challenge user ideas against industry best practices — never blindly agree
+alwaysApply: true
+---
+
+# Design & UX Decision Making
+
+## Core Principle
+
+NEVER blindly agree with the user's suggestions. Before implementing any UX, design, or architectural decision:
+
+1. **Research** what the industry standard is for similar Israeli e-commerce stores (Terminalx, KSP, Castro, Zara IL, SheIn IL, etc.) and leading international stores.
+2. **Challenge** the user's idea if it deviates from best practices — explain WHY and suggest the professional alternative.
+3. **Strive for the best** — this store should look and feel like a top-tier, modern, professional Israeli e-commerce site with maximum UI/UX quality.
+4. **Be honest** — if the user's instinct is wrong, say so clearly with reasoning.
+
+## When Evaluating a Suggestion
+
+- What do the best stores in this category do?
+- Is there a security or UX concern?
+- Does it follow accessibility standards?
+- Will it scale well?
+- Is it modern or outdated?
+
+If the user's idea IS the best approach, say so — but only after verifying.
