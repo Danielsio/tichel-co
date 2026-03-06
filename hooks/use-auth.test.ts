@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
+import type { User } from "firebase/auth";
 import { useAuth } from "./use-auth";
 import { onAuth } from "@/lib/firebase/auth";
 
@@ -29,7 +30,7 @@ describe("useAuth", () => {
       getIdTokenResult: vi.fn().mockResolvedValue({ claims: { role: "user" } }),
     } as unknown;
 
-    let authCallback: ((u: unknown) => void) | undefined;
+    let authCallback: ((u: User | null) => void) | undefined;
     vi.mocked(onAuth).mockImplementation((callback) => {
       authCallback = callback;
       return () => {};
@@ -38,7 +39,7 @@ describe("useAuth", () => {
     const { result } = renderHook(() => useAuth());
 
     await act(async () => {
-      authCallback?.(mockUser);
+      authCallback?.(mockUser as User);
     });
 
     expect(result.current.loading).toBe(false);
@@ -51,7 +52,7 @@ describe("useAuth", () => {
       getIdTokenResult: vi.fn().mockResolvedValue({ claims: { role: "admin" } }),
     } as unknown;
 
-    let authCallback: ((u: unknown) => void) | undefined;
+    let authCallback: ((u: User | null) => void) | undefined;
     vi.mocked(onAuth).mockImplementation((callback) => {
       authCallback = callback;
       return () => {};
@@ -60,14 +61,14 @@ describe("useAuth", () => {
     const { result } = renderHook(() => useAuth());
 
     await act(async () => {
-      authCallback?.(mockUser);
+      authCallback?.(mockUser as User);
     });
 
     expect(result.current.isAdmin).toBe(true);
   });
 
   it("sets isAdmin=false when user is null", async () => {
-    let authCallback: ((u: unknown) => void) | undefined;
+    let authCallback: ((u: User | null) => void) | undefined;
     vi.mocked(onAuth).mockImplementation((callback) => {
       authCallback = callback;
       return () => {};

@@ -147,7 +147,7 @@ describe("admin-queries", () => {
 
       const result = await getFeaturedProducts();
       expect(result).toHaveLength(1);
-      expect(result[0].variants).toHaveLength(1);
+      expect(result[0]!.variants).toHaveLength(1);
     });
   });
 
@@ -243,7 +243,7 @@ describe("admin-queries", () => {
 
       const result = await getRelatedProducts(current);
       expect(result).toHaveLength(1);
-      expect(result[0].id).toBe("prod-2");
+      expect(result[0]!.id).toBe("prod-2");
     });
   });
 

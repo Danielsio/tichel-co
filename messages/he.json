@@ -186,7 +186,9 @@
     "mainNav": "ניווט ראשי",
     "errorTitle": "משהו השתבש",
     "errorMessage": "מצטערים, אירעה שגיאה. אנא נסו שוב.",
-    "tryAgain": "נסה שוב"
+    "tryAgain": "נסה שוב",
+    "notFoundText": "הדף שחיפשת לא נמצא.",
+    "backToHome": "חזרה לדף הבית"
   },
   "locale": {
     "switchTo": "English",

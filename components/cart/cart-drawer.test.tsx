@@ -29,7 +29,31 @@ const mockCloseCart = vi.fn();
 const mockRemoveItem = vi.fn();
 const mockUpdateQuantity = vi.fn();
 
-const emptyStore = {
+interface MockCartItem {
+  variantId: string;
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+  color: string;
+  size: string;
+}
+
+interface MockStore {
+  items: MockCartItem[];
+  isOpen: boolean;
+  closeCart: ReturnType<typeof vi.fn>;
+  totalPrice: () => number;
+  addItem: ReturnType<typeof vi.fn>;
+  removeItem: ReturnType<typeof vi.fn>;
+  updateQuantity: ReturnType<typeof vi.fn>;
+  openCart: ReturnType<typeof vi.fn>;
+  totalItems: () => number;
+  toggleCart: ReturnType<typeof vi.fn>;
+}
+
+const emptyStore: MockStore = {
   items: [],
   isOpen: true,
   closeCart: mockCloseCart,
@@ -42,7 +66,7 @@ const emptyStore = {
   toggleCart: vi.fn(),
 };
 
-const storeWithItems = {
+const storeWithItems: MockStore = {
   ...emptyStore,
   items: [
     {
@@ -59,7 +83,7 @@ const storeWithItems = {
   totalPrice: () => 30000,
 };
 
-let currentStore = emptyStore;
+let currentStore: MockStore = emptyStore;
 
 vi.mock("@/stores/cart-store", () => ({
   useCartStore: (selector?: (s: Record<string, unknown>) => unknown) => {

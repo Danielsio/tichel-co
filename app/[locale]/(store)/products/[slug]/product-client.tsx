@@ -110,6 +110,7 @@ export function ProductPageClient({
                   <button
                     key={variant.id}
                     onClick={() => setSelectedVariantIdx(idx)}
+                    aria-pressed={idx === selectedVariantIdx}
                     className={cn(
                       "cursor-pointer border px-4 py-2.5 text-[13px] transition-all duration-200",
                       idx === selectedVariantIdx

@@ -20,7 +20,8 @@
     "test:e2e:smoke": "playwright test --grep @smoke",
     "test:e2e:debug": "playwright test --debug",
     "seed": "npx tsx scripts/seed-firestore.ts",
-    "emulators": "firebase emulators:start",
+    "seed:emulator": "FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 npx tsx scripts/seed-firestore.ts",
+    "emulators": "firebase emulators:start --only auth,firestore,storage",
     "prepare": "husky"
   },
   "dependencies": {
@@ -59,11 +60,13 @@
     "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^9.39.3",
     "eslint-config-next": "^15.5.12",
+    "firebase-tools": "^15.8.0",
     "husky": "^9.1.7",
     "jsdom": "^28.1.0",
     "lint-staged": "^16.3.2",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   }

@@ -11,9 +11,23 @@
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore, Timestamp, type Firestore } from "firebase-admin/firestore";
 import { existsSync, readFileSync } from "fs";
+import { generateKeyPairSync } from "crypto";
 import { join } from "path";
 
 const EMULATOR_HOST = "127.0.0.1:8080";
+
+function getEmulatorCredential() {
+  const { privateKey } = generateKeyPairSync("rsa", {
+    modulusLength: 2048,
+    privateKeyEncoding: { type: "pkcs1", format: "pem" },
+    publicKeyEncoding: { type: "pkcs1", format: "pem" },
+  });
+  return cert({
+    projectId: "demo-tichel-co",
+    clientEmail: "demo@demo-tichel-co.iam.gserviceaccount.com",
+    privateKey,
+  });
+}
 
 function init(): Firestore {
   const useEmulator = process.env.SEED_PRODUCTION !== "true";
@@ -26,19 +40,23 @@ function init(): Firestore {
   }
 
   if (!getApps().length) {
-    const saPath = join(process.cwd(), "service-account.json");
-    if (existsSync(saPath)) {
-      initializeApp({
-        credential: cert(JSON.parse(readFileSync(saPath, "utf-8"))),
-      });
+    if (useEmulator) {
+      initializeApp({ credential: getEmulatorCredential() });
     } else {
-      initializeApp({
-        credential: cert({
-          projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
-          clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-          privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-        }),
-      });
+      const saPath = join(process.cwd(), "service-account.json");
+      if (existsSync(saPath)) {
+        initializeApp({
+          credential: cert(JSON.parse(readFileSync(saPath, "utf-8"))),
+        });
+      } else {
+        initializeApp({
+          credential: cert({
+            projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
+            clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+          }),
+        });
+      }
     }
   }
 
@@ -571,4 +589,7 @@ async function seed() {
   );
 }
 
-seed().catch(console.error);
+seed().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

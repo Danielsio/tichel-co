@@ -7,6 +7,8 @@ import {
 } from "@/lib/firebase/admin-queries";
 import { ProductPageClient } from "./product-client";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };

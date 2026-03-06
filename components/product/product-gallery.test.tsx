@@ -38,13 +38,13 @@ describe("ProductGallery", () => {
     render(<ProductGallery images={images} />);
 
     const tabs = screen.getAllByRole("tab");
-    await user.click(tabs[1]);
+    await user.click(tabs[1]!);
     expect(tabs[1]).toHaveAttribute("aria-selected", "true");
     expect(tabs[0]).toHaveAttribute("aria-selected", "false");
   });
 
   it("does not render thumbnails for single image", () => {
-    render(<ProductGallery images={[images[0]]} />);
+    render(<ProductGallery images={[images[0]!]} />);
     expect(screen.queryByRole("tab")).not.toBeInTheDocument();
   });
 
@@ -58,7 +58,7 @@ describe("ProductGallery", () => {
     render(<ProductGallery images={images} />);
 
     const tabs = screen.getAllByRole("tab");
-    await user.click(tabs[0]);
+    await user.click(tabs[0]!);
     await user.keyboard("{ArrowRight}");
     expect(tabs[1]).toHaveAttribute("aria-selected", "true");
   });
@@ -68,7 +68,7 @@ describe("ProductGallery", () => {
     render(<ProductGallery images={images} />);
 
     const tabs = screen.getAllByRole("tab");
-    await user.click(tabs[1]);
+    await user.click(tabs[1]!);
     await user.keyboard("{ArrowLeft}");
     expect(tabs[0]).toHaveAttribute("aria-selected", "true");
   });
@@ -78,7 +78,7 @@ describe("ProductGallery", () => {
     render(<ProductGallery images={images} />);
 
     const tabs = screen.getAllByRole("tab");
-    await user.click(tabs[0]);
+    await user.click(tabs[0]!);
     await user.keyboard("{ArrowLeft}");
     expect(tabs[0]).toHaveAttribute("aria-selected", "true");
   });
@@ -88,7 +88,7 @@ describe("ProductGallery", () => {
     render(<ProductGallery images={images} />);
 
     const tabs = screen.getAllByRole("tab");
-    await user.click(tabs[1]);
+    await user.click(tabs[1]!);
     await user.keyboard("{ArrowRight}");
     expect(tabs[1]).toHaveAttribute("aria-selected", "true");
   });

@@ -1,0 +1,23 @@
+---
+description: Git workflow rules — never push to master directly, always use PRs
+alwaysApply: true
+---
+
+# Git Workflow
+
+## Branch Protection (MANDATORY)
+
+- **NEVER push directly to `master`** — not regular push, not force push, not with `--no-verify`.
+- **NEVER force push** to any branch. If asked by the user, warn them and only proceed if they explicitly confirm.
+- Always create a feature/fix branch (e.g. `fix/description`, `feat/description`) for every change.
+- Commit on the branch, push the branch, then open a PR targeting `master`.
+- The user will review and merge PRs themselves after CI is green.
+
+## Workflow
+
+1. `git checkout -b <type>/<short-description>` from `master`
+2. Make changes, commit with conventional commit messages
+3. `git push -u origin <branch-name>`
+4. `gh pr create --base master --title "..." --body-file <tmp-file>`
+5. Clean up any temp files used for PR body
+6. Report the PR URL to the user
