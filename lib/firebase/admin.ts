@@ -53,7 +53,7 @@ function getAdminApp(): App {
 
 export function getAdminDb(): Firestore {
   if (!_db) {
-    const db = getFirestore(getAdminApp(), "default");
+    const db = getFirestore(getAdminApp());
     db.settings({ preferRest: true });
     _db = db;
   }

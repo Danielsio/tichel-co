@@ -61,7 +61,7 @@ function init(): Firestore {
   }
 
   const app = getApps()[0]!;
-  const db = getFirestore(app, "default");
+  const db = getFirestore(app);
   db.settings({ preferRest: true });
   return db;
 }
