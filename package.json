@@ -23,6 +23,7 @@
     "seed": "npx tsx scripts/seed-firestore.ts",
     "seed:emulator": "FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 npx tsx scripts/seed-firestore.ts",
     "emulators": "firebase emulators:start --only auth,firestore,storage",
+    "benchmark": "npx tsx scripts/benchmark-hosting.ts",
     "prepare": "husky"
   },
   "dependencies": {
@@ -44,6 +45,7 @@
     "stripe": "^20.4.0",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.1",
+    "web-vitals": "^5.1.0",
     "zod": "^4.3.6",
     "zustand": "^5.0.11"
   },
