@@ -28,9 +28,6 @@ blob-report/
 *.swp
 *.swo
 
-# Vercel
-.vercel
-
 # misc
 *.tsbuildinfo
 next-env.d.ts

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Heebo, Noto_Serif_Hebrew } from "next/font/google";
 import { getLocale } from "next-intl/server";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -67,11 +65,7 @@ export default async function RootLayout({
       dir={locale === "he" ? "rtl" : "ltr"}
       className={`${cormorant.variable} ${notoSerifHebrew.variable} ${heebo.variable}`}
     >
-      <body className="bg-ivory text-charcoal font-body antialiased">
-        {children}
-        <SpeedInsights />
-        <Analytics />
-      </body>
+      <body className="bg-ivory text-charcoal font-body antialiased">{children}</body>
     </html>
   );
 }
