@@ -6,7 +6,7 @@ A premium, mobile-first e-commerce platform for Jewish modest fashion, targeting
 
 | Layer         | Dev                     | Production                    | Cost |
 | ------------- | ----------------------- | ----------------------------- | ---- |
-| **Framework** | Next.js 15 (App Router) | Vercel hobby                  | $0   |
+| **Framework** | Next.js 15 (App Router) | Firebase Hosting (Blaze)      | $0   |
 | **Database**  | Postgres 16 (Docker)    | Supabase free (500 MB)        | $0   |
 | **Cache**     | Redis 7 (Docker)        | In-memory fallback            | $0   |
 | **Auth**      | Clerk (test)            | Clerk free tier (10k MAU)     | $0   |
@@ -68,7 +68,7 @@ Open [http://localhost:3000](http://localhost:3000).
 1. Create a free [Supabase](https://supabase.com) project — copy the connection string
 2. Create free [Clerk](https://clerk.com) and [Stripe](https://stripe.com) accounts — copy API keys
 3. Create free [Resend](https://resend.com) account — copy API key
-4. Deploy to [Vercel](https://vercel.com) and set environment variables from `.env.example`
+4. Deploy to [Firebase Hosting](https://firebase.google.com/docs/hosting) — run `firebase deploy --only hosting`
 
 ## Localization
 
