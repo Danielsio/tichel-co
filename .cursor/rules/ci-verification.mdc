@@ -1,0 +1,16 @@
+---
+description: Always verify CI passes after pushing changes
+alwaysApply: true
+---
+
+# CI Verification (MANDATORY)
+
+After pushing any branch or creating/updating a PR:
+
+1. **Check CI status** — run `gh pr checks <pr-number>` to see all check results
+2. **If any check fails** — immediately fetch the failure logs with `gh run view <run-id> --log-failed`
+3. **Fix the failures** — diagnose, fix locally, commit, and push
+4. **Monitor again** — re-run `gh pr checks` and confirm ALL checks pass
+5. **Never leave a PR with failing CI** — repeat the fix cycle until green
+
+Do NOT consider a task complete until CI is fully green.
