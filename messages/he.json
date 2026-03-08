@@ -107,7 +107,16 @@
     "orderNumber": "הזמנה מס׳ {id}",
     "status": "סטטוס",
     "backToStore": "חזרה לחנות",
-    "orderNotFound": "ההזמנה לא נמצאה"
+    "orderNotFound": "ההזמנה לא נמצאה",
+    "statusLabels": {
+      "pending_payment": "ממתין לתשלום",
+      "payment_confirmed": "התשלום אושר",
+      "processing": "בטיפול",
+      "shipped": "נשלח",
+      "delivered": "נמסר",
+      "cancelled": "בוטל",
+      "refunded": "הוחזר"
+    }
   },
   "topBar": {
     "message": "משלוח חינם בהזמנות מעל ₪250 · החלפות חינם תוך 30 יום"
@@ -265,7 +274,8 @@
     "budget4": "₪1,400+",
     "submitButton": "שלחי בקשה",
     "successTitle": "הבקשה נשלחה!",
-    "successText": "תודה על בקשת העיצוב המותאם שלך. הצוות שלנו יבדוק אותה ויחזור אליך תוך 2-3 ימי עסקים."
+    "successText": "תודה על בקשת העיצוב המותאם שלך. הצוות שלנו יבדוק אותה ויחזור אליך תוך 2-3 ימי עסקים.",
+    "submitError": "שגיאה בשליחת הבקשה. נסי שוב."
   },
   "lookbook": {
     "title": "לוקבוק",

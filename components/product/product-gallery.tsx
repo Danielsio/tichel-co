@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils/cn";
 
@@ -48,13 +49,13 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
       {/* Main Image */}
       <div className="bg-stone group relative aspect-[3/4] flex-1 overflow-hidden">
         {activeImage && (
-          <img
+          <Image
             src={activeImage.url}
             alt={activeImage.altText ?? t("productImage")}
-            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority={activeIndex === 0}
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           />
         )}
       </div>
@@ -83,10 +84,12 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
                   : "opacity-40 hover:opacity-70",
               )}
             >
-              <img
+              <Image
                 src={image.url}
                 alt={image.altText ?? t("imageNumber", { n: idx + 1 })}
-                className="h-full w-full object-cover"
+                fill
+                sizes="72px"
+                className="object-cover"
               />
             </button>
           ))}

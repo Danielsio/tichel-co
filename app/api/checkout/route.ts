@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { z } from "zod";
 import { getAdminDb } from "@/lib/firebase/admin";
+import { getAdminAuth } from "@/lib/firebase/admin";
 import { lookupProductPrice } from "@/lib/firebase/admin-queries";
 
 const checkoutItemSchema = z.object({
@@ -33,6 +34,18 @@ const checkoutSchema = z.object({
     .optional(),
 });
 
+async function verifyAuthToken(req: NextRequest): Promise<string | null> {
+  const authHeader = req.headers.get("authorization");
+  if (!authHeader?.startsWith("Bearer ")) return null;
+  try {
+    const token = authHeader.slice(7);
+    const decoded = await getAdminAuth().verifyIdToken(token);
+    return decoded.uid;
+  } catch {
+    return null;
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -50,7 +63,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { items, currency, shippingAddress, userId, guestEmail } = parsed.data;
+    const { items, currency, shippingAddress, guestEmail } = parsed.data;
+
+    const verifiedUid = await verifyAuthToken(req);
+    const userId = verifiedUid ?? null;
 
     const secretKey = process.env.STRIPE_SECRET_KEY;
     if (!secretKey) {
@@ -86,16 +102,20 @@ export async function POST(req: NextRequest) {
 
     const stripe = new Stripe(secretKey);
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalCents,
-      currency,
-      metadata: { source: "tichel-co" },
-    });
-
     const adminDb = getAdminDb();
     const orderRef = adminDb.collection("orders").doc();
+
+    const paymentIntent = await stripe.paymentIntents.create(
+      {
+        amount: totalCents,
+        currency,
+        metadata: { source: "tichel-co", orderId: orderRef.id },
+      },
+      { idempotencyKey: `checkout_${orderRef.id}` },
+    );
+
     await orderRef.set({
-      userId: userId ?? null,
+      userId,
       guestEmail: guestEmail ?? null,
       status: "pending_payment",
       subtotalCents: totalCents,

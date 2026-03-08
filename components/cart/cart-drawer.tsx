@@ -1,6 +1,7 @@
 "use client";
 
 import { memo } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/lib/i18n/navigation";
 import { useCartStore, type CartItem } from "@/stores/cart-store";
@@ -16,15 +17,14 @@ const CartItemRow = memo(function CartItemRow({ item }: { item: CartItem }) {
 
   return (
     <div className="flex gap-4 py-5">
-      <div className="bg-stone h-24 w-20 shrink-0 overflow-hidden">
+      <div className="bg-stone relative h-24 w-20 shrink-0 overflow-hidden">
         {item.image && (
-          <img
+          <Image
             src={item.image}
             alt={item.name}
-            className="h-full w-full object-cover"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
+            fill
+            sizes="80px"
+            className="object-cover"
           />
         )}
       </div>

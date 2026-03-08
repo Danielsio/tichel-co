@@ -1,12 +1,13 @@
 import { z } from "zod";
 
 export const createCustomRequestSchema = z.object({
+  name: z.string().min(1).max(200),
   contactEmail: z.string().email("כתובת אימייל לא תקינה"),
-  type: z.enum(["tichel", "scarf", "headwrap", "accessory", "other"], {
+  type: z.enum(["tichel", "scarf", "head-wrap", "other"], {
     error: "סוג הפריט נדרש",
   }),
   description: z.string().min(10, "תיאור חייב להכיל לפחות 10 תווים").max(2000),
-  budgetRange: z.enum(["under_200", "200_500", "500_900", "above_900"]).optional(),
+  budgetRange: z.enum(["under-100", "100-200", "200-400", "400-plus"]).optional(),
   referenceImages: z.array(z.string().url()).max(5).default([]),
 });
 

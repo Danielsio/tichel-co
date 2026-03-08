@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import Image from "next/image";
 import { Link } from "@/lib/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { getPublishedProducts } from "@/lib/firebase/admin-queries";
@@ -75,12 +76,13 @@ function LookbookContent({ allProducts }: { allProducts: StoreProduct[] }) {
                 }`}
               >
                 {/* Image */}
-                <div className="bg-stone aspect-[4/5] overflow-hidden rounded-sm lg:flex-1">
-                  <img
+                <div className="bg-stone relative aspect-[4/5] overflow-hidden rounded-sm lg:flex-1">
+                  <Image
                     src={look.imageUrl}
                     alt={look.title}
-                    className="h-full w-full object-cover"
-                    loading="lazy"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
                   />
                 </div>
 
@@ -103,12 +105,14 @@ function LookbookContent({ allProducts }: { allProducts: StoreProduct[] }) {
                           href={`/products/${product.slug}` as never}
                           className="border-stone group hover:border-gold/30 flex items-center gap-4 rounded-sm border p-3 transition-colors"
                         >
-                          <div className="bg-stone h-16 w-12 shrink-0 overflow-hidden rounded-sm">
+                          <div className="bg-stone relative h-16 w-12 shrink-0 overflow-hidden rounded-sm">
                             {variant?.imageUrls[0] && (
-                              <img
+                              <Image
                                 src={variant.imageUrls[0]}
                                 alt={product.title}
-                                className="h-full w-full object-cover"
+                                fill
+                                sizes="48px"
+                                className="object-cover"
                               />
                             )}
                           </div>
@@ -132,11 +136,16 @@ function LookbookContent({ allProducts }: { allProducts: StoreProduct[] }) {
                     })}
                   </div>
 
-                  <div className="mt-6">
-                    <Button variant="secondary" size="sm">
-                      {t("shopTheLook")}
-                    </Button>
-                  </div>
+                  {products.length > 0 && (
+                    <Link
+                      href={`/products/${products[0]!.slug}` as never}
+                      className="mt-6 inline-block"
+                    >
+                      <Button variant="secondary" size="sm">
+                        {t("shopTheLook")}
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             );

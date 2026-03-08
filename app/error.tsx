@@ -28,6 +28,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         <button
           onClick={reset}
           className="border-gold text-gold mt-8 inline-block cursor-pointer border-b-2 transition-opacity hover:opacity-80"
+          aria-label={t.retry}
         >
           {t.retry}
         </button>

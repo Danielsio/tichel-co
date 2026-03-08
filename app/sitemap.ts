@@ -8,32 +8,24 @@ const staticPages = [
   "/care-guide",
   "/lookbook",
   "/custom",
-  "/collections/silk-tichels",
-  "/collections/velvet-wraps",
-  "/collections/everyday-essentials",
+  "/collections/signature-collection",
+  "/collections/silk-dreams",
+  "/collections/everyday-elegance",
+  "/collections/bridal",
+  "/collections/accessories",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const locales = ["he", "en"];
-
-  const entries: MetadataRoute.Sitemap = [];
-
-  for (const page of staticPages) {
-    for (const locale of locales) {
-      entries.push({
-        url: `${BASE_URL}/${locale}${page}`,
-        lastModified: new Date(),
-        changeFrequency: page === "" ? "daily" : "weekly",
-        priority: page === "" ? 1.0 : 0.8,
-        alternates: {
-          languages: {
-            he: `${BASE_URL}/he${page}`,
-            en: `${BASE_URL}/en${page}`,
-          },
-        },
-      });
-    }
-  }
-
-  return entries;
+  return staticPages.map((page) => ({
+    url: `${BASE_URL}${page}`,
+    lastModified: new Date(),
+    changeFrequency: page === "" ? "daily" : "weekly",
+    priority: page === "" ? 1.0 : 0.8,
+    alternates: {
+      languages: {
+        he: `${BASE_URL}${page}`,
+        en: `${BASE_URL}/en${page}`,
+      },
+    },
+  }));
 }

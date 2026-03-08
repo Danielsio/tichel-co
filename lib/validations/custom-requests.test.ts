@@ -7,16 +7,18 @@ import {
 describe("createCustomRequestSchema", () => {
   it("passes with valid request data", () => {
     const result = createCustomRequestSchema.safeParse({
+      name: "מרים לוי",
       contactEmail: "miriam@example.com",
       type: "tichel",
       description: "אני מחפשת מטפחת משי בצבע שנהב עם עיטורי זהב",
-      budgetRange: "200_500",
+      budgetRange: "200-400",
     });
     expect(result.success).toBe(true);
   });
 
   it("rejects invalid email", () => {
     const result = createCustomRequestSchema.safeParse({
+      name: "מרים",
       contactEmail: "not-an-email",
       type: "scarf",
       description: "תיאור ארוך מספיק כדי לעבור ולידציה",
@@ -26,6 +28,7 @@ describe("createCustomRequestSchema", () => {
 
   it("rejects too-short description", () => {
     const result = createCustomRequestSchema.safeParse({
+      name: "מרים",
       contactEmail: "miriam@example.com",
       type: "tichel",
       description: "קצר",
@@ -35,6 +38,7 @@ describe("createCustomRequestSchema", () => {
 
   it("rejects invalid type", () => {
     const result = createCustomRequestSchema.safeParse({
+      name: "מרים",
       contactEmail: "miriam@example.com",
       type: "invalid_type",
       description: "תיאור ארוך מספיק כדי לעבור ולידציה",
@@ -44,6 +48,7 @@ describe("createCustomRequestSchema", () => {
 
   it("limits reference images to 5", () => {
     const result = createCustomRequestSchema.safeParse({
+      name: "מרים",
       contactEmail: "miriam@example.com",
       type: "tichel",
       description: "תיאור ארוך מספיק כדי לעבור ולידציה",
