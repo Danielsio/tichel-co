@@ -5,30 +5,14 @@ test.describe("Custom request form", () => {
     await page.goto("/custom");
   });
 
-  test("form renders with all fields", async ({ page }) => {
+  test("shows login prompt for unauthenticated users", async ({ page }) => {
     await expect(page.getByRole("heading", { name: "בקשת עיצוב מותאם" })).toBeVisible();
-    await expect(page.getByLabel("שם מלא")).toBeVisible();
-    await expect(page.getByLabel("כתובת אימייל")).toBeVisible();
-    await expect(page.getByLabel("סוג כיסוי ראש")).toBeVisible();
-    await expect(page.getByLabel("תארי את החזון שלך")).toBeVisible();
-    await expect(page.getByLabel("טווח תקציב")).toBeVisible();
-    await expect(page.getByRole("button", { name: "שלחי בקשה" })).toBeVisible();
+    await expect(page.getByText("יש להתחבר כדי לשלוח בקשת עיצוב מותאם")).toBeVisible();
+    await expect(page.getByRole("link", { name: "התחבר" })).toBeVisible();
   });
 
-  test("form validation prevents empty submission", async ({ page }) => {
-    await page.getByRole("button", { name: "שלחי בקשה" }).click();
-    await expect(page.getByLabel("שם מלא")).toBeFocused();
-  });
-
-  test("form submits successfully with valid data", async ({ page }) => {
-    await page.getByLabel("שם מלא").fill("שרה כהן");
-    await page.getByLabel("כתובת אימייל").fill("sarah@test.co");
-    await page.getByLabel("סוג כיסוי ראש").selectOption({ label: "טישל" });
-    await page
-      .getByLabel("תארי את החזון שלך")
-      .fill("טישל משי בגוון ורוד עתיק עם עיטורי תחרה עדינים");
-    await page.getByLabel("טווח תקציב").selectOption({ label: "₪350 – ₪700" });
-    await page.getByRole("button", { name: "שלחי בקשה" }).click();
-    await expect(page.getByText("הבקשה נשלחה!")).toBeVisible({ timeout: 10000 });
+  test("login link navigates to login page", async ({ page }) => {
+    await page.getByRole("link", { name: "התחבר" }).click();
+    await expect(page).toHaveURL(/\/login/);
   });
 });
