@@ -3,6 +3,9 @@ name: Deploy
 on:
   push:
     branches: [master]
+    paths:
+      - firestore.rules
+      - firestore.indexes.json
 
 permissions:
   contents: read
