@@ -37,6 +37,14 @@ export const metadata: Metadata = {
     siteName: "Tichel & Co.",
     locale: "he_IL",
     alternateLocale: "en_US",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Tichel & Co. — Luxury Modest Head Coverings",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",

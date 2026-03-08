@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/collections/everyday-elegance" as const, key: "scarves" as const },
   { href: "/collections/bridal" as const, key: "headWraps" as const },
   { href: "/collections/accessories" as const, key: "accessories" as const },
+  { href: "/lookbook" as const, key: "lookbook" as const },
   { href: "/custom" as const, key: "custom" as const },
 ];
 

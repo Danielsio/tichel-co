@@ -136,11 +136,16 @@ function LookbookContent({ allProducts }: { allProducts: StoreProduct[] }) {
                     })}
                   </div>
 
-                  <div className="mt-6">
-                    <Button variant="secondary" size="sm">
-                      {t("shopTheLook")}
-                    </Button>
-                  </div>
+                  {products.length > 0 && (
+                    <Link
+                      href={`/products/${products[0]!.slug}` as never}
+                      className="mt-6 inline-block"
+                    >
+                      <Button variant="secondary" size="sm">
+                        {t("shopTheLook")}
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             );
