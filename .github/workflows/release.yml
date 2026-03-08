@@ -95,6 +95,8 @@ jobs:
       - name: Push changes and tag
         if: steps.check.outputs.should_release == 'true'
         run: git push --follow-tags origin master
+        env:
+          HUSKY: "0"
 
       - name: Extract version
         if: steps.check.outputs.should_release == 'true'
