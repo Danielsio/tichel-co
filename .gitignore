@@ -28,6 +28,9 @@ blob-report/
 *.swp
 *.swo
 
+# benchmarks
+benchmarks/
+
 # misc
 *.tsbuildinfo
 next-env.d.ts
