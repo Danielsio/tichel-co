@@ -30,15 +30,6 @@ env:
       - BUILD
       - RUNTIME
 
-  - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-    secret: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-
-  - variable: STRIPE_SECRET_KEY
-    secret: STRIPE_SECRET_KEY
-
-  - variable: STRIPE_WEBHOOK_SECRET
-    secret: STRIPE_WEBHOOK_SECRET
-
   - variable: FIREBASE_ADMIN_PROJECT_ID
     secret: FIREBASE_ADMIN_PROJECT_ID
 
@@ -48,8 +39,14 @@ env:
   - variable: FIREBASE_ADMIN_PRIVATE_KEY
     secret: FIREBASE_ADMIN_PRIVATE_KEY
 
-  - variable: RESEND_API_KEY
-    secret: RESEND_API_KEY
-
-  - variable: RESEND_FROM_EMAIL
-    secret: RESEND_FROM_EMAIL
+  # Uncomment when Stripe and Resend are configured:
+  # - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  #   secret: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  # - variable: STRIPE_SECRET_KEY
+  #   secret: STRIPE_SECRET_KEY
+  # - variable: STRIPE_WEBHOOK_SECRET
+  #   secret: STRIPE_WEBHOOK_SECRET
+  # - variable: RESEND_API_KEY
+  #   secret: RESEND_API_KEY
+  # - variable: RESEND_FROM_EMAIL
+  #   secret: RESEND_FROM_EMAIL

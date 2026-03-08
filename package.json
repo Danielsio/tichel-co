@@ -24,7 +24,12 @@
     "seed:emulator": "FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 npx tsx scripts/seed-firestore.ts",
     "emulators": "firebase emulators:start --only auth,firestore,storage",
     "benchmark": "npx tsx scripts/benchmark-hosting.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release": "commit-and-tag-version",
+    "release:patch": "commit-and-tag-version --release-as patch",
+    "release:minor": "commit-and-tag-version --release-as minor",
+    "release:major": "commit-and-tag-version --release-as major",
+    "release:first": "commit-and-tag-version --first-release"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -60,6 +65,7 @@
     "@types/react": "^19.2.14",
     "@vitejs/plugin-react": "^5.1.4",
     "@vitest/coverage-v8": "^4.0.18",
+    "commit-and-tag-version": "^12.6.1",
     "eslint": "^9.39.3",
     "eslint-config-next": "^15.5.12",
     "firebase-tools": "^15.8.0",
