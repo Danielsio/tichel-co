@@ -6,6 +6,7 @@ import { useRouter } from "@/lib/i18n/navigation";
 import { useCartStore } from "@/stores/cart-store";
 import { useAuth } from "@/hooks/use-auth";
 import { useMounted } from "@/hooks/use-mounted";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/utils/format-price";
@@ -279,12 +280,14 @@ export default function CheckoutPage() {
             <div className="flex flex-col gap-4">
               {items.map((item) => (
                 <div key={item.variantId} className="flex items-center gap-3">
-                  <div className="bg-stone h-14 w-11 shrink-0 overflow-hidden">
+                  <div className="bg-stone relative h-14 w-11 shrink-0 overflow-hidden">
                     {item.image && (
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.name}
-                        className="h-full w-full object-cover"
+                        fill
+                        sizes="44px"
+                        className="object-cover"
                       />
                     )}
                   </div>
