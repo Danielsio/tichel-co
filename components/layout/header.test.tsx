@@ -25,6 +25,7 @@ vi.mock("@/lib/i18n/navigation", () => ({
 const mockOpenCart = vi.fn();
 const mockOpenMobileMenu = vi.fn();
 const mockCloseMobileMenu = vi.fn();
+const mockOpenSearch = vi.fn();
 
 vi.mock("@/stores/cart-store", () => ({
   useCartStore: (selector: (s: Record<string, unknown>) => unknown) =>
@@ -35,11 +36,17 @@ vi.mock("@/stores/cart-store", () => ({
 }));
 
 vi.mock("@/stores/ui-store", () => ({
-  useUIStore: () => ({
-    isMobileMenuOpen: false,
-    openMobileMenu: mockOpenMobileMenu,
-    closeMobileMenu: mockCloseMobileMenu,
-  }),
+  useUIStore: (selector?: (s: Record<string, unknown>) => unknown) => {
+    const state = {
+      isMobileMenuOpen: false,
+      openMobileMenu: mockOpenMobileMenu,
+      closeMobileMenu: mockCloseMobileMenu,
+      isSearchOpen: false,
+      openSearch: mockOpenSearch,
+      closeSearch: vi.fn(),
+    };
+    return selector ? selector(state) : state;
+  },
 }));
 
 vi.mock("@/hooks/use-mounted", () => ({
