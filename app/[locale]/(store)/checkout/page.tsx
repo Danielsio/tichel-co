@@ -10,6 +10,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/utils/format-price";
+import { cn } from "@/lib/utils/cn";
 
 type Step = "info" | "shipping" | "payment";
 
@@ -44,14 +45,29 @@ export default function CheckoutPage() {
   if (!mounted) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 lg:px-6">
-        <div className="bg-stone h-96 animate-pulse" />
+        <div className="bg-stone h-96 animate-pulse rounded-2xl" />
       </div>
     );
   }
 
   if (items.length === 0) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center px-4">
+      <div className="flex min-h-[50vh] flex-col items-center justify-center px-4">
+        <div className="bg-stone mb-5 flex h-16 w-16 items-center justify-center rounded-full">
+          <svg
+            className="text-charcoal/20 h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+            />
+          </svg>
+        </div>
         <h1 className="font-display text-navy text-2xl font-semibold">
           {tCart("empty")}
         </h1>
@@ -122,41 +138,66 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 lg:px-6 lg:py-16">
+    <div className="mx-auto max-w-4xl px-4 py-8 sm:py-12 lg:px-6 lg:py-16">
       <h1 className="font-display text-navy text-3xl font-semibold lg:text-4xl">
         {t("title")}
       </h1>
 
       {/* Progress Steps */}
-      <div className="mt-10 flex items-center gap-1">
+      <div className="mt-8 flex items-center sm:mt-10">
         {steps.map((s, idx) => (
-          <div key={s} className="flex flex-1 items-center gap-2">
-            <div
-              className={`flex h-8 w-8 items-center justify-center text-[11px] font-bold transition-colors ${
-                idx <= stepIndex ? "bg-navy text-ivory" : "bg-stone text-charcoal/30"
-              }`}
-            >
-              {idx + 1}
-            </div>
-            <span
-              className={`hidden text-[12px] tracking-wide sm:block ${
-                idx <= stepIndex ? "text-navy font-medium" : "text-charcoal/30"
-              }`}
-            >
-              {t(`steps.${s}`)}
-            </span>
-            {idx < steps.length - 1 && (
+          <div key={s} className="flex flex-1 items-center">
+            <div className="flex items-center gap-2.5">
               <div
-                className={`mx-2 h-px flex-1 ${
-                  idx < stepIndex ? "bg-navy" : "bg-stone"
-                }`}
-              />
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-full text-[12px] font-bold transition-all duration-300",
+                  idx < stepIndex && "bg-success text-white",
+                  idx === stepIndex && "bg-navy text-ivory ring-navy/10 ring-4",
+                  idx > stepIndex && "bg-stone text-charcoal/30",
+                )}
+              >
+                {idx < stepIndex ? (
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m4.5 12.75 6 6 9-13.5"
+                    />
+                  </svg>
+                ) : (
+                  idx + 1
+                )}
+              </div>
+              <span
+                className={cn(
+                  "hidden text-[12px] tracking-wide sm:block",
+                  idx <= stepIndex ? "text-navy font-medium" : "text-charcoal/30",
+                )}
+              >
+                {t(`steps.${s}`)}
+              </span>
+            </div>
+            {idx < steps.length - 1 && (
+              <div className="mx-3 h-px flex-1 sm:mx-4">
+                <div
+                  className={cn(
+                    "h-full rounded-full transition-colors duration-300",
+                    idx < stepIndex ? "bg-success" : "bg-stone",
+                  )}
+                />
+              </div>
             )}
           </div>
         ))}
       </div>
 
-      <div className="mt-12 grid gap-12 lg:grid-cols-5">
+      <div className="mt-10 grid gap-10 sm:mt-12 lg:grid-cols-5 lg:gap-12">
         {/* Form */}
         <div className="lg:col-span-3">
           {step === "info" && (
@@ -171,20 +212,23 @@ export default function CheckoutPage() {
                   value={form.email}
                   onChange={(e) => updateForm("email", e.target.value)}
                   required
+                  autoComplete="email"
                 />
               )}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input
                   label={t("firstName")}
                   value={form.firstName}
                   onChange={(e) => updateForm("firstName", e.target.value)}
                   required
+                  autoComplete="given-name"
                 />
                 <Input
                   label={t("lastName")}
                   value={form.lastName}
                   onChange={(e) => updateForm("lastName", e.target.value)}
                   required
+                  autoComplete="family-name"
                 />
               </div>
               <Button size="lg" onClick={() => setStep("shipping")} className="mt-4">
@@ -203,23 +247,27 @@ export default function CheckoutPage() {
                 value={form.line1}
                 onChange={(e) => updateForm("line1", e.target.value)}
                 required
+                autoComplete="address-line1"
               />
               <Input
                 label={t("apartment")}
                 value={form.line2}
                 onChange={(e) => updateForm("line2", e.target.value)}
+                autoComplete="address-line2"
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input
                   label={t("city")}
                   value={form.city}
                   onChange={(e) => updateForm("city", e.target.value)}
                   required
+                  autoComplete="address-level2"
                 />
                 <Input
                   label={t("postalCode")}
                   value={form.postalCode}
                   onChange={(e) => updateForm("postalCode", e.target.value)}
+                  autoComplete="postal-code"
                 />
               </div>
               <div className="mt-4 flex gap-3">
@@ -239,17 +287,20 @@ export default function CheckoutPage() {
                 {t("steps.payment")}
               </h2>
 
-              <div className="border-stone/60 border p-7">
+              <div className="border-stone/60 rounded-xl border p-6 sm:p-7">
                 <p className="text-charcoal/50 text-[13px]">{t("stripeNote")}</p>
-                <div className="bg-stone mt-4 p-4">
+                <div className="bg-stone mt-4 rounded-lg p-4">
                   <p className="text-charcoal/40 text-[11px]">{t("testCard")}</p>
                 </div>
               </div>
 
               {error && (
-                <p className="text-error text-[13px]" role="alert">
-                  {error}
-                </p>
+                <div
+                  className="bg-error/5 border-error/20 rounded-lg border px-4 py-3"
+                  role="alert"
+                >
+                  <p className="text-error text-[13px]">{error}</p>
+                </div>
               )}
 
               <p className="text-charcoal/40 text-[11px]">{t("freeReturns")}</p>
@@ -273,14 +324,14 @@ export default function CheckoutPage() {
 
         {/* Order Summary */}
         <div className="lg:col-span-2">
-          <div className="border-stone/60 sticky top-28 border p-7">
+          <div className="border-stone/60 sticky top-28 rounded-xl border p-6 sm:p-7">
             <h3 className="text-navy mb-5 text-[11px] font-semibold tracking-[0.15em] uppercase">
               {t("orderSummary")}
             </h3>
             <div className="flex flex-col gap-4">
               {items.map((item) => (
                 <div key={item.variantId} className="flex items-center gap-3">
-                  <div className="bg-stone relative h-14 w-11 shrink-0 overflow-hidden">
+                  <div className="bg-stone relative h-14 w-11 shrink-0 overflow-hidden rounded-lg">
                     {item.image && (
                       <Image
                         src={item.image}

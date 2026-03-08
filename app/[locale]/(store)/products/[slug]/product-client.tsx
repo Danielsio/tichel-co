@@ -50,10 +50,10 @@ export function ProductPageClient({
   ];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 lg:px-6">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8 lg:px-6">
       <Breadcrumb items={breadcrumbItems} />
 
-      <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <div className="mt-6 grid gap-8 sm:mt-8 lg:grid-cols-2 lg:gap-16">
         <ProductGallery images={images} />
 
         <div className="flex flex-col">
@@ -86,13 +86,15 @@ export function ProductPageClient({
 
           <div className="mt-3">
             {selectedVariant.stockQty > 0 ? (
-              <span className="text-success/80 text-[12px] font-medium tracking-wide">
+              <span className="text-success/80 inline-flex items-center gap-1.5 text-[12px] font-medium tracking-wide">
+                <span className="bg-success inline-block h-1.5 w-1.5 rounded-full" />
                 {selectedVariant.stockQty <= 5
                   ? t("lowStock", { count: selectedVariant.stockQty })
                   : t("inStock")}
               </span>
             ) : (
-              <span className="text-error text-[12px] font-medium tracking-wide">
+              <span className="text-error inline-flex items-center gap-1.5 text-[12px] font-medium tracking-wide">
+                <span className="bg-error inline-block h-1.5 w-1.5 rounded-full" />
                 {t("outOfStock")}
               </span>
             )}
@@ -105,18 +107,19 @@ export function ProductPageClient({
               <h3 className="text-navy/60 mb-3 text-[11px] font-semibold tracking-[0.15em] uppercase">
                 {t("color")}: <span className="text-navy">{selectedVariant.color}</span>
               </h3>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {product.variants.map((variant, idx) => (
                   <button
                     key={variant.id}
                     onClick={() => setSelectedVariantIdx(idx)}
                     aria-pressed={idx === selectedVariantIdx}
                     className={cn(
-                      "cursor-pointer border px-4 py-2.5 text-[13px] transition-all duration-200",
+                      "cursor-pointer rounded-lg border px-4 py-2.5 text-[13px] transition-all duration-200",
                       idx === selectedVariantIdx
-                        ? "border-navy text-navy font-medium"
+                        ? "border-navy bg-navy/5 text-navy font-medium"
                         : "border-stone text-charcoal/50 hover:border-navy/30",
-                      variant.stockQty === 0 && "opacity-30",
+                      variant.stockQty === 0 &&
+                        "pointer-events-none line-through opacity-30",
                     )}
                   >
                     {variant.color}
@@ -146,26 +149,28 @@ export function ProductPageClient({
             stockQty={selectedVariant.stockQty}
           />
 
-          <div className="border-stone/60 mt-10 border-t pt-8">
-            <h3 className="text-navy mb-3 text-[11px] font-semibold tracking-[0.15em] uppercase">
-              {t("description")}
-            </h3>
-            <p className="text-charcoal/60 text-[14px] leading-[1.8]">
-              {product.description}
-            </p>
-          </div>
+          <div className="border-stone/60 mt-10 space-y-6 border-t pt-8">
+            <div>
+              <h3 className="text-navy mb-3 text-[11px] font-semibold tracking-[0.15em] uppercase">
+                {t("description")}
+              </h3>
+              <p className="text-charcoal/60 text-[14px] leading-[1.8]">
+                {product.description}
+              </p>
+            </div>
 
-          <div className="border-stone/60 mt-6 border-t pt-6">
-            <h3 className="text-navy mb-2 text-[11px] font-semibold tracking-[0.15em] uppercase">
-              {t("shipping")}
-            </h3>
-            <p className="text-charcoal/50 text-[13px]">{t("shippingText")}</p>
+            <div className="border-stone/60 border-t pt-6">
+              <h3 className="text-navy mb-2 text-[11px] font-semibold tracking-[0.15em] uppercase">
+                {t("shipping")}
+              </h3>
+              <p className="text-charcoal/50 text-[13px]">{t("shippingText")}</p>
+            </div>
           </div>
         </div>
       </div>
 
       {relatedProducts.length > 0 && (
-        <section className="border-stone/60 mt-24 border-t pt-16">
+        <section className="border-stone/60 mt-20 border-t pt-16 sm:mt-24">
           <h2 className="font-display text-navy mb-10 text-center text-2xl font-semibold md:text-3xl">
             {t("completeTheLook")}
           </h2>
