@@ -1,8 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
 
@@ -16,8 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with: { version: 9 }
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -30,8 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with: { version: 9 }
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -44,8 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with: { version: 9 }
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -59,14 +54,23 @@ jobs:
           path: coverage/
           retention-days: 14
 
+  firestore-validate:
+    name: Validate Firestore Config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate indexes JSON
+        run: node -e "const f=require('./firestore.indexes.json'); if(!f.indexes||!Array.isArray(f.indexes)) throw new Error('Missing indexes array'); f.indexes.forEach((idx,i)=>{if(!idx.collectionGroup) throw new Error('Index '+i+' missing collectionGroup'); if(!idx.fields||idx.fields.length<2) throw new Error('Index '+i+' needs >=2 fields')}); console.log('All '+f.indexes.length+' indexes valid')"
+      - name: Validate rules file exists
+        run: test -f firestore.rules || (echo "firestore.rules missing" && exit 1)
+
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [type-check, lint, unit-tests]
+    needs: [type-check, lint, unit-tests, firestore-validate]
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with: { version: 9 }
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -95,8 +99,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: pnpm/action-setup@v3
-        with: { version: 9 }
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
