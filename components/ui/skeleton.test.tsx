@@ -18,13 +18,13 @@ describe("Skeleton", () => {
   it("applies text variant styles", () => {
     const { container } = render(<Skeleton variant="text" />);
     const div = container.firstChild as HTMLElement;
-    expect(div).toHaveClass("h-4", "rounded-sm");
+    expect(div).toHaveClass("h-4", "rounded-md");
   });
 
   it("applies rectangular variant styles", () => {
     const { container } = render(<Skeleton variant="rectangular" />);
     const div = container.firstChild as HTMLElement;
-    expect(div).toHaveClass("rounded-sm");
+    expect(div).toHaveClass("rounded-xl");
   });
 });
 

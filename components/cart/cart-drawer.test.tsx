@@ -150,8 +150,8 @@ describe("CartDrawer", () => {
   it("renders quantity controls", () => {
     currentStore = storeWithItems;
     render(<CartDrawer />);
-    expect(screen.getByLabelText("decreaseQty")).toBeInTheDocument();
-    expect(screen.getByLabelText("increaseQty")).toBeInTheDocument();
+    expect(screen.getByLabelText("decrease")).toBeInTheDocument();
+    expect(screen.getByLabelText("increase")).toBeInTheDocument();
     expect(screen.getByText("2")).toBeInTheDocument();
   });
 });
