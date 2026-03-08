@@ -118,8 +118,7 @@ export function ProductPageClient({
                       idx === selectedVariantIdx
                         ? "border-navy bg-navy/5 text-navy font-medium"
                         : "border-stone text-charcoal/50 hover:border-navy/30",
-                      variant.stockQty === 0 &&
-                        "pointer-events-none line-through opacity-30",
+                      variant.stockQty === 0 && "line-through opacity-30",
                     )}
                   >
                     {variant.color}

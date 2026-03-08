@@ -67,7 +67,7 @@ const CartItemRow = memo(function CartItemRow({ item }: { item: CartItem }) {
             <button
               onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
               className="border-stone hover:border-navy/20 hover:bg-navy/5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-s-lg border text-[14px] transition-all"
-              aria-label={t("decrease")}
+              aria-label={t("decreaseQty")}
             >
               −
             </button>
@@ -77,7 +77,7 @@ const CartItemRow = memo(function CartItemRow({ item }: { item: CartItem }) {
             <button
               onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
               className="border-stone hover:border-navy/20 hover:bg-navy/5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-e-lg border text-[14px] transition-all"
-              aria-label={t("increase")}
+              aria-label={t("increaseQty")}
             >
               +
             </button>
