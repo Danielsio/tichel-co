@@ -17,6 +17,14 @@ vi.mock("web-vitals", () => ({
 
 import { WebVitalsReporter } from "./web-vitals-reporter";
 
+function getCollect(mock: ReturnType<typeof vi.fn>): (m: unknown) => void {
+  return mock.mock.calls[0]![0] as (m: unknown) => void;
+}
+
+function getLoggedStr(spy: ReturnType<typeof vi.spyOn>): string {
+  return spy.mock.calls[0]![0] as string;
+}
+
 describe("WebVitalsReporter", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -74,14 +82,14 @@ describe("WebVitalsReporter", () => {
 
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnTTFB.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnTTFB);
     collectCb({ name: "TTFB", value: 150, rating: "good" });
     collectCb({ name: "FCP", value: 800, rating: "good" });
 
     vi.advanceTimersByTime(3500);
 
     expect(consoleSpy).toHaveBeenCalled();
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).toContain("Web Vitals");
     expect(loggedStr).toContain("TTFB");
 
@@ -93,13 +101,13 @@ describe("WebVitalsReporter", () => {
 
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnCLS.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnCLS);
     collectCb({ name: "CLS", value: 0.0523, rating: "good" });
 
     vi.advanceTimersByTime(3500);
 
     expect(consoleSpy).toHaveBeenCalled();
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).toContain("0.0523");
 
     consoleSpy.mockRestore();
@@ -110,12 +118,12 @@ describe("WebVitalsReporter", () => {
 
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnTTFB.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnTTFB);
     collectCb({ name: "TTFB", value: 80, rating: "good" });
 
     vi.advanceTimersByTime(3500);
 
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).toContain("DNS:");
     expect(loggedStr).toContain("Server:");
     expect(loggedStr).toContain("Transfer:");
@@ -128,12 +136,12 @@ describe("WebVitalsReporter", () => {
 
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnTTFB.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnTTFB);
     collectCb({ name: "TTFB", value: 50, rating: "good" });
 
     vi.advanceTimersByTime(3500);
 
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).toContain("Vercel");
 
     consoleSpy.mockRestore();
@@ -148,12 +156,12 @@ describe("WebVitalsReporter", () => {
     const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnTTFB.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnTTFB);
     collectCb({ name: "TTFB", value: 50, rating: "good" });
 
     vi.advanceTimersByTime(3500);
 
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).toContain("Firebase");
 
     consoleSpy.mockRestore();
@@ -168,12 +176,12 @@ describe("WebVitalsReporter", () => {
     const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnTTFB.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnTTFB);
     collectCb({ name: "TTFB", value: 50, rating: "good" });
 
     vi.advanceTimersByTime(3500);
 
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).toContain("custom.example.com");
 
     consoleSpy.mockRestore();
@@ -190,12 +198,12 @@ describe("WebVitalsReporter", () => {
     const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnTTFB.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnTTFB);
     collectCb({ name: "TTFB", value: 50, rating: "good" });
 
     vi.advanceTimersByTime(3500);
 
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).not.toContain("DNS:");
 
     consoleSpy.mockRestore();
@@ -206,7 +214,7 @@ describe("WebVitalsReporter", () => {
 
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnTTFB.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnTTFB);
     collectCb({ name: "TTFB", value: 50, rating: "good" });
 
     vi.advanceTimersByTime(1000);
@@ -215,7 +223,7 @@ describe("WebVitalsReporter", () => {
     vi.advanceTimersByTime(3500);
 
     expect(consoleSpy).toHaveBeenCalledTimes(1);
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).toContain("TTFB");
     expect(loggedStr).toContain("FCP");
 
@@ -227,12 +235,12 @@ describe("WebVitalsReporter", () => {
 
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnTTFB.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnTTFB);
     collectCb({ name: "TTFB", value: 0.123, rating: "good" });
 
     vi.advanceTimersByTime(3500);
 
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).toContain("0.123");
 
     consoleSpy.mockRestore();
@@ -264,12 +272,12 @@ describe("WebVitalsReporter", () => {
     const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     render(<WebVitalsReporter />);
 
-    const collectCb = mockOnTTFB.mock.calls[0][0] as (m: unknown) => void;
+    const collectCb = getCollect(mockOnTTFB);
     collectCb({ name: "TTFB", value: 50, rating: "good" });
 
     vi.advanceTimersByTime(3500);
 
-    const loggedStr = consoleSpy.mock.calls[0]![0] as string;
+    const loggedStr = getLoggedStr(consoleSpy);
     expect(loggedStr).toContain("TLS: 0ms");
 
     consoleSpy.mockRestore();
