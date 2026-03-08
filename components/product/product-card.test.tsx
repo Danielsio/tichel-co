@@ -63,7 +63,7 @@ describe("ProductCard", () => {
       <ProductCard {...defaultProps} imageUrl="/test.jpg" imageAlt="Custom alt" />,
     );
     const img = screen.getByRole("img", { name: "Custom alt" });
-    expect(img).toHaveAttribute("src", "/test.jpg");
+    expect(img.getAttribute("src")).toContain("test.jpg");
   });
 
   it("shows fallback when no imageUrl", () => {

@@ -75,7 +75,7 @@ const storeWithItems: MockStore = {
       name: "Silk Tichel",
       price: 15000,
       quantity: 2,
-      image: "img.jpg",
+      image: "/img.jpg",
       color: "Blue",
       size: "M",
     },
