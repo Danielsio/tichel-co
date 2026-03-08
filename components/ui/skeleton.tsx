@@ -18,8 +18,8 @@ export function Skeleton({
       className={cn(
         "bg-stone animate-pulse",
         variant === "circular" && "rounded-full",
-        variant === "text" && "h-4 rounded-sm",
-        variant === "rectangular" && "rounded-sm",
+        variant === "text" && "h-4 rounded-md",
+        variant === "rectangular" && "rounded-xl",
         className,
       )}
       style={{ width, height }}
@@ -31,7 +31,7 @@ export function Skeleton({
 export function ProductCardSkeleton() {
   return (
     <div className="flex flex-col gap-3">
-      <Skeleton className="aspect-[3/4] w-full" />
+      <Skeleton className="aspect-[3/4] w-full rounded-xl" />
       <Skeleton variant="text" className="w-3/4" />
       <Skeleton variant="text" className="w-1/3" />
     </div>

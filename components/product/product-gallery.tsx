@@ -36,7 +36,7 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
 
   if (images.length === 0) {
     return (
-      <div className="bg-stone flex aspect-[3/4] items-center justify-center">
+      <div className="bg-stone flex aspect-[3/4] items-center justify-center rounded-2xl">
         <span className="font-display text-charcoal/10 text-2xl">Tichel & Co.</span>
       </div>
     );
@@ -47,7 +47,7 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
   return (
     <div className="flex flex-col gap-3 md:flex-row-reverse md:gap-4">
       {/* Main Image */}
-      <div className="bg-stone group relative aspect-[3/4] flex-1 overflow-hidden">
+      <div className="group bg-stone relative aspect-[3/4] flex-1 overflow-hidden rounded-2xl">
         {activeImage && (
           <Image
             src={activeImage.url}
@@ -58,12 +58,27 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           />
         )}
+        {images.length > 1 && (
+          <div className="absolute inset-x-0 bottom-4 flex justify-center gap-1.5 md:hidden">
+            {images.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-300",
+                  activeIndex === idx ? "bg-navy w-6" : "bg-navy/20 w-1.5",
+                )}
+                aria-label={t("imageNumber", { n: idx + 1 })}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Thumbnails */}
       {images.length > 1 && (
         <div
-          className="flex gap-2 md:w-[72px] md:flex-col"
+          className="hidden gap-2 md:flex md:w-20 md:flex-col lg:w-[88px]"
           role="tablist"
           onKeyDown={handleKeyDown}
         >
@@ -78,17 +93,17 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
               tabIndex={activeIndex === idx ? 0 : -1}
               onClick={() => setActiveIndex(idx)}
               className={cn(
-                "relative aspect-square w-16 shrink-0 cursor-pointer overflow-hidden transition-all duration-300 md:w-full",
+                "relative aspect-square w-full shrink-0 cursor-pointer overflow-hidden rounded-xl transition-all duration-300",
                 activeIndex === idx
-                  ? "ring-navy opacity-100 ring-1"
-                  : "opacity-40 hover:opacity-70",
+                  ? "ring-navy ring-offset-ivory ring-2 ring-offset-2"
+                  : "opacity-50 hover:opacity-80",
               )}
             >
               <Image
                 src={image.url}
                 alt={image.altText ?? t("imageNumber", { n: idx + 1 })}
                 fill
-                sizes="72px"
+                sizes="88px"
                 className="object-cover"
               />
             </button>

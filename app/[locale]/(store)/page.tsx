@@ -52,8 +52,8 @@ function HomePageContent({
 
   return (
     <>
-      {/* Hero — Full Impact */}
-      <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden">
+      {/* Hero */}
+      <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden sm:min-h-[90vh]">
         <div className="gradient-luxury absolute inset-0" />
         <div
           className="absolute inset-0 opacity-[0.03]"
@@ -63,17 +63,17 @@ function HomePageContent({
           }}
         />
 
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <p className="text-gold animate-fade-in mb-6 text-[11px] font-semibold tracking-[0.3em] uppercase">
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
+          <p className="text-gold animate-fade-in mb-4 text-[10px] font-semibold tracking-[0.3em] uppercase sm:mb-6 sm:text-[11px]">
             {t("hero.tag")}
           </p>
-          <h1 className="font-display text-ivory animate-fade-up text-5xl leading-[1.08] font-semibold text-balance md:text-7xl lg:text-[5.5rem]">
+          <h1 className="font-display text-ivory animate-fade-up text-4xl leading-[1.08] font-semibold text-balance sm:text-5xl md:text-7xl lg:text-[5.5rem]">
             {t("hero.title")}
           </h1>
-          <p className="text-ivory/50 animate-fade-up mx-auto mt-8 max-w-lg text-base leading-relaxed [animation-delay:150ms]">
+          <p className="text-ivory/50 animate-fade-up mx-auto mt-6 max-w-lg text-[14px] leading-relaxed [animation-delay:150ms] sm:mt-8 sm:text-base">
             {t("hero.subtitle")}
           </p>
-          <div className="animate-fade-up mt-12 flex flex-wrap items-center justify-center gap-4 [animation-delay:300ms]">
+          <div className="animate-fade-up mt-10 flex flex-wrap items-center justify-center gap-3 [animation-delay:300ms] sm:mt-12 sm:gap-4">
             <Link href="/collections/signature-collection">
               <Button
                 size="lg"
@@ -94,30 +94,27 @@ function HomePageContent({
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="animate-fade-in absolute bottom-10 left-1/2 -translate-x-1/2 [animation-delay:800ms]">
+        <div className="animate-fade-in absolute bottom-8 left-1/2 -translate-x-1/2 [animation-delay:800ms] sm:bottom-10">
           <div className="border-ivory/20 flex h-10 w-6 items-start justify-center rounded-full border p-1.5">
             <div className="bg-ivory/50 h-2 w-1 animate-bounce rounded-full" />
           </div>
         </div>
       </section>
 
-      {/* Collections — Editorial Grid */}
-      <section className="mx-auto max-w-7xl px-4 py-24 lg:px-6">
-        <div className="mb-14 text-center">
-          <p className="text-gold mb-3 text-[11px] font-semibold tracking-[0.3em] uppercase">
-            {t("collections.subtitle")}
-          </p>
+      {/* Collections Grid */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-20 lg:px-6 lg:py-24">
+        <div className="mb-10 text-center sm:mb-14">
+          <p className="section-heading">{t("collections.subtitle")}</p>
           <h2 className="font-display text-navy text-3xl font-semibold text-balance md:text-4xl lg:text-5xl">
             {t("collections.title")}
           </h2>
         </div>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5 lg:gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
           {collections.map((col, i) => (
             <Link
               key={col.id}
               href={`/collections/${col.slug}` as never}
-              className="group relative flex flex-col overflow-hidden"
+              className="group relative flex flex-col overflow-hidden rounded-xl"
               style={{ animationDelay: `${i * 100}ms` }}
             >
               <div className="relative aspect-[3/4] overflow-hidden">
@@ -129,11 +126,11 @@ function HomePageContent({
                   className="object-cover transition-all duration-700 ease-out group-hover:scale-105"
                 />
                 <div className="from-navy/70 via-navy/20 group-hover:from-navy/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500" />
-                <div className="absolute inset-x-0 bottom-0 p-4 lg:p-5">
-                  <h3 className="text-ivory font-display text-lg font-semibold lg:text-xl">
+                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 lg:p-5">
+                  <h3 className="text-ivory font-display text-base font-semibold sm:text-lg lg:text-xl">
                     {col.title}
                   </h3>
-                  <span className="text-ivory/50 mt-1 block text-[11px] tracking-[0.15em] uppercase opacity-0 transition-all duration-300 group-hover:opacity-100">
+                  <span className="text-ivory/50 mt-1 block text-[10px] tracking-[0.15em] uppercase opacity-0 transition-all duration-300 group-hover:opacity-100 sm:text-[11px]">
                     {t("collections.viewCollection")}
                   </span>
                 </div>
@@ -144,13 +141,11 @@ function HomePageContent({
       </section>
 
       {/* Featured Products */}
-      <section className="border-stone/60 border-y bg-white py-24">
+      <section className="border-stone/60 border-y bg-white py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 lg:px-6">
-          <div className="mb-14 flex items-end justify-between">
+          <div className="mb-10 flex items-end justify-between sm:mb-14">
             <div>
-              <p className="text-gold mb-3 text-[11px] font-semibold tracking-[0.3em] uppercase">
-                {t("featured.subtitle")}
-              </p>
+              <p className="section-heading">{t("featured.subtitle")}</p>
               <h2 className="font-display text-navy text-3xl font-semibold md:text-4xl">
                 {t("featured.title")}
               </h2>
@@ -161,7 +156,7 @@ function HomePageContent({
               </Button>
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-4 sm:gap-y-10 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
             {featured.map((product) => (
               <FeaturedProductCard key={product.id} product={product} />
             ))}
@@ -169,8 +164,8 @@ function HomePageContent({
         </div>
       </section>
 
-      {/* Brand Story Banner */}
-      <section className="gradient-luxury relative overflow-hidden py-28">
+      {/* Brand Story */}
+      <section className="gradient-luxury relative overflow-hidden py-20 sm:py-24 lg:py-28">
         <div
           className="absolute inset-0 opacity-[0.02]"
           style={{
@@ -178,17 +173,15 @@ function HomePageContent({
             backgroundSize: "24px 24px",
           }}
         />
-        <div className="relative mx-auto max-w-3xl px-4 text-center">
-          <p className="text-gold mb-5 text-[11px] font-semibold tracking-[0.3em] uppercase">
-            {t("brand.tag")}
-          </p>
-          <h2 className="font-display text-ivory text-3xl leading-snug font-semibold text-balance md:text-4xl lg:text-5xl">
+        <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
+          <p className="section-heading">{t("brand.tag")}</p>
+          <h2 className="font-display text-ivory text-2xl leading-snug font-semibold text-balance sm:text-3xl md:text-4xl lg:text-5xl">
             {t("brand.title")}
           </h2>
-          <p className="text-ivory/50 mx-auto mt-8 max-w-xl text-base leading-relaxed">
+          <p className="text-ivory/50 mx-auto mt-6 max-w-xl text-[14px] leading-relaxed sm:mt-8 sm:text-base">
             {t("brand.text")}
           </p>
-          <Link href="/about" className="mt-10 inline-block">
+          <Link href="/about" className="mt-8 inline-block sm:mt-10">
             <Button
               variant="secondary"
               className="border-ivory/20 text-ivory hover:border-ivory hover:bg-ivory hover:text-navy"
@@ -200,13 +193,11 @@ function HomePageContent({
       </section>
 
       {/* Custom Design CTA */}
-      <section className="mx-auto max-w-7xl px-4 py-24 lg:px-6">
-        <div className="border-stone overflow-hidden border">
-          <div className="flex flex-col items-center gap-10 p-10 text-center md:flex-row md:p-16 md:text-start">
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-20 lg:px-6 lg:py-24">
+        <div className="border-stone overflow-hidden rounded-2xl border bg-white">
+          <div className="flex flex-col items-center gap-8 p-8 text-center sm:p-10 md:flex-row md:p-16 md:text-start">
             <div className="flex-1">
-              <p className="text-gold mb-3 text-[11px] font-semibold tracking-[0.3em] uppercase">
-                {t("custom.tag")}
-              </p>
+              <p className="section-heading">{t("custom.tag")}</p>
               <h2 className="font-display text-navy text-2xl font-semibold md:text-3xl lg:text-4xl">
                 {t("custom.title")}
               </h2>

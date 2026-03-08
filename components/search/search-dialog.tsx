@@ -102,7 +102,7 @@ export function SearchDialog() {
 
       {/* Panel */}
       <div className="relative mx-auto mt-[10vh] w-full max-w-xl px-4">
-        <div className="animate-in slide-in-from-top-4 fade-in overflow-hidden rounded-lg bg-white shadow-2xl duration-200">
+        <div className="animate-in slide-in-from-top-4 fade-in overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-overlay)] duration-200">
           {/* Search input */}
           <div className="border-stone flex items-center gap-3 border-b px-4">
             <svg
@@ -156,7 +156,7 @@ export function SearchDialog() {
                       "hover:bg-stone/50 flex items-center gap-3 rounded-md px-3 py-2.5 transition-colors",
                     )}
                   >
-                    <div className="bg-stone relative h-12 w-10 shrink-0 overflow-hidden rounded-sm">
+                    <div className="bg-stone relative h-12 w-10 shrink-0 overflow-hidden rounded-lg">
                       {product.imageUrl ? (
                         <Image
                           src={product.imageUrl}

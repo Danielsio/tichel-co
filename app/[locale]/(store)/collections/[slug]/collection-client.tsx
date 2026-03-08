@@ -79,7 +79,7 @@ export function CollectionPageClient({
 
   return (
     <>
-      <section className="gradient-luxury relative overflow-hidden py-16 lg:py-20">
+      <section className="gradient-luxury relative overflow-hidden py-14 sm:py-16 lg:py-20">
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -101,8 +101,8 @@ export function CollectionPageClient({
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-10 lg:px-6">
-        <div className="border-stone/60 mb-8 flex flex-wrap items-center justify-between gap-4 border-b pb-5">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:py-10 lg:px-6">
+        <div className="border-stone/60 mb-6 flex flex-wrap items-center justify-between gap-4 border-b pb-5 sm:mb-8">
           <p className="text-charcoal/50 text-[13px]">
             {tCol("productsCount", { count: filteredProducts.length })}
           </p>
@@ -110,7 +110,7 @@ export function CollectionPageClient({
             <Select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="w-auto border-0 bg-transparent text-[13px]"
+              className="h-10 w-auto rounded-lg border-0 bg-transparent text-[13px]"
             >
               <option value="newest">{t("sortNewest")}</option>
               <option value="price-low">{t("sortPriceLow")}</option>
@@ -119,7 +119,7 @@ export function CollectionPageClient({
           </div>
         </div>
 
-        <div className="flex gap-10">
+        <div className="flex gap-8 lg:gap-10">
           <aside className="hidden w-52 shrink-0 lg:block">
             <div className="sticky top-28">
               <div className="mb-6 flex items-center justify-between">
@@ -151,7 +151,7 @@ export function CollectionPageClient({
                           type="checkbox"
                           checked={selectedFabrics.includes(fabric)}
                           onChange={() => toggleFabric(fabric)}
-                          className="accent-navy h-3.5 w-3.5"
+                          className="accent-navy h-4 w-4 rounded"
                         />
                         <span className="text-charcoal/80">{fabric}</span>
                       </label>
@@ -169,7 +169,7 @@ export function CollectionPageClient({
                     <Link
                       key={col.id}
                       href={`/collections/${col.slug}` as never}
-                      className={`py-1.5 text-[13px] transition-colors duration-200 ${
+                      className={`rounded-md py-2 text-[13px] transition-colors duration-200 ${
                         col.slug === slug
                           ? "text-navy font-medium"
                           : "text-charcoal/50 hover:text-navy"
@@ -190,10 +190,22 @@ export function CollectionPageClient({
                   <button
                     key={fabric}
                     onClick={() => toggleFabric(fabric)}
-                    className="border-stone text-charcoal/60 hover:border-navy/30 flex cursor-pointer items-center gap-1.5 border px-3 py-1.5 text-[11px] font-medium tracking-wide transition-colors"
+                    className="border-stone text-charcoal/60 hover:border-error/30 hover:text-error flex cursor-pointer items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[11px] font-medium tracking-wide transition-all"
                   >
                     {fabric}
-                    <span className="text-charcoal/30 text-[10px]">✕</span>
+                    <svg
+                      className="h-3 w-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18 18 6M6 6l12 12"
+                      />
+                    </svg>
                   </button>
                 ))}
               </div>
@@ -212,7 +224,7 @@ export function CollectionPageClient({
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:gap-x-6">
+              <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-4 sm:gap-y-10 md:grid-cols-3 lg:gap-x-6">
                 {filteredProducts.map((product) => (
                   <CollectionProductCard key={product.id} product={product} />
                 ))}

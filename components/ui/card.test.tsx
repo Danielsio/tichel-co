@@ -37,7 +37,7 @@ describe("Card", () => {
   it("applies hover styles", () => {
     const { container } = render(<Card hover>Hover</Card>);
     const article = container.querySelector("article");
-    expect(article).toHaveClass("hover:shadow-md");
+    expect(article).toHaveClass("hover:shadow-[var(--shadow-card)]");
   });
 
   it("CardHeader, CardTitle, CardContent, CardFooter render children", () => {

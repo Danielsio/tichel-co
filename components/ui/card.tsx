@@ -23,9 +23,10 @@ export function Card({
   return (
     <article
       className={cn(
-        "border-stone rounded-sm border bg-white",
+        "border-stone rounded-xl border bg-white",
         paddingStyles[padding],
-        hover && "transition-shadow duration-200 hover:shadow-md",
+        hover &&
+          "transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[var(--shadow-card)]",
         className,
       )}
     >

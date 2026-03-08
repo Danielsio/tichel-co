@@ -7,6 +7,7 @@ import { Link } from "@/lib/i18n/navigation";
 import { signUp, signInWithGoogle } from "@/lib/firebase/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { GoogleIcon } from "@/components/icons/google";
 
 export default function RegisterPage() {
   const t = useTranslations("auth");
@@ -55,11 +56,40 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
-      <div className="w-full max-w-[400px]">
+      <div className="w-full max-w-[420px]">
         <div className="mb-10 text-center">
           <h1 className="font-display text-navy text-3xl font-semibold lg:text-4xl">
             {t("registerTitle")}
           </h1>
+          <p className="text-charcoal/40 mt-3 text-[14px]">
+            {t("hasAccount")}{" "}
+            <Link
+              href="/login"
+              className="text-navy font-medium underline underline-offset-4 hover:no-underline"
+            >
+              {t("loginLink")}
+            </Link>
+          </p>
+        </div>
+
+        <Button
+          variant="secondary"
+          size="lg"
+          fullWidth
+          onClick={handleGoogle}
+          type="button"
+          iconStart={<GoogleIcon className="h-5 w-5" />}
+          className="mb-8 tracking-normal normal-case"
+        >
+          {t("googleButton")}
+        </Button>
+
+        <div className="mb-8 flex items-center gap-4">
+          <div className="bg-stone-dark h-px flex-1" />
+          <span className="text-charcoal/30 text-[11px] tracking-[0.15em] uppercase">
+            {t("or")}
+          </span>
+          <div className="bg-stone-dark h-px flex-1" />
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -70,6 +100,7 @@ export default function RegisterPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="email"
           />
 
           <Input
@@ -80,6 +111,7 @@ export default function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
+            autoComplete="new-password"
           />
 
           <Input
@@ -90,12 +122,16 @@ export default function RegisterPage() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             minLength={6}
+            autoComplete="new-password"
           />
 
           {error && (
-            <p className="text-error text-[13px]" role="alert">
-              {error}
-            </p>
+            <div
+              className="bg-error/5 border-error/20 rounded-lg border px-4 py-3"
+              role="alert"
+            >
+              <p className="text-error text-[13px]">{error}</p>
+            </div>
           )}
 
           <Button
@@ -108,31 +144,6 @@ export default function RegisterPage() {
             {t("registerButton")}
           </Button>
         </form>
-
-        <div className="my-8 flex items-center gap-4">
-          <div className="bg-stone h-px flex-1" />
-          <span className="text-charcoal/30 text-[11px] tracking-[0.15em] uppercase">
-            {t("or")}
-          </span>
-          <div className="bg-stone h-px flex-1" />
-        </div>
-
-        <Button
-          variant="secondary"
-          size="lg"
-          fullWidth
-          onClick={handleGoogle}
-          type="button"
-        >
-          {t("googleButton")}
-        </Button>
-
-        <p className="text-charcoal/50 mt-10 text-center text-[13px]">
-          {t("hasAccount")}{" "}
-          <Link href="/login" className="text-navy font-medium hover:underline">
-            {t("loginLink")}
-          </Link>
-        </p>
       </div>
     </div>
   );

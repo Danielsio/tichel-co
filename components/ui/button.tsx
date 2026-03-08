@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, type ButtonHTMLAttributes } from "react";
+import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "destructive" | "link";
@@ -11,10 +11,13 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   isLoading?: boolean;
   fullWidth?: boolean;
+  iconStart?: ReactNode;
+  iconEnd?: ReactNode;
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: "bg-navy text-ivory hover:bg-navy/90 active:scale-[0.98] border border-navy",
+  primary:
+    "bg-navy text-ivory hover:bg-navy/90 active:scale-[0.98] border border-navy shadow-sm hover:shadow-md",
   secondary:
     "bg-transparent text-navy border border-navy/20 hover:border-navy hover:bg-navy hover:text-ivory active:scale-[0.98]",
   ghost:
@@ -25,9 +28,9 @@ const variantStyles: Record<ButtonVariant, string> = {
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "h-9 px-4 text-[12px] tracking-wider",
-  md: "h-12 px-6 text-[13px] tracking-wide",
-  lg: "h-14 px-10 text-[13px] tracking-wider",
+  sm: "h-9 px-4 text-[12px] tracking-wider rounded-md",
+  md: "h-11 px-6 text-[13px] tracking-wide rounded-lg",
+  lg: "h-[52px] px-10 text-[13px] tracking-wider rounded-lg",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -38,6 +41,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       size = "md",
       isLoading = false,
       fullWidth = false,
+      iconStart,
+      iconEnd,
       disabled,
       children,
       ...props
@@ -48,7 +53,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "font-body inline-flex cursor-pointer items-center justify-center gap-2 font-medium uppercase transition-all duration-300 ease-out",
+          "font-body inline-flex cursor-pointer items-center justify-center gap-2.5 font-medium uppercase transition-all duration-300 ease-out",
           "disabled:pointer-events-none disabled:opacity-40",
           variantStyles[variant],
           variant !== "link" && sizeStyles[size],
@@ -85,7 +90,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             <span>{children}</span>
           </>
         ) : (
-          children
+          <>
+            {iconStart && (
+              <span className="shrink-0 [&>svg]:h-5 [&>svg]:w-5">{iconStart}</span>
+            )}
+            {children}
+            {iconEnd && (
+              <span className="shrink-0 [&>svg]:h-4 [&>svg]:w-4">{iconEnd}</span>
+            )}
+          </>
         )}
       </button>
     );

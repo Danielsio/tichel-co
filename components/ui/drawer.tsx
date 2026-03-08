@@ -120,7 +120,7 @@ export function Drawer({
       <div
         ref={panelRef}
         className={cn(
-          "z-10 bg-white shadow-2xl transition-transform duration-300",
+          "z-10 bg-white shadow-[var(--shadow-overlay)] transition-transform duration-300",
           styles.panel,
           isOpen ? styles.open : styles.closed,
           className,
@@ -134,7 +134,7 @@ export function Drawer({
             </h2>
             <button
               onClick={onClose}
-              className="text-charcoal/30 hover:text-navy flex h-8 w-8 cursor-pointer items-center justify-center transition-colors duration-200"
+              className="text-charcoal/30 hover:text-navy hover:bg-navy/5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg transition-all duration-200"
               aria-label={closeLabel}
             >
               <svg

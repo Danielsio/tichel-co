@@ -33,11 +33,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={selectId}
             className={cn(
-              "border-stone text-charcoal h-12 w-full appearance-none border bg-white py-3 ps-4 pe-10 text-[14px] transition-all duration-200",
+              "border-stone text-charcoal h-12 w-full appearance-none rounded-lg border bg-white py-3 ps-4 pe-10 text-[14px] transition-all duration-200",
               "hover:border-navy/20",
-              "focus:border-navy focus:ring-0 focus:outline-none",
+              "focus:border-navy focus:ring-navy/10 focus:ring-1 focus:outline-none",
               "disabled:cursor-not-allowed disabled:opacity-50",
-              error && "border-error focus:border-error",
+              error && "border-error focus:border-error focus:ring-error/10",
               className,
             )}
             aria-invalid={!!error}
