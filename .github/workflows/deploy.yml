@@ -4,33 +4,27 @@ on:
   push:
     branches: [master]
 
-jobs:
-  deploy-functions-staging:
-    name: Deploy Cloud Functions (Staging)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with: { version: 9 }
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: cd functions && pnpm install --frozen-lockfile && pnpm build
-      - run: npm install -g firebase-tools
-      - run: firebase deploy --only functions --project ${{ secrets.FIREBASE_PROJECT_ID_DEV }} --non-interactive
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+permissions:
+  contents: read
+  id-token: write
 
-  deploy-firestore-staging:
-    name: Deploy Firestore Rules (Staging)
+jobs:
+  deploy-firestore:
+    name: Deploy Firestore Rules & Indexes
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/439958953518/locations/global/workloadIdentityPools/github-actions/providers/github-provider
+          service_account: github-actions-deploy@tichel-co.iam.gserviceaccount.com
+
       - run: npm install -g firebase-tools
-      - run: firebase deploy --only firestore --project ${{ secrets.FIREBASE_PROJECT_ID_DEV }} --non-interactive
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Deploy rules and indexes
+        run: firebase deploy --only firestore --project tichel-co --non-interactive
 
   # Frontend is deployed automatically by Firebase App Hosting
   # on every push to master (connected via GitHub integration).
