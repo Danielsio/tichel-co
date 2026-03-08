@@ -1,0 +1,97 @@
+name: Post-Deploy Smoke Test
+
+on:
+  # Runs after Firebase App Hosting completes a rollout
+  deployment_status:
+
+jobs:
+  smoke-test:
+    name: Smoke Test Production
+    runs-on: ubuntu-latest
+    if: >
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment == 'Production'
+    steps:
+      - name: Wait for deployment to stabilize
+        run: sleep 30
+
+      - name: Check /api/health
+        run: |
+          SITE_URL="${{ github.event.deployment_status.environment_url }}"
+          if [ -z "$SITE_URL" ]; then
+            SITE_URL="https://tichel-co--tichel-co.europe-west4.hosted.app"
+          fi
+          echo "Testing: $SITE_URL"
+
+          RESPONSE=$(curl -s -o /tmp/health.json -w "%{http_code}" \
+            --max-time 15 --retry 3 --retry-delay 10 \
+            "$SITE_URL/api/health")
+
+          echo "Status code: $RESPONSE"
+          cat /tmp/health.json | jq . 2>/dev/null || cat /tmp/health.json
+
+          if [ "$RESPONSE" != "200" ]; then
+            echo "::error::Health check failed with status $RESPONSE"
+            exit 1
+          fi
+
+          echo "Health check passed"
+
+      - name: Check homepage (Hebrew)
+        run: |
+          SITE_URL="${{ github.event.deployment_status.environment_url }}"
+          if [ -z "$SITE_URL" ]; then
+            SITE_URL="https://tichel-co--tichel-co.europe-west4.hosted.app"
+          fi
+
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            --max-time 15 --retry 3 --retry-delay 10 \
+            "$SITE_URL/he")
+
+          echo "Homepage status: $RESPONSE"
+          if [ "$RESPONSE" != "200" ]; then
+            echo "::error::Homepage returned $RESPONSE"
+            exit 1
+          fi
+
+      - name: Check collection page
+        run: |
+          SITE_URL="${{ github.event.deployment_status.environment_url }}"
+          if [ -z "$SITE_URL" ]; then
+            SITE_URL="https://tichel-co--tichel-co.europe-west4.hosted.app"
+          fi
+
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            --max-time 15 --retry 3 --retry-delay 10 \
+            "$SITE_URL/he/collections/signature-collection")
+
+          echo "Collection page status: $RESPONSE"
+          if [ "$RESPONSE" != "200" ]; then
+            echo "::error::Collection page returned $RESPONSE"
+            exit 1
+          fi
+
+      - name: Check product page
+        run: |
+          SITE_URL="${{ github.event.deployment_status.environment_url }}"
+          if [ -z "$SITE_URL" ]; then
+            SITE_URL="https://tichel-co--tichel-co.europe-west4.hosted.app"
+          fi
+
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            --max-time 15 --retry 3 --retry-delay 10 \
+            "$SITE_URL/he/products/ivory-silk-square-tichel")
+
+          echo "Product page status: $RESPONSE"
+          if [ "$RESPONSE" != "200" ]; then
+            echo "::error::Product page returned $RESPONSE"
+            exit 1
+          fi
+
+      - name: Report success
+        run: |
+          echo "All smoke tests passed!"
+          echo "- /api/health: 200"
+          echo "- /he (homepage): 200"
+          echo "- /he/collections/signature-collection: 200"
+          echo "- /he/products/ivory-silk-square-tichel: 200"
