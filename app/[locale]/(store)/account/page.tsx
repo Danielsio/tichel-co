@@ -111,7 +111,7 @@ function AccountCard({
 }: AccountCardProps) {
   return (
     <div
-      className={`glass-card group relative overflow-hidden rounded-sm p-8 transition-all duration-300 ${
+      className={`glass-card group relative overflow-hidden p-7 transition-all duration-300 sm:p-8 ${
         interactive ? "hover-lift cursor-pointer" : ""
       }`}
     >
@@ -216,13 +216,13 @@ export default function AccountPage() {
   const displayName = user.displayName || user.email?.split("@")[0] || "";
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 lg:px-6 lg:py-24">
+    <div className="mx-auto max-w-4xl px-4 py-12 sm:py-16 lg:px-6 lg:py-24">
       <div className="animate-fade-in flex flex-col items-center text-center">
         <Avatar
           src={user.photoURL}
           fallback={displayName}
           size="lg"
-          className="ring-gold/20 ring-offset-ivory h-20 w-20 text-lg ring-2 ring-offset-4"
+          className="ring-gold/20 ring-offset-ivory h-20 w-20 rounded-full text-lg ring-2 ring-offset-4"
         />
         <h1 className="font-display text-navy mt-6 text-3xl font-semibold lg:text-4xl">
           {t("welcome", { name: displayName })}
