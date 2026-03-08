@@ -220,6 +220,12 @@
     "switchLabel": "החלף לאנגלית",
     "current": "עברית"
   },
+  "search": {
+    "title": "חיפוש",
+    "placeholder": "חפשי מוצרים...",
+    "noResults": "לא נמצאו תוצאות",
+    "startTyping": "הקלידי כדי לחפש מוצרים"
+  },
   "filter": {
     "title": "סינון",
     "price": "מחיר",

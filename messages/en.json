@@ -220,6 +220,12 @@
     "switchLabel": "Switch to Hebrew",
     "current": "English"
   },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search products...",
+    "noResults": "No results found",
+    "startTyping": "Start typing to search products"
+  },
   "filter": {
     "title": "Filters",
     "price": "Price",
