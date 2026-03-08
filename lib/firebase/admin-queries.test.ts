@@ -247,6 +247,145 @@ describe("admin-queries", () => {
     });
   });
 
+  describe("toStoreProduct fallback values", () => {
+    it("handles missing optional fields with defaults", async () => {
+      const sparseDoc = {
+        id: "prod-sparse",
+        data: () => ({
+          priceCents: 5000,
+        }),
+      };
+
+      mockGet
+        .mockResolvedValueOnce({ empty: false, docs: [sparseDoc] })
+        .mockResolvedValueOnce({ docs: [] });
+
+      const result = await getProductBySlug("sparse");
+      expect(result).not.toBeNull();
+      expect(result!.slug).toBe("prod-sparse");
+      expect(result!.title).toBe("");
+      expect(result!.description).toBe("");
+      expect(result!.collectionIds).toEqual([]);
+      expect(result!.isFeatured).toBe(false);
+      expect(result!.isNew).toBe(false);
+      expect(result!.comparePriceCents).toBeUndefined();
+    });
+
+    it("uses comparePriceCents when provided", async () => {
+      const docWithCompare = {
+        id: "prod-sale",
+        data: () => ({
+          slug: "sale-item",
+          title: "Sale Item",
+          description: "On sale",
+          priceCents: 8000,
+          comparePriceCents: 12000,
+          collectionIds: ["col-1"],
+          isFeatured: true,
+          isNew: true,
+          publishedAt: new Date(),
+        }),
+      };
+
+      mockGet
+        .mockResolvedValueOnce({ empty: false, docs: [docWithCompare] })
+        .mockResolvedValueOnce({ docs: [] });
+
+      const result = await getProductBySlug("sale-item");
+      expect(result!.comparePriceCents).toBe(12000);
+      expect(result!.isFeatured).toBe(true);
+      expect(result!.isNew).toBe(true);
+    });
+  });
+
+  describe("toStoreCollection fallback values", () => {
+    it("handles missing optional fields with defaults", async () => {
+      const sparseColDoc = {
+        id: "col-sparse",
+        data: () => ({}),
+      };
+
+      mockGet.mockResolvedValue({ empty: false, docs: [sparseColDoc] });
+
+      const result = await getCollectionBySlug("sparse");
+      expect(result).not.toBeNull();
+      expect(result!.slug).toBe("col-sparse");
+      expect(result!.title).toBe("");
+      expect(result!.description).toBe("");
+      expect(result!.displayOrder).toBe(0);
+    });
+  });
+
+  describe("getRelatedProducts", () => {
+    it("returns empty when no products share collections", async () => {
+      const unrelatedProduct = {
+        id: "prod-3",
+        data: () => ({
+          slug: "unrelated",
+          title: "Unrelated",
+          description: "No shared collections",
+          priceCents: 5000,
+          collectionIds: ["col-99"],
+          isFeatured: false,
+          isNew: false,
+          publishedAt: new Date(),
+        }),
+      };
+
+      mockGet
+        .mockResolvedValueOnce({ docs: [unrelatedProduct] })
+        .mockResolvedValue({ docs: [] });
+
+      const current = {
+        id: "prod-1",
+        slug: "silk-tichel",
+        title: "Silk Tichel",
+        description: "A nice tichel",
+        priceCents: 15000,
+        collectionIds: ["col-1"],
+        isFeatured: true,
+        isNew: false,
+        variants: [],
+      };
+
+      const result = await getRelatedProducts(current);
+      expect(result).toHaveLength(0);
+    });
+
+    it("respects limit parameter", async () => {
+      const products = Array.from({ length: 6 }, (_, i) => ({
+        id: `prod-${i + 2}`,
+        data: () => ({
+          slug: `product-${i + 2}`,
+          title: `Product ${i + 2}`,
+          description: "",
+          priceCents: 5000,
+          collectionIds: ["col-1"],
+          isFeatured: false,
+          isNew: false,
+          publishedAt: new Date(),
+        }),
+      }));
+
+      mockGet.mockResolvedValueOnce({ docs: products }).mockResolvedValue({ docs: [] });
+
+      const current = {
+        id: "prod-1",
+        slug: "silk-tichel",
+        title: "Silk Tichel",
+        description: "",
+        priceCents: 15000,
+        collectionIds: ["col-1"],
+        isFeatured: true,
+        isNew: false,
+        variants: [],
+      };
+
+      const result = await getRelatedProducts(current, 2);
+      expect(result).toHaveLength(2);
+    });
+  });
+
   describe("lookupProductPrice", () => {
     it("returns price when product and variant exist", async () => {
       mockGet

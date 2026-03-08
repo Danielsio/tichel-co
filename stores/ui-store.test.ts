@@ -3,7 +3,7 @@ import { useUIStore } from "./ui-store";
 
 describe("UI store", () => {
   beforeEach(() => {
-    useUIStore.setState({ isMobileMenuOpen: false });
+    useUIStore.setState({ isMobileMenuOpen: false, isSearchOpen: false });
   });
 
   it("starts with mobile menu closed", () => {
@@ -26,5 +26,20 @@ describe("UI store", () => {
     expect(useUIStore.getState().isMobileMenuOpen).toBe(true);
     useUIStore.getState().toggleMobileMenu();
     expect(useUIStore.getState().isMobileMenuOpen).toBe(false);
+  });
+
+  it("starts with search closed", () => {
+    expect(useUIStore.getState().isSearchOpen).toBe(false);
+  });
+
+  it("opens search", () => {
+    useUIStore.getState().openSearch();
+    expect(useUIStore.getState().isSearchOpen).toBe(true);
+  });
+
+  it("closes search", () => {
+    useUIStore.getState().openSearch();
+    useUIStore.getState().closeSearch();
+    expect(useUIStore.getState().isSearchOpen).toBe(false);
   });
 });

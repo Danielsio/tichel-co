@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Input } from "@/components/ui/input";
 
 describe("Input", () => {
@@ -41,5 +42,55 @@ describe("Input", () => {
     render(<Input label="User Name" />);
     const input = screen.getByLabelText("User Name");
     expect(input).toHaveAttribute("id", "user-name");
+  });
+
+  it("renders password toggle button for password type", () => {
+    render(<Input label="Password" type="password" />);
+    const toggle = screen.getByLabelText("Show password");
+    expect(toggle).toBeInTheDocument();
+  });
+
+  it("toggles password visibility on click", async () => {
+    const user = userEvent.setup();
+    render(<Input label="Password" type="password" />);
+
+    const input = screen.getByLabelText("Password");
+    expect(input).toHaveAttribute("type", "password");
+
+    await user.click(screen.getByLabelText("Show password"));
+    expect(input).toHaveAttribute("type", "text");
+    expect(screen.getByLabelText("Hide password")).toBeInTheDocument();
+
+    await user.click(screen.getByLabelText("Hide password"));
+    expect(input).toHaveAttribute("type", "password");
+  });
+
+  it("does not show password toggle for text type", () => {
+    render(<Input label="Email" type="text" />);
+    expect(screen.queryByLabelText("Show password")).not.toBeInTheDocument();
+  });
+
+  it("uses provided id over generated one", () => {
+    render(<Input label="Email" id="custom-id" />);
+    const input = screen.getByLabelText("Email");
+    expect(input).toHaveAttribute("id", "custom-id");
+  });
+
+  it("sets aria-describedby to hint when no error", () => {
+    render(<Input label="Email" id="email" hint="Enter your email" />);
+    const input = screen.getByLabelText("Email");
+    expect(input).toHaveAttribute("aria-describedby", "email-hint");
+  });
+
+  it("sets aria-describedby to error when error present", () => {
+    render(<Input label="Email" id="email" error="Required" />);
+    const input = screen.getByLabelText("Email");
+    expect(input).toHaveAttribute("aria-describedby", "email-error");
+  });
+
+  it("does not set aria-describedby when no hint or error", () => {
+    render(<Input label="Email" />);
+    const input = screen.getByLabelText("Email");
+    expect(input).not.toHaveAttribute("aria-describedby");
   });
 });
