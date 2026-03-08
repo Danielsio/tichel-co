@@ -173,6 +173,22 @@
     "errorMismatch": "הסיסמאות אינן תואמות",
     "errorGeneric": "אירעה שגיאה. נסו שוב."
   },
+  "orders": {
+    "orderNumber": "הזמנה #{id}",
+    "placedOn": "הוזמן ב-{date}",
+    "items": "פריטים",
+    "each": "ליחידה",
+    "shippingAddress": "כתובת למשלוח",
+    "priceSummary": "סיכום מחיר",
+    "subtotal": "סכום ביניים",
+    "shipping": "משלוח",
+    "tax": "מע״מ",
+    "total": "סה״כ",
+    "free": "חינם",
+    "notFound": "ההזמנה לא נמצאה",
+    "backToOrders": "חזרה לחשבון",
+    "noOrders": "אין הזמנות עדיין"
+  },
   "account": {
     "title": "החשבון שלי",
     "orders": "ההזמנות שלי",
