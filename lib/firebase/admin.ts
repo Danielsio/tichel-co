@@ -51,7 +51,7 @@ function getAdminApp(): App {
   return _app;
 }
 
-const FIRESTORE_DB_ID = process.env.FIRESTORE_DATABASE_ID ?? "tichel-co-db";
+const FIRESTORE_DB_ID = process.env.FIRESTORE_DATABASE_ID ?? "tichel-co-db-eu";
 
 export function getAdminDb(): Firestore {
   if (!_db) {
