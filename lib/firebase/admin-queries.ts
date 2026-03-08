@@ -2,7 +2,6 @@ import { getAdminDb } from "./admin";
 import type { StoreProduct, StoreVariant, StoreCollection } from "@/types";
 
 async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
-  if (process.env.NODE_ENV === "production") return fn();
   const start = performance.now();
   const result = await fn();
   const ms = (performance.now() - start).toFixed(1);
