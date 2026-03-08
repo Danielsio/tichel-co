@@ -24,6 +24,18 @@ env:
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
     secret: NEXT_PUBLIC_FIREBASE_APP_ID
 
+  - variable: FIRESTORE_DATABASE_ID
+    value: tichel-co-db-eu
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIRESTORE_DATABASE_ID
+    value: tichel-co-db-eu
+    availability:
+      - BUILD
+      - RUNTIME
+
   - variable: NEXT_PUBLIC_DEFAULT_LOCALE
     value: he
     availability:

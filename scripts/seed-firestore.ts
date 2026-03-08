@@ -29,6 +29,8 @@ function getEmulatorCredential() {
   });
 }
 
+const DB_ID = process.env.FIRESTORE_DATABASE_ID ?? "tichel-co-db";
+
 function init(): Firestore {
   const useEmulator = process.env.SEED_PRODUCTION !== "true";
 
@@ -38,6 +40,8 @@ function init(): Firestore {
   } else {
     console.warn("→ Targeting PRODUCTION Firestore");
   }
+
+  console.warn(`→ Database ID: ${DB_ID}`);
 
   if (!getApps().length) {
     if (useEmulator) {
@@ -61,7 +65,7 @@ function init(): Firestore {
   }
 
   const app = getApps()[0]!;
-  const db = getFirestore(app, "tichel-co-db");
+  const db = getFirestore(app, DB_ID);
   db.settings({ preferRest: true });
   return db;
 }

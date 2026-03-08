@@ -7,10 +7,14 @@ import { onTTFB, onFCP, onLCP, onINP, onCLS, type Metric } from "web-vitals";
 function getHostLabel(): string {
   if (typeof window === "undefined") return "unknown";
   const host = window.location.hostname;
-  if (host.includes("vercel")) return `Vercel (${host})`;
-  if (host.includes("hosted.app") || host.includes("web.app"))
-    return `Firebase (${host})`;
-  return host;
+  const dbId = process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID ?? "tichel-co-db";
+  const dbTag = dbId.includes("eu") ? "EU" : "IL";
+  const prefix = host.includes("vercel")
+    ? "Vercel"
+    : host.includes("hosted.app") || host.includes("web.app")
+      ? "Firebase"
+      : host;
+  return `${prefix} [DB:${dbTag}] (${host})`;
 }
 
 function getNavigationTiming() {
