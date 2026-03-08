@@ -1,6 +1,8 @@
 name: Release
 
 on:
+  push:
+    branches: [master]
   workflow_dispatch:
     inputs:
       bump:
@@ -20,6 +22,8 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # Guard against release-commit loops (belt & suspenders with GITHUB_TOKEN)
+    if: "!startsWith(github.event.head_commit.message, 'chore(release):')"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,27 +43,66 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Check for releasable commits
+        id: check
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No tags found — first release"
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Manual dispatch always releases
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual dispatch — releasing"
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Only feat, fix, and perf warrant an automatic version bump
+          #   feat  → minor
+          #   fix   → patch
+          #   perf  → patch
+          #   feat! / fix! / BREAKING CHANGE → major
+          RELEASABLE=$(git log ${LATEST_TAG}..HEAD --pretty=format:"%s" \
+            | grep -cE "^(feat|fix|perf)(\(.+\))?!?:" || true)
+
+          if [ "$RELEASABLE" -gt 0 ]; then
+            echo "Found $RELEASABLE releasable commit(s) since $LATEST_TAG"
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No releasable commits (feat/fix/perf) since $LATEST_TAG — skipping"
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Configure git
+        if: steps.check.outputs.should_release == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Bump version
+        if: steps.check.outputs.should_release == 'true'
         run: |
-          if [ "${{ inputs.bump }}" = "auto" ]; then
-            pnpm release
-          else
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.bump }}" != "auto" ]; then
             pnpm release:${{ inputs.bump }}
+          else
+            pnpm release
           fi
 
       - name: Push changes and tag
+        if: steps.check.outputs.should_release == 'true'
         run: git push --follow-tags origin master
 
       - name: Extract version
+        if: steps.check.outputs.should_release == 'true'
         id: version
         run: echo "tag=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Extract changelog for release
+        if: steps.check.outputs.should_release == 'true'
         id: changelog
         run: |
           TAG="${{ steps.version.outputs.tag }}"
@@ -69,6 +112,7 @@ jobs:
           echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
+        if: steps.check.outputs.should_release == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
