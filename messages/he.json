@@ -107,7 +107,16 @@
     "orderNumber": "הזמנה מס׳ {id}",
     "status": "סטטוס",
     "backToStore": "חזרה לחנות",
-    "orderNotFound": "ההזמנה לא נמצאה"
+    "orderNotFound": "ההזמנה לא נמצאה",
+    "statusLabels": {
+      "pending_payment": "ממתין לתשלום",
+      "payment_confirmed": "התשלום אושר",
+      "processing": "בטיפול",
+      "shipped": "נשלח",
+      "delivered": "נמסר",
+      "cancelled": "בוטל",
+      "refunded": "הוחזר"
+    }
   },
   "topBar": {
     "message": "משלוח חינם בהזמנות מעל ₪250 · החלפות חינם תוך 30 יום"

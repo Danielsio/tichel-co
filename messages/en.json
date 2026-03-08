@@ -107,7 +107,16 @@
     "orderNumber": "Order #{id}",
     "status": "Status",
     "backToStore": "Continue Shopping",
-    "orderNotFound": "Order not found"
+    "orderNotFound": "Order not found",
+    "statusLabels": {
+      "pending_payment": "Pending Payment",
+      "payment_confirmed": "Payment Confirmed",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded"
+    }
   },
   "topBar": {
     "message": "Free shipping on orders over $70 · Free exchanges within 30 days"

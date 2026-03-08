@@ -31,15 +31,15 @@ interface OrderData {
   createdAt: { seconds: number } | null;
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  pending_payment: "ממתין לתשלום",
-  payment_confirmed: "התשלום אושר",
-  processing: "בטיפול",
-  shipped: "נשלח",
-  delivered: "נמסר",
-  cancelled: "בוטל",
-  refunded: "הוחזר",
-};
+const STATUS_KEYS = [
+  "pending_payment",
+  "payment_confirmed",
+  "processing",
+  "shipped",
+  "delivered",
+  "cancelled",
+  "refunded",
+] as const;
 
 export default function OrderConfirmationPage({ params }: Props) {
   const { id } = use(params);
@@ -78,7 +78,9 @@ export default function OrderConfirmationPage({ params }: Props) {
     );
   }
 
-  const statusLabel = STATUS_LABELS[order.status] ?? order.status;
+  const statusLabel = STATUS_KEYS.includes(order.status as (typeof STATUS_KEYS)[number])
+    ? t(`statusLabels.${order.status}`)
+    : order.status;
   const statusColor =
     order.status === "payment_confirmed" || order.status === "delivered"
       ? "text-success"
