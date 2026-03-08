@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/lib/i18n/navigation";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { createCustomRequestSchema } from "@/lib/validations/custom-requests";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +14,8 @@ import { Select } from "@/components/ui/select";
 
 export default function CustomPage() {
   const t = useTranslations("custom");
+  const tAuth = useTranslations("auth");
+  const { user, loading: authLoading } = useAuth();
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -40,6 +44,7 @@ export default function CustomPage() {
     try {
       await addDoc(collection(db, "customRequests"), {
         ...parsed.data,
+        userId: user!.uid,
         status: "submitted",
         createdAt: serverTimestamp(),
       });
@@ -50,6 +55,55 @@ export default function CustomPage() {
       setIsSubmitting(false);
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="mx-auto max-w-xl px-4 py-20 lg:px-6">
+        <div className="bg-stone h-8 w-48 animate-pulse rounded" />
+        <div className="bg-stone mt-6 h-64 animate-pulse rounded" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <>
+        {/* Header */}
+        <section className="gradient-luxury relative overflow-hidden py-16 lg:py-20">
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+              backgroundSize: "32px 32px",
+            }}
+          />
+          <div className="relative mx-auto max-w-2xl px-4 text-center lg:px-6">
+            <h1 className="font-display text-ivory text-3xl font-semibold text-balance lg:text-5xl">
+              {t("title")}
+            </h1>
+          </div>
+        </section>
+
+        <div className="flex min-h-[40vh] items-center justify-center px-4">
+          <div className="w-full max-w-sm text-center">
+            <p className="text-charcoal/50 text-sm">{t("loginRequired")}</p>
+            <div className="mt-6 flex flex-col gap-3">
+              <Link href="/login">
+                <Button size="lg" fullWidth>
+                  {tAuth("loginButton")}
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button variant="secondary" size="lg" fullWidth>
+                  {tAuth("registerButton")}
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   if (submitted) {
     return (
@@ -101,6 +155,7 @@ export default function CustomPage() {
             id="email"
             name="email"
             type="email"
+            defaultValue={user?.email ?? ""}
             required
           />
 
