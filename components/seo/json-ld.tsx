@@ -1,3 +1,5 @@
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://tichel.co";
+
 interface JsonLdProps {
   data: Record<string, unknown>;
 }
@@ -17,7 +19,7 @@ export function storeJsonLd() {
     "@type": "Store",
     name: "Tichel & Co.",
     description: "כיסויי ראש יוקרתיים, טישלים וצעיפים לנשים שמכסות בכוונה.",
-    url: "https://tichel.co",
+    url: BASE_URL,
     priceRange: "₪₪",
     address: {
       "@type": "PostalAddress",
@@ -41,7 +43,7 @@ export function productJsonLd(product: {
     name: product.name,
     description: product.description,
     image: product.image,
-    url: `https://tichel.co/products/${product.slug}`,
+    url: `${BASE_URL}/products/${product.slug}`,
     offers: {
       "@type": "Offer",
       price: (product.price / 100).toFixed(2),

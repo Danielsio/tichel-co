@@ -14,7 +14,6 @@ export interface ProductCardProps {
   comparePriceCents?: number | null;
   imageUrl?: string;
   imageAlt?: string;
-  isFeatured?: boolean;
   isNew?: boolean;
   stockQty?: number;
   className?: string;
@@ -27,7 +26,6 @@ export const ProductCard = memo(function ProductCard({
   comparePriceCents,
   imageUrl,
   imageAlt,
-  isFeatured: _isFeatured,
   isNew,
   stockQty,
   className,
