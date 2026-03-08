@@ -123,4 +123,101 @@ describe("RangeSlider", () => {
     fireEvent.keyDown(sliders[0]!, { key: "Enter" });
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  it("handles pointer down on min thumb", () => {
+    const onChange = vi.fn();
+    render(<RangeSlider min={0} max={100} value={[20, 80]} onChange={onChange} />);
+    const sliders = screen.getAllByRole("slider");
+    const setPointerCapture = vi.fn();
+    Object.defineProperty(sliders[0]!, "setPointerCapture", {
+      value: setPointerCapture,
+    });
+    fireEvent.pointerDown(sliders[0]!, { pointerId: 1 });
+    expect(setPointerCapture).toHaveBeenCalledWith(1);
+  });
+
+  it("handles pointer down on max thumb", () => {
+    const onChange = vi.fn();
+    render(<RangeSlider min={0} max={100} value={[20, 80]} onChange={onChange} />);
+    const sliders = screen.getAllByRole("slider");
+    const setPointerCapture = vi.fn();
+    Object.defineProperty(sliders[1]!, "setPointerCapture", {
+      value: setPointerCapture,
+    });
+    fireEvent.pointerDown(sliders[1]!, { pointerId: 2 });
+    expect(setPointerCapture).toHaveBeenCalledWith(2);
+  });
+
+  it("moves min thumb via pointer move after pointer down", () => {
+    const onChange = vi.fn();
+    render(<RangeSlider min={0} max={100} value={[20, 80]} onChange={onChange} />);
+    const sliders = screen.getAllByRole("slider");
+    const track = sliders[0]!.parentElement!;
+
+    Object.defineProperty(sliders[0]!, "setPointerCapture", { value: vi.fn() });
+    Object.defineProperty(track, "getBoundingClientRect", {
+      value: () => ({ left: 0, right: 200, width: 200, top: 0, bottom: 0 }),
+    });
+
+    fireEvent.pointerDown(sliders[0]!, { pointerId: 1 });
+    fireEvent.pointerMove(track, { clientX: 60 });
+
+    expect(onChange).toHaveBeenCalled();
+  });
+
+  it("moves max thumb via pointer move after pointer down", () => {
+    const onChange = vi.fn();
+    render(<RangeSlider min={0} max={100} value={[20, 80]} onChange={onChange} />);
+    const sliders = screen.getAllByRole("slider");
+    const track = sliders[1]!.parentElement!;
+
+    Object.defineProperty(sliders[1]!, "setPointerCapture", { value: vi.fn() });
+    Object.defineProperty(track, "getBoundingClientRect", {
+      value: () => ({ left: 0, right: 200, width: 200, top: 0, bottom: 0 }),
+    });
+
+    fireEvent.pointerDown(sliders[1]!, { pointerId: 2 });
+    fireEvent.pointerMove(track, { clientX: 180 });
+
+    expect(onChange).toHaveBeenCalled();
+  });
+
+  it("stops tracking on pointer up", () => {
+    const onChange = vi.fn();
+    render(<RangeSlider min={0} max={100} value={[20, 80]} onChange={onChange} />);
+    const sliders = screen.getAllByRole("slider");
+    const track = sliders[0]!.parentElement!;
+
+    Object.defineProperty(sliders[0]!, "setPointerCapture", { value: vi.fn() });
+
+    fireEvent.pointerDown(sliders[0]!, { pointerId: 1 });
+    fireEvent.pointerUp(track);
+    fireEvent.pointerMove(track, { clientX: 100 });
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("handles global pointerup to release active thumb", () => {
+    const onChange = vi.fn();
+    render(<RangeSlider min={0} max={100} value={[20, 80]} onChange={onChange} />);
+    const sliders = screen.getAllByRole("slider");
+
+    Object.defineProperty(sliders[0]!, "setPointerCapture", { value: vi.fn() });
+
+    fireEvent.pointerDown(sliders[0]!, { pointerId: 1 });
+    fireEvent(window, new Event("pointerup"));
+  });
+
+  it("applies className prop", () => {
+    const { container } = render(
+      <RangeSlider
+        min={0}
+        max={100}
+        value={[20, 80]}
+        onChange={vi.fn()}
+        className="custom-class"
+      />,
+    );
+    expect(container.firstElementChild).toHaveClass("custom-class");
+  });
 });

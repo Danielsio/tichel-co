@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { CartDrawer } from "./cart-drawer";
 
 vi.mock("next-intl", () => ({
@@ -153,5 +153,74 @@ describe("CartDrawer", () => {
     expect(screen.getByLabelText("decreaseQty")).toBeInTheDocument();
     expect(screen.getByLabelText("increaseQty")).toBeInTheDocument();
     expect(screen.getByText("2")).toBeInTheDocument();
+  });
+
+  it("calls removeItem when remove button is clicked", async () => {
+    currentStore = storeWithItems;
+    render(<CartDrawer />);
+    const removeBtn = screen.getByLabelText("removeItem");
+    fireEvent.click(removeBtn);
+    expect(mockRemoveItem).toHaveBeenCalledWith("v1");
+  });
+
+  it("calls updateQuantity when increase is clicked", async () => {
+    currentStore = storeWithItems;
+    render(<CartDrawer />);
+    const increaseBtn = screen.getByLabelText("increaseQty");
+    fireEvent.click(increaseBtn);
+    expect(mockUpdateQuantity).toHaveBeenCalledWith("v1", 3);
+  });
+
+  it("calls updateQuantity when decrease is clicked", async () => {
+    currentStore = storeWithItems;
+    render(<CartDrawer />);
+    const decreaseBtn = screen.getByLabelText("decreaseQty");
+    fireEvent.click(decreaseBtn);
+    expect(mockUpdateQuantity).toHaveBeenCalledWith("v1", 1);
+  });
+
+  it("calls closeCart when continue shopping button is clicked (empty)", () => {
+    currentStore = emptyStore;
+    render(<CartDrawer />);
+    fireEvent.click(screen.getByText("continueShopping"));
+    expect(mockCloseCart).toHaveBeenCalled();
+  });
+
+  it("calls closeCart when continue shopping button is clicked (with items)", () => {
+    currentStore = storeWithItems;
+    render(<CartDrawer />);
+    const buttons = screen.getAllByText("continueShopping");
+    fireEvent.click(buttons[0]!);
+    expect(mockCloseCart).toHaveBeenCalled();
+  });
+
+  it("renders item without image", () => {
+    currentStore = {
+      ...emptyStore,
+      items: [
+        {
+          ...storeWithItems.items[0]!,
+          image: "",
+        },
+      ],
+      totalPrice: () => 15000,
+    };
+    render(<CartDrawer />);
+    expect(screen.getByText("Silk Tichel")).toBeInTheDocument();
+  });
+
+  it("renders item with only color (no size)", () => {
+    currentStore = {
+      ...emptyStore,
+      items: [
+        {
+          ...storeWithItems.items[0]!,
+          size: "",
+        },
+      ],
+      totalPrice: () => 30000,
+    };
+    render(<CartDrawer />);
+    expect(screen.getByText("Blue")).toBeInTheDocument();
   });
 });
