@@ -32,22 +32,22 @@ export function Header() {
 
   return (
     <>
-      {/* Announcement Bar */}
-      <div className="gradient-luxury hidden lg:block">
-        <div className="mx-auto max-w-7xl px-6">
-          <p className="text-ivory/50 py-2.5 text-center text-[11px] tracking-[0.15em] uppercase">
+      {/* Announcement Bar — visible on all sizes */}
+      <div className="gradient-luxury">
+        <div className="mx-auto max-w-7xl px-4 lg:px-6">
+          <p className="text-ivory/60 py-2 text-center text-[10px] tracking-[0.15em] uppercase sm:py-2.5 sm:text-[11px]">
             {tTopBar("message")}
           </p>
         </div>
       </div>
 
-      <header className="bg-ivory/95 sticky top-0 z-40 backdrop-blur-xl">
+      <header className="bg-ivory/95 sticky top-0 z-40 shadow-[var(--shadow-soft)] backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-4 lg:px-6">
-          <div className="flex h-[72px] items-center justify-between">
+          <div className="flex h-16 items-center justify-between sm:h-[72px]">
             {/* Mobile menu */}
             <button
               onClick={openMobileMenu}
-              className="text-navy hover:text-gold flex h-10 w-10 cursor-pointer items-center justify-center transition-colors duration-300 lg:hidden"
+              className="text-navy hover:text-gold -ms-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-colors duration-300 lg:hidden"
               aria-label={t("openMenu")}
             >
               <svg
@@ -67,14 +67,14 @@ export function Header() {
 
             {/* Logo */}
             <Link href="/" className="group flex items-center gap-2">
-              <span className="font-display text-navy group-hover:text-gold text-[26px] font-semibold tracking-tight transition-colors duration-300 lg:text-[30px]">
+              <span className="font-display text-navy group-hover:text-gold text-[24px] font-semibold tracking-tight transition-colors duration-300 sm:text-[26px] lg:text-[30px]">
                 Tichel & Co.
               </span>
             </Link>
 
             {/* Desktop Nav */}
             <nav
-              className="hidden lg:flex lg:items-center lg:gap-10"
+              className="hidden lg:flex lg:items-center lg:gap-8 xl:gap-10"
               aria-label={tCommon("mainNav")}
             >
               {navLinks.map((link) => (
@@ -89,10 +89,10 @@ export function Header() {
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center gap-0.5">
+            <div className="-me-2 flex items-center gap-0.5 sm:me-0">
               <button
                 onClick={openSearch}
-                className="text-navy/60 hover:text-navy flex h-10 w-10 cursor-pointer items-center justify-center transition-colors duration-300"
+                className="text-navy/60 hover:text-navy hover:bg-navy/5 flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-all duration-300"
                 aria-label={t("search")}
               >
                 <svg
@@ -112,7 +112,7 @@ export function Header() {
 
               <Link
                 href="/account"
-                className="text-navy/60 hover:text-navy flex h-10 w-10 items-center justify-center transition-colors duration-300"
+                className="text-navy/60 hover:text-navy hover:bg-navy/5 hidden h-10 w-10 items-center justify-center rounded-lg transition-all duration-300 sm:flex"
                 aria-label={t("account")}
               >
                 <svg
@@ -132,7 +132,7 @@ export function Header() {
 
               <button
                 onClick={openCart}
-                className="text-navy/60 hover:text-navy relative flex h-10 w-10 cursor-pointer items-center justify-center transition-colors duration-300"
+                className="text-navy/60 hover:text-navy hover:bg-navy/5 relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg transition-all duration-300"
                 aria-label={t("cart")}
               >
                 <svg
@@ -149,7 +149,7 @@ export function Header() {
                   />
                 </svg>
                 {itemCount > 0 && (
-                  <span className="bg-navy text-ivory absolute -end-0.5 top-0.5 flex h-[18px] w-[18px] items-center justify-center rounded-full text-[9px] font-bold">
+                  <span className="bg-gold text-navy absolute -end-0.5 top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[9px] font-bold">
                     {itemCount}
                   </span>
                 )}
@@ -157,9 +157,6 @@ export function Header() {
             </div>
           </div>
         </div>
-
-        {/* Subtle border */}
-        <div className="from-stone via-stone-dark h-px bg-gradient-to-r to-transparent opacity-60" />
       </header>
 
       <SearchDialog />
@@ -172,23 +169,23 @@ export function Header() {
         side="start"
         closeLabel={tCommon("close")}
       >
-        <nav className="flex flex-col gap-1 pt-2" aria-label={tCommon("mainNav")}>
+        <nav className="flex flex-col gap-0.5 pt-4" aria-label={tCommon("mainNav")}>
           {navLinks.map((link) => (
             <Link
               key={link.key}
               href={link.href}
               onClick={closeMobileMenu}
-              className="text-navy hover:text-gold rounded-sm px-3 py-3.5 text-[15px] font-medium transition-colors duration-200"
+              className="text-navy hover:text-gold hover:bg-gold/5 rounded-lg px-4 py-3.5 text-[15px] font-medium transition-all duration-200"
             >
               {t(link.key)}
             </Link>
           ))}
         </nav>
-        <div className="border-stone mt-10 border-t pt-6">
+        <div className="border-stone mt-8 border-t pt-6">
           <Link
             href="/account"
             onClick={closeMobileMenu}
-            className="text-charcoal/60 hover:text-navy flex items-center gap-3 px-3 py-3 text-sm transition-colors"
+            className="text-charcoal/60 hover:text-navy hover:bg-navy/5 flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-all duration-200"
           >
             <svg
               className="h-5 w-5"
