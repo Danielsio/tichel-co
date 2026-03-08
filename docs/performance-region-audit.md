@@ -146,6 +146,32 @@ Some features use the Firebase Client SDK directly from the user's browser:
 
 ---
 
-## Experiment Plan
+## Experiment Results (2026-03-08)
 
-See `docs/eu-region-experiment-plan.md` for the step-by-step plan to test this with a European Firestore database.
+Tested from Israel with identical transfer sizes (21.0 KB).
+
+| Metric       | IL DB (me-west1) | EU DB (europe-west4) | Improvement     |
+| ------------ | ---------------- | -------------------- | --------------- |
+| **TTFB**     | 318ms            | 172ms                | **46% faster**  |
+| **FCP**      | 512ms            | 236ms                | **54% faster**  |
+| Server       | 179ms            | 170ms                | ~same           |
+| **Download** | **1064ms**       | **103ms**            | **10x faster**  |
+| DOM Ready    | 1385ms           | 278ms                | **5x faster**   |
+| Full Load    | 1492ms           | 467ms                | **3.2x faster** |
+
+**Key finding:** Co-locating Firestore with App Hosting saved **961ms** of SSR response time — matching the predicted 700-1200ms from cross-region round trips.
+
+**Decision:** Migrate production to `tichel-co-db-eu` (europe-west4).
+
+---
+
+## Post-Migration Checklist
+
+- [x] Create `tichel-co-db-eu` in europe-west4
+- [x] Deploy rules and indexes
+- [x] Seed with production data
+- [x] Validate performance improvement
+- [ ] Merge PR and deploy to production
+- [ ] Delete test backend `tichel-co-eu-test`
+- [ ] Keep `tichel-co-db` (Tel Aviv) as backup for 2 weeks, then delete
+- [ ] Storage bucket stays in me-west1 (not actively used; cannot be moved)
