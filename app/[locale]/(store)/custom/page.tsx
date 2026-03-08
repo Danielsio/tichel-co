@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
+import { createCustomRequestSchema } from "@/lib/validations/custom-requests";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,14 +14,41 @@ export default function CustomPage() {
   const t = useTranslations("custom");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
     setIsSubmitting(true);
-    setTimeout(() => {
+
+    const formData = new FormData(e.currentTarget);
+    const raw = {
+      name: formData.get("name") as string,
+      contactEmail: formData.get("email") as string,
+      type: formData.get("type") as string,
+      description: formData.get("description") as string,
+      budgetRange: (formData.get("budget") as string) || undefined,
+    };
+
+    const parsed = createCustomRequestSchema.safeParse(raw);
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? "Invalid input");
       setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "customRequests"), {
+        ...parsed.data,
+        status: "submitted",
+        createdAt: serverTimestamp(),
+      });
       setSubmitted(true);
-    }, 1200);
+    } catch {
+      setError(t("submitError"));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -50,7 +80,7 @@ export default function CustomPage() {
         />
         <div className="relative mx-auto max-w-2xl px-4 text-center lg:px-6">
           <p className="text-gold mb-3 text-[11px] font-semibold tracking-[0.3em] uppercase">
-            {t("subtitle").slice(0, 30)}
+            {t("subtitle")}
           </p>
           <h1 className="font-display text-ivory text-3xl font-semibold text-balance lg:text-5xl">
             {t("title")}
@@ -116,6 +146,12 @@ export default function CustomPage() {
               <option value="400-plus">{t("budget4")}</option>
             </Select>
           </div>
+
+          {error && (
+            <p className="text-error text-[13px]" role="alert">
+              {error}
+            </p>
+          )}
 
           <Button type="submit" size="lg" isLoading={isSubmitting} className="mt-2">
             {t("submitButton")}

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { getAdminDb } from "@/lib/firebase/admin";
+import { getAdminDb, getAdminAuth } from "@/lib/firebase/admin";
 import { sendOrderConfirmation } from "@/lib/email/send-order-confirmation";
 
 function getStripe() {
@@ -59,12 +59,16 @@ export async function POST(req: NextRequest) {
         });
         console.warn(`Order ${orderDoc.id} → payment_confirmed`);
 
-        const recipientEmail = orderData.guestEmail || orderData.userId;
-        if (
-          recipientEmail &&
-          typeof recipientEmail === "string" &&
-          recipientEmail.includes("@")
-        ) {
+        let recipientEmail: string | null = orderData.guestEmail ?? null;
+        if (!recipientEmail && orderData.userId) {
+          try {
+            const user = await getAdminAuth().getUser(orderData.userId);
+            recipientEmail = user.email ?? null;
+          } catch {
+            console.warn(`Could not resolve email for userId ${orderData.userId}`);
+          }
+        }
+        if (recipientEmail) {
           await sendOrderConfirmation({
             to: recipientEmail,
             orderId: orderDoc.id,

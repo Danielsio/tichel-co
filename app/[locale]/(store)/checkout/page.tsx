@@ -76,9 +76,17 @@ export default function CheckoutPage() {
         unitPriceCents: item.price,
       }));
 
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+      if (user) {
+        const idToken = await user.getIdToken();
+        headers["Authorization"] = `Bearer ${idToken}`;
+      }
+
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           items: orderItems,
           currency: "ils",
