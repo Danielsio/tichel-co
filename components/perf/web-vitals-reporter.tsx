@@ -7,7 +7,7 @@ import { onTTFB, onFCP, onLCP, onINP, onCLS, type Metric } from "web-vitals";
 function getHostLabel(): string {
   if (typeof window === "undefined") return "unknown";
   const host = window.location.hostname;
-  const dbId = process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID ?? "tichel-co-db";
+  const dbId = process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID ?? "tichel-co-db-eu";
   const dbTag = dbId.includes("eu") ? "EU" : "IL";
   const prefix = host.includes("vercel")
     ? "Vercel"

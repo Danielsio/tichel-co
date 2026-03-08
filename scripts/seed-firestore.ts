@@ -29,7 +29,7 @@ function getEmulatorCredential() {
   });
 }
 
-const DB_ID = process.env.FIRESTORE_DATABASE_ID ?? "tichel-co-db";
+const DB_ID = process.env.FIRESTORE_DATABASE_ID ?? "tichel-co-db-eu";
 
 function init(): Firestore {
   const useEmulator = process.env.SEED_PRODUCTION !== "true";

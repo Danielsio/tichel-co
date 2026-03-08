@@ -14,7 +14,8 @@ const firebaseConfig = {
 
 const app = getApps().length ? getApps()[0]! : initializeApp(firebaseConfig);
 
-const FIRESTORE_DB_ID = process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID ?? "tichel-co-db";
+const FIRESTORE_DB_ID =
+  process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID ?? "tichel-co-db-eu";
 
 export const auth = getAuth(app);
 export const db = getFirestore(app, FIRESTORE_DB_ID);
