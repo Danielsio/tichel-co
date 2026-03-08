@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/lib/i18n/navigation";
@@ -120,11 +121,12 @@ function HomePageContent({
               style={{ animationDelay: `${i * 100}ms` }}
             >
               <div className="relative aspect-[3/4] overflow-hidden">
-                <img
+                <Image
                   src={col.imageUrl}
                   alt={col.title}
-                  className="h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                  className="object-cover transition-all duration-700 ease-out group-hover:scale-105"
                 />
                 <div className="from-navy/70 via-navy/20 group-hover:from-navy/80 absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-500" />
                 <div className="absolute inset-x-0 bottom-0 p-4 lg:p-5">

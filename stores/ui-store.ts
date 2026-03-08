@@ -5,6 +5,9 @@ interface UIState {
   openMobileMenu: () => void;
   closeMobileMenu: () => void;
   toggleMobileMenu: () => void;
+  isSearchOpen: boolean;
+  openSearch: () => void;
+  closeSearch: () => void;
 }
 
 export const useUIStore = create<UIState>()((set) => ({
@@ -13,4 +16,7 @@ export const useUIStore = create<UIState>()((set) => ({
   closeMobileMenu: () => set({ isMobileMenuOpen: false }),
   toggleMobileMenu: () =>
     set((state) => ({ isMobileMenuOpen: !state.isMobileMenuOpen })),
+  isSearchOpen: false,
+  openSearch: () => set({ isSearchOpen: true }),
+  closeSearch: () => set({ isSearchOpen: false }),
 }));

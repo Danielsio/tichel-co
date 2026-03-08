@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/lib/i18n/navigation";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -110,12 +111,14 @@ export default function OrderConfirmationPage({ params }: Props) {
       <div className="mt-6 flex flex-col gap-3">
         {order.items?.map((item, idx) => (
           <div key={idx} className="border-stone flex items-center gap-3 border-b pb-3">
-            <div className="bg-stone h-14 w-11 shrink-0 overflow-hidden rounded-sm">
+            <div className="bg-stone relative h-14 w-11 shrink-0 overflow-hidden rounded-sm">
               {item.imageUrl && (
-                <img
+                <Image
                   src={item.imageUrl}
                   alt={item.productTitle}
-                  className="h-full w-full object-cover"
+                  fill
+                  sizes="44px"
+                  className="object-cover"
                 />
               )}
             </div>

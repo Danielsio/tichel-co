@@ -173,6 +173,22 @@
     "errorMismatch": "Passwords do not match",
     "errorGeneric": "An error occurred. Please try again."
   },
+  "orders": {
+    "orderNumber": "Order #{id}",
+    "placedOn": "Placed on {date}",
+    "items": "Items",
+    "each": "each",
+    "shippingAddress": "Shipping Address",
+    "priceSummary": "Price Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "total": "Total",
+    "free": "Free",
+    "notFound": "Order not found",
+    "backToOrders": "Back to Account",
+    "noOrders": "No orders yet"
+  },
   "account": {
     "title": "My Account",
     "orders": "My Orders",
@@ -203,6 +219,12 @@
     "switchTo": "עברית",
     "switchLabel": "Switch to Hebrew",
     "current": "English"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search products...",
+    "noResults": "No results found",
+    "startTyping": "Start typing to search products"
   },
   "filter": {
     "title": "Filters",
@@ -275,7 +297,8 @@
     "submitButton": "Submit Request",
     "successTitle": "Request Submitted!",
     "successText": "Thank you for your custom design request. Our team will review it and get back to you within 2-3 business days.",
-    "submitError": "Error submitting your request. Please try again."
+    "submitError": "Error submitting your request. Please try again.",
+    "loginRequired": "Please sign in to submit a custom design request"
   },
   "lookbook": {
     "title": "Lookbook",

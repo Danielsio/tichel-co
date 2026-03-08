@@ -7,7 +7,7 @@ describe("Avatar", () => {
     render(<Avatar src="/avatar.jpg" alt="User" fallback="John Doe" />);
     const img = screen.getByRole("img", { name: "User" });
     expect(img).toBeInTheDocument();
-    expect(img).toHaveAttribute("src", "/avatar.jpg");
+    expect(img.getAttribute("src")).toContain("avatar.jpg");
   });
 
   it("renders initials when no src", () => {

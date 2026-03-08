@@ -6,6 +6,7 @@ import { useCartStore } from "@/stores/cart-store";
 import { useUIStore } from "@/stores/ui-store";
 import { useMounted } from "@/hooks/use-mounted";
 import { Drawer } from "@/components/ui/drawer";
+import { SearchDialog } from "@/components/search/search-dialog";
 
 const navLinks = [
   { href: "/collections/signature-collection" as const, key: "collections" as const },
@@ -23,7 +24,8 @@ export function Header() {
   const tTopBar = useTranslations("topBar");
   const totalItems = useCartStore((s) => s.totalItems);
   const openCart = useCartStore((s) => s.openCart);
-  const { isMobileMenuOpen, openMobileMenu, closeMobileMenu } = useUIStore();
+  const { isMobileMenuOpen, openMobileMenu, closeMobileMenu, openSearch } =
+    useUIStore();
   const mounted = useMounted();
 
   const itemCount = mounted ? totalItems() : 0;
@@ -89,6 +91,7 @@ export function Header() {
             {/* Actions */}
             <div className="flex items-center gap-0.5">
               <button
+                onClick={openSearch}
                 className="text-navy/60 hover:text-navy flex h-10 w-10 cursor-pointer items-center justify-center transition-colors duration-300"
                 aria-label={t("search")}
               >
@@ -158,6 +161,8 @@ export function Header() {
         {/* Subtle border */}
         <div className="from-stone via-stone-dark h-px bg-gradient-to-r to-transparent opacity-60" />
       </header>
+
+      <SearchDialog />
 
       {/* Mobile Menu Drawer */}
       <Drawer
