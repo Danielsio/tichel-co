@@ -26,54 +26,16 @@ env:
       - BUILD
       - RUNTIME
 
-  # ── Firebase client config (public — safe to commit) ─────────────────────────
-  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: AIzaSyBScV_Af2IYfHrHRXPeRqGwHnXMs3xkKFo
-    availability:
-      - BUILD
-      - RUNTIME
-
-  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-    value: tichel-co.firebaseapp.com
-    availability:
-      - BUILD
-      - RUNTIME
-
-  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    value: tichel-co
-    availability:
-      - BUILD
-      - RUNTIME
-
-  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-    value: tichel-co.firebasestorage.app
-    availability:
-      - BUILD
-      - RUNTIME
-
-  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-    value: "439958953518"
-    availability:
-      - BUILD
-      - RUNTIME
-
-  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    value: 1:439958953518:web:833306b0ee5044bebac9bf
-    availability:
-      - BUILD
-      - RUNTIME
-
-  # ── Firebase Admin SDK (non-sensitive fields) ─────────────────────────────────
-  - variable: GCP_ADMIN_PROJECT_ID
-    value: tichel-co
-    availability:
-      - RUNTIME
-
-  - variable: GCP_ADMIN_CLIENT_EMAIL
-    value: firebase-adminsdk-fbsvc@tichel-co.iam.gserviceaccount.com
-    availability:
-      - RUNTIME
-
-  # ── Firebase Admin SDK (sensitive — set via Firebase console env vars) ────────
-  # GCP_ADMIN_PRIVATE_KEY must be set in:
-  # Firebase Console → App Hosting → Backend tichel-co → Environment
+  # ── Firebase client config + Admin SDK credentials ───────────────────────────
+  # All of the following are set via Firebase Console:
+  # App Hosting → Backend tichel-co → Environment
+  #
+  #   NEXT_PUBLIC_FIREBASE_API_KEY
+  #   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+  #   NEXT_PUBLIC_FIREBASE_PROJECT_ID
+  #   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+  #   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+  #   NEXT_PUBLIC_FIREBASE_APP_ID
+  #   GCP_ADMIN_PROJECT_ID
+  #   GCP_ADMIN_CLIENT_EMAIL
+  #   GCP_ADMIN_PRIVATE_KEY
