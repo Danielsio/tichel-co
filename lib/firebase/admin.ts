@@ -29,9 +29,9 @@ function getCredential() {
   }
 
   return cert({
-    projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+    projectId: process.env.GCP_ADMIN_PROJECT_ID,
+    clientEmail: process.env.GCP_ADMIN_CLIENT_EMAIL,
+    privateKey: process.env.GCP_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
   });
 }
 
